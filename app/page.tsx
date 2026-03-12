@@ -107,25 +107,22 @@ export default function PrototypeLibrary() {
   const [modalPrompt, setModalPrompt] = useState("")
 
   // Filter sites and prototypes based on all filters
-  const filteredSites = sites.map(site => ({
-    ...site,
-    prototypes: site.prototypes.filter(p => {
-      const matchesPlatform = !selectedPlatform || p.platform === selectedPlatform
-      const matchesSegment = !selectedSegment || p.segment === selectedSegment
-      const matchesSearch = !searchQuery || 
-        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        p.description.toLowerCase().includes(searchQuery.toLowerCase())
-      return matchesPlatform && matchesSegment && matchesSearch
-    })
-  })).filter(site => {
-    const matchesSearch = !searchQuery || 
-      site.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      site.code.toLowerCase().includes(searchQuery.toLowerCase())
-    return site.prototypes.length > 0 || matchesSearch
-  })
+  const filteredSites = sites
+    .filter(site => !selectedSite || site.id === selectedSite)
+    .map(site => ({
+      ...site,
+      prototypes: site.prototypes.filter(p => {
+        const matchesPlatform = !selectedPlatform || p.platform === selectedPlatform
+        const matchesSegment = !selectedSegment || p.segment === selectedSegment
+        const matchesSearch = !searchQuery || 
+          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          p.description.toLowerCase().includes(searchQuery.toLowerCase())
+        return matchesPlatform && matchesSegment && matchesSearch
+      })
+    })).filter(site => site.prototypes.length > 0)
 
   const totalPrototypes = filteredSites.reduce((acc, site) => acc + site.prototypes.length, 0)
-  const activeFiltersCount = [selectedPlatform, selectedSegment].filter(Boolean).length
+  const activeFiltersCount = [selectedSite, selectedPlatform, selectedSegment].filter(Boolean).length
 
   const handleCopy = async (prototypeId: string) => {
     setCopiedId(prototypeId)
@@ -210,7 +207,27 @@ export default function PrototypeLibrary() {
           </div>
 
           {/* Filters */}
-          <div className="max-w-4xl mx-auto flex flex-wrap gap-8 justify-center">
+          <div className="max-w-5xl mx-auto flex flex-wrap gap-6 justify-center items-start">
+            {/* Market Filter */}
+            <div className="flex items-center gap-3">
+              <span className="text-[#666] text-xs uppercase tracking-wider">Market</span>
+              <div className="flex flex-wrap gap-2">
+                {sites.map((site) => (
+                  <button
+                    key={site.id}
+                    onClick={() => setSelectedSite(selectedSite === site.id ? null : site.id)}
+                    className={`px-3 py-1.5 rounded-lg border text-sm transition-all ${
+                      selectedSite === site.id 
+                        ? "bg-blue-600 border-blue-500 text-white" 
+                        : "bg-[#1a1a1a] border-[#333] text-[#888] hover:border-[#444] hover:text-white"
+                    }`}
+                  >
+                    {site.code}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Platform Filter */}
             <div className="flex items-center gap-3">
               <span className="text-[#666] text-xs uppercase tracking-wider">Platform</span>
@@ -258,6 +275,7 @@ export default function PrototypeLibrary() {
               <span className="text-[#666] text-sm">{totalPrototypes} prototypes found</span>
               <button
                 onClick={() => {
+                  setSelectedSite(null)
                   setSelectedPlatform(null)
                   setSelectedSegment(null)
                 }}
@@ -271,54 +289,17 @@ export default function PrototypeLibrary() {
         </div>
       </section>
 
-      {/* Sites Grid */}
-      <section className="px-6 pb-8">
+      {/* Prototypes Grid */}
+      <section className="px-6 pb-20">
         <div className="max-w-7xl mx-auto">
-          <div className="flex items-center gap-2 mb-6">
-            <h2 className="text-white font-semibold">Markets</h2>
-            <span className="text-[#666] text-sm">({filteredSites.length} sites)</span>
+          <div className="flex items-center gap-3 mb-6">
+            <h2 className="text-white font-semibold">Prototypes</h2>
+            <span className="text-[#666] text-sm">({totalPrototypes} results)</span>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-            {filteredSites.map((site) => (
-              <button
-                key={site.id}
-                onClick={() => setSelectedSite(selectedSite === site.id ? null : site.id)}
-                className={`p-4 rounded-xl border text-left transition-all ${
-                  selectedSite === site.id 
-                    ? "bg-[#1a1a1a] border-blue-500" 
-                    : "bg-[#111] border-[#222] hover:border-[#333]"
-                }`}
-              >
-                <span className="text-2xl block mb-2">{site.flag}</span>
-                <h3 className="text-white font-medium text-sm truncate">{site.name}</h3>
-                <div className="flex items-center justify-between mt-1">
-                  <span className="text-[#666] text-xs">{site.prototypes.length} proto</span>
-                  <ChevronRight className={`w-3 h-3 text-[#666] transition-transform ${selectedSite === site.id ? 'rotate-90' : ''}`} />
-                </div>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Prototype Details Panel */}
-      {selectedSite && (
-        <section className="px-6 pb-20">
-          <div className="max-w-7xl mx-auto">
-            <div className="bg-[#111] border border-[#222] rounded-xl p-6">
-              <div className="flex items-center gap-3 mb-6">
-                <span className="text-2xl">{filteredSites.find(s => s.id === selectedSite)?.flag}</span>
-                <h3 className="text-white font-semibold text-lg">
-                  {filteredSites.find(s => s.id === selectedSite)?.name} Prototypes
-                </h3>
-                <span className="text-[#666] text-sm">
-                  ({filteredSites.find(s => s.id === selectedSite)?.prototypes.length} matching)
-                </span>
-              </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {filteredSites.find(s => s.id === selectedSite)?.prototypes.map((prototype) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredSites.flatMap((site) => 
+              site.prototypes.map((prototype) => (
                   <div 
                     key={prototype.id}
                     className="bg-[#0a0a0a] border border-[#222] rounded-xl overflow-hidden hover:border-[#333] transition-colors"
@@ -358,8 +339,11 @@ export default function PrototypeLibrary() {
                         </span>
                       </div>
                       
-                      {/* Platform & Segment Tags */}
+                      {/* Market, Platform & Segment Tags */}
                       <div className="flex items-center gap-2 mb-3">
+                        <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
+                          {site.code}
+                        </span>
                         <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
                           {platforms.find(p => p.id === prototype.platform)?.name}
                         </span>
@@ -407,32 +391,11 @@ export default function PrototypeLibrary() {
                       </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
+                ))
+              )}
           </div>
-        </section>
-      )}
-
-      {/* Quick Stats */}
-      {!selectedSite && (
-        <section className="px-6 pb-20">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-[#111] border border-[#222] rounded-xl p-6">
-                <h3 className="text-[#666] text-sm mb-1">Total Sites</h3>
-                <p className="text-white text-3xl font-bold">{sites.length}</p>
-              </div>
-              <div className="bg-[#111] border border-[#222] rounded-xl p-6">
-                <h3 className="text-[#666] text-sm mb-1">Total Prototypes</h3>
-                <p className="text-white text-3xl font-bold">{sites.reduce((acc, s) => acc + s.prototypes.length, 0)}</p>
-              </div>
-              <div className="bg-[#111] border border-[#222] rounded-xl p-6">
-                <h3 className="text-[#666] text-sm mb-1">Active</h3>
-                <p className="text-white text-3xl font-bold">{sites.reduce((acc, s) => acc + s.prototypes.filter(p => p.status === 'active').length, 0)}</p>
-              </div>
-            </div>
-          </div>
+        </div>
+      </section>
         </section>
       )}
 
