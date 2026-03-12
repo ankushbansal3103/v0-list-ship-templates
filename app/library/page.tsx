@@ -28,7 +28,8 @@ import {
   SelectionCard,
 } from "@/components/prototype-library"
 import { colors, typography, spacing, countryConfigs } from "@/components/prototype-library/design-tokens"
-import { X, Plus, Settings } from "lucide-react"
+import { X, Plus, Settings, ArrowLeft, Home } from "lucide-react"
+import Link from "next/link"
 
 export default function PrototypeLibraryPage() {
   const [activeSection, setActiveSection] = useState<string>("overview")
@@ -38,17 +39,48 @@ export default function PrototypeLibraryPage() {
   const [textValue, setTextValue] = useState("Berlin")
   
   return (
-    <div className="min-h-screen bg-[#F5F5F5] p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-[#191919] mb-2">
-            eBay Mobile Prototype Library
-          </h1>
-          <p className="text-[#707070]">
-            Reusable components for building eBay mobile prototypes. Click on any component to see it in action.
-          </p>
+    <div className="min-h-screen bg-[#0a0a0a]">
+      {/* Top Navigation Bar */}
+      <header className="border-b border-[#1f1f1f] bg-[#0a0a0a] sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <Link 
+              href="/"
+              className="flex items-center gap-2 text-white hover:text-blue-400 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              <span className="text-sm">Back to Prototypes</span>
+            </Link>
+          </div>
+          
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <div className="w-6 h-6 rounded bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
+              <span className="text-white font-bold text-xs">eb</span>
+            </div>
+            <span className="text-white font-medium text-sm">Prototype Library</span>
+          </Link>
+          
+          <Link 
+            href="/"
+            className="p-2 bg-[#1a1a1a] hover:bg-[#222] rounded-lg transition-colors"
+            title="Home"
+          >
+            <Home className="w-4 h-4 text-white" />
+          </Link>
         </div>
+      </header>
+
+      <div className="p-8">
+        <div className="max-w-7xl mx-auto">
+          {/* Page Header */}
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold text-white mb-2">
+              Component Library
+            </h1>
+            <p className="text-[#888]">
+              Reusable components for building eBay mobile prototypes. Click on any component to see it in action.
+            </p>
+          </div>
         
         {/* Navigation */}
         <div className="flex gap-2 mb-8 flex-wrap">
@@ -58,8 +90,8 @@ export default function PrototypeLibraryPage() {
               onClick={() => setActiveSection(section)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 activeSection === section 
-                  ? "bg-[#3665F3] text-white" 
-                  : "bg-white text-[#191919] hover:bg-[#E5E5E5]"
+                  ? "bg-blue-600 text-white" 
+                  : "bg-[#1a1a1a] text-[#888] hover:bg-[#222] hover:text-white border border-[#333]"
               }`}
             >
               {section.charAt(0).toUpperCase() + section.slice(1)}
@@ -378,6 +410,7 @@ export function MyPrototype() {
             </div>
           </div>
         )}
+        </div>
       </div>
     </div>
   )
@@ -386,8 +419,8 @@ export function MyPrototype() {
 // Helper components
 function ComponentCard({ title, children, fullWidth }: { title: string; children: React.ReactNode; fullWidth?: boolean }) {
   return (
-    <div className={`bg-white rounded-xl p-6 shadow-sm ${fullWidth ? 'lg:col-span-2 xl:col-span-3' : ''}`}>
-      <h3 className="text-lg font-bold text-[#191919] mb-4">{title}</h3>
+    <div className={`bg-[#111] border border-[#222] rounded-xl p-6 ${fullWidth ? 'lg:col-span-2 xl:col-span-3' : ''}`}>
+      <h3 className="text-lg font-bold text-white mb-4">{title}</h3>
       <div className="space-y-4">
         {children}
       </div>
@@ -397,7 +430,7 @@ function ComponentCard({ title, children, fullWidth }: { title: string; children
 
 function CodeSnippet({ code }: { code: string }) {
   return (
-    <pre className="text-xs bg-[#F7F7F7] text-[#707070] p-3 rounded-lg overflow-x-auto mt-3">
+    <pre className="text-xs bg-[#0a0a0a] text-[#888] p-3 rounded-lg overflow-x-auto mt-3 border border-[#222]">
       {code}
     </pre>
   )
