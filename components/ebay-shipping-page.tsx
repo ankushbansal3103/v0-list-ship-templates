@@ -186,6 +186,19 @@ export function EbayShippingPage() {
   const [shippingCost, setShippingCost] = useState("5,99")
   const [showNumericKeyboard, setShowNumericKeyboard] = useState(false)
   
+  // Delivery details state
+  const [showDeliveryDetailsSheet, setShowDeliveryDetailsSheet] = useState(false)
+  const [itemLocation, setItemLocation] = useState("Berlin, Germany, 10115")
+  const [handlingTime, setHandlingTime] = useState("2 business days")
+  const [domesticReturns, setDomesticReturns] = useState(true)
+  const [domesticAllowedWithin, setDomesticAllowedWithin] = useState("14 days")
+  const [domesticReturnsPaidBy, setDomesticReturnsPaidBy] = useState("Buyer")
+  const [domesticRefundMethod, setDomesticRefundMethod] = useState("Money back")
+  const [internationalReturns, setInternationalReturns] = useState(true)
+  const [internationalAllowedWithin, setInternationalAllowedWithin] = useState("14 days")
+  const [internationalReturnsPaidBy, setInternationalReturnsPaidBy] = useState("Buyer")
+  const [internationalRefundMethod, setInternationalRefundMethod] = useState("Money back")
+  
   // Handle numeric keyboard input
   const handleKeyPress = (key: string) => {
     if (key === "backspace") {
@@ -303,7 +316,7 @@ export function EbayShippingPage() {
     <div className="flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
       {/* iPhone 17 Frame - 402x874 logical resolution */}
       {/* Hide L1 when full-screen sheets are shown to prevent double frame/island */}
-      <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet || showServicesSheet || showShippingCostSheet ? 'invisible' : ''}`}>
+      <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet || showServicesSheet || showShippingCostSheet || showDeliveryDetailsSheet ? 'invisible' : ''}`}>
         {/* Dynamic Island */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
         
@@ -548,19 +561,22 @@ export function EbayShippingPage() {
             <div className="py-5 pb-28">
               <h2 className="text-[14px] font-bold text-[#191919] mb-3">Delivery details</h2>
               
-              <button className="w-full p-4 bg-white border border-[#767676] rounded-[16px] flex">
+              <button 
+                onClick={() => setShowDeliveryDetailsSheet(true)}
+                className="w-full p-4 bg-white border border-[#767676] rounded-[16px] flex"
+              >
                 <div className="flex flex-col gap-4 text-left flex-1">
                   <div className="flex flex-col">
                     <span className="text-[14px] font-bold text-[#191919]">Item location</span>
-                    <span className="text-[13px] text-[#707070]">Located at 95117 (visible on listing)</span>
+                    <span className="text-[13px] text-[#707070]">{itemLocation}</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[14px] font-bold text-[#191919]">Handling time</span>
-                    <span className="text-[13px] text-[#707070]">X business days</span>
+                    <span className="text-[13px] text-[#707070]">{handlingTime}</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[14px] font-bold text-[#191919]">Domestic returns</span>
-                    <span className="text-[13px] text-[#707070]">14 Days, Buyer, Money back</span>
+                    <span className="text-[13px] text-[#707070]">{domesticReturns ? `${domesticAllowedWithin}, ${domesticReturnsPaidBy}, ${domesticRefundMethod}` : "Not accepted"}</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[14px] font-bold text-[#191919]">eBay International Shipping returns</span>
@@ -568,7 +584,7 @@ export function EbayShippingPage() {
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[14px] font-bold text-[#191919]">International returns</span>
-                    <span className="text-[13px] text-[#707070]">14 Days, Buyer, Money back</span>
+                    <span className="text-[13px] text-[#707070]">{internationalReturns ? `${internationalAllowedWithin}, ${internationalReturnsPaidBy}, ${internationalRefundMethod}` : "Not accepted"}</span>
                   </div>
                 </div>
                 <div className="flex items-center pl-3">
@@ -1283,6 +1299,211 @@ export function EbayShippingPage() {
                 <div className="px-4 pb-3 pt-3">
                   <button 
                     onClick={() => setShowServicesSheet(false)}
+                    className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]"
+                  >
+                    <span className="text-[16px] font-bold text-white">Done</span>
+                  </button>
+                </div>
+                {/* Home Indicator */}
+                <div className="h-[34px] flex items-center justify-center">
+                  <div className="w-[134px] h-[5px] bg-[#191919] rounded-full" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delivery Details Full Screen Sheet */}
+      {showDeliveryDetailsSheet && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          {/* iPhone Frame - identical to L1 */}
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            {/* Dynamic Island - same as L1 */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            
+            {/* Screen - same as L1 */}
+            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+              {/* iOS Status Bar */}
+              <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
+                <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
+                <div className="flex items-center gap-[5px]">
+                  <svg className="w-[17px] h-[11px]" viewBox="0 0 17 11">
+                    <rect x="0" y="7" width="3" height="4" rx="1" fill="#191919"/>
+                    <rect x="4.5" y="5" width="3" height="6" rx="1" fill="#191919"/>
+                    <rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#191919"/>
+                    <rect x="13.5" y="0" width="3" height="11" rx="1" fill="#191919"/>
+                  </svg>
+                  <svg className="w-[15px] h-[11px]" viewBox="0 0 15 11">
+                    <path d="M7.5 10.5C8.33 10.5 9 9.83 9 9C9 8.17 8.33 7.5 7.5 7.5C6.67 7.5 6 8.17 6 9C6 9.83 6.67 10.5 7.5 10.5Z" fill="#191919"/>
+                    <path d="M4.5 7C5.5 6 6.5 5.5 7.5 5.5C8.5 5.5 9.5 6 10.5 7" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                    <path d="M2.5 4.5C4 3 5.5 2.5 7.5 2.5C9.5 2.5 11 3 12.5 4.5" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                    <path d="M0.5 2C2.5 0.5 5 0 7.5 0C10 0 12.5 0.5 14.5 2" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                  </svg>
+                  <svg className="w-[25px] h-[12px]" viewBox="0 0 25 12">
+                    <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#191919" strokeOpacity="0.35"/>
+                    <rect x="2" y="2" width="18" height="8" rx="1.5" fill="#191919"/>
+                    <path d="M23 4V8C23.8 8 24 7 24 6C24 5 23.8 4 23 4Z" fill="#191919" fillOpacity="0.4"/>
+                  </svg>
+                </div>
+              </div>
+
+              {/* Navigation Header - Back and X buttons */}
+              <div className="h-[44px] px-4 flex items-center justify-between bg-white flex-shrink-0">
+                <button 
+                  onClick={() => setShowDeliveryDetailsSheet(false)}
+                  className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                >
+                  <BackArrow className="w-6 h-6 text-[#191919]" />
+                </button>
+                <button 
+                  onClick={() => setShowDeliveryDetailsSheet(false)}
+                  className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                >
+                  <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                </button>
+              </div>
+
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto px-4 pb-28">
+                {/* Page Title */}
+                <h1 className="text-[24px] font-bold text-[#191919] leading-[32px] mt-2 mb-6">
+                  Delivery details
+                </h1>
+
+                {/* Item Location Section */}
+                <div className="mb-4">
+                  <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-3">Item location</h2>
+                  <div className="w-full p-3 bg-[#F7F7F7] rounded-[8px] flex items-start justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-[14px] text-[#191919] leading-[20px]">{itemLocation}</span>
+                      <span className="text-[14px] text-[#707070] leading-[20px]">The item location appears on the listing.</span>
+                    </div>
+                    <button className="text-[14px] text-[#191919] underline ml-3 flex-shrink-0">Edit</button>
+                  </div>
+                </div>
+
+                {/* Divider */}
+                <div className="h-[1px] bg-[#E5E5E5] my-4" />
+
+                {/* Handling Time Section */}
+                <div className="mb-4">
+                  <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-3">Handling time</h2>
+                  <button className="w-full h-[48px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                    <span className="text-[14px] text-[#191919]">{handlingTime}</span>
+                    <ChevronDown className="w-4 h-4 text-[#191919]" />
+                  </button>
+                </div>
+
+                {/* Divider */}
+                <div className="h-[1px] bg-[#E5E5E5] my-4" />
+
+                {/* Returns Section */}
+                <div>
+                  <div className="mb-4">
+                    <h2 className="text-[16px] font-bold text-[#191919] leading-[24px]">Returns</h2>
+                    <p className="text-[14px] text-[#707070] leading-[20px]">Sellers must accept returns if the item doesn&apos;t match the listing description.</p>
+                  </div>
+
+                  {/* Domestic Returns */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between py-2 mb-3">
+                      <span className="text-[14px] font-bold text-[#191919]">Domestic</span>
+                      <button 
+                        onClick={() => setDomesticReturns(!domesticReturns)}
+                        className={`w-[51px] h-[31px] rounded-full transition-colors ${domesticReturns ? 'bg-[#3665F3]' : 'bg-[#E5E5E5]'}`}
+                      >
+                        <div className={`w-[27px] h-[27px] bg-white rounded-full shadow-sm transition-transform ${domesticReturns ? 'translate-x-[22px]' : 'translate-x-[2px]'}`} />
+                      </button>
+                    </div>
+
+                    {domesticReturns && (
+                      <div className="flex flex-col gap-3">
+                        {/* Allowed within */}
+                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">Allowed within</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]">{domesticAllowedWithin}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+
+                        {/* Returns shipping paid by */}
+                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">Returns shipping paid by</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]">{domesticReturnsPaidBy}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+
+                        {/* Refund method */}
+                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">Refund method</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]">{domesticRefundMethod}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* International Returns */}
+                  <div>
+                    <div className="flex items-center justify-between py-2 mb-3">
+                      <span className="text-[14px] font-bold text-[#191919]">International</span>
+                      <button 
+                        onClick={() => setInternationalReturns(!internationalReturns)}
+                        className={`w-[51px] h-[31px] rounded-full transition-colors ${internationalReturns ? 'bg-[#3665F3]' : 'bg-[#E5E5E5]'}`}
+                      >
+                        <div className={`w-[27px] h-[27px] bg-white rounded-full shadow-sm transition-transform ${internationalReturns ? 'translate-x-[22px]' : 'translate-x-[2px]'}`} />
+                      </button>
+                    </div>
+
+                    {internationalReturns && (
+                      <div className="flex flex-col gap-3">
+                        {/* Allowed within */}
+                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">Allowed within</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]">{internationalAllowedWithin}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+
+                        {/* Returns shipping paid by */}
+                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">Returns shipping paid by</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]">{internationalReturnsPaidBy}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+
+                        {/* Refund method */}
+                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">Refund method</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]">{internationalRefundMethod}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              {/* Fixed Bottom Button */}
+              <div className="absolute bottom-0 left-0 right-0 bg-white">
+                <div className="h-[1px] bg-[#E5E5E5]" />
+                <div className="px-4 pb-3 pt-3">
+                  <button 
+                    onClick={() => setShowDeliveryDetailsSheet(false)}
                     className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]"
                   >
                     <span className="text-[16px] font-bold text-white">Done</span>
