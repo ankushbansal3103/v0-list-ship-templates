@@ -184,6 +184,20 @@ export function EbayShippingPage() {
   // Shipping cost state
   const [showShippingCostSheet, setShowShippingCostSheet] = useState(false)
   const [shippingCost, setShippingCost] = useState("5,99")
+  const [showNumericKeyboard, setShowNumericKeyboard] = useState(false)
+  
+  // Handle numeric keyboard input
+  const handleKeyPress = (key: string) => {
+    if (key === "backspace") {
+      setShippingCost(prev => prev.slice(0, -1) || "0")
+    } else if (key === ",") {
+      if (!shippingCost.includes(",")) {
+        setShippingCost(prev => prev + ",")
+      }
+    } else {
+      setShippingCost(prev => prev === "0" ? key : prev + key)
+    }
+  }
   
   // International shipping services data
   const internationalServices = [
@@ -289,7 +303,7 @@ export function EbayShippingPage() {
     <div className="flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
       {/* iPhone 17 Frame - 402x874 logical resolution */}
       {/* Hide L1 when full-screen sheets are shown to prevent double frame/island */}
-      <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet || showServicesSheet ? 'invisible' : ''}`}>
+      <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet || showServicesSheet || showShippingCostSheet ? 'invisible' : ''}`}>
         {/* Dynamic Island */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
         
@@ -941,82 +955,136 @@ export function EbayShippingPage() {
   </div>
   )}
 
-      {/* Shipping Cost Bottom Sheet */}
+      {/* Shipping Cost Full Screen Sheet */}
       {showShippingCostSheet && (
         <div 
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3" style={{ pointerEvents: 'auto' }}>
-            {/* Dynamic Island */}
+          {/* iPhone Frame - identical to L1 */}
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            {/* Dynamic Island - same as L1 */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             
-            {/* Screen with scrim */}
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
-              <div 
-                className="absolute inset-0 bg-black/[0.32]"
-                onClick={() => setShowShippingCostSheet(false)}
-              />
-              
-              <div 
-                className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]"
-                onClick={(e) => e.stopPropagation()}
-              >
+            {/* Screen - same as L1 */}
+            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+              {/* iOS Status Bar */}
+              <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
+                <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
+                <div className="flex items-center gap-[5px]">
+                  <svg className="w-[17px] h-[11px]" viewBox="0 0 17 11">
+                    <rect x="0" y="7" width="3" height="4" rx="1" fill="#191919"/>
+                    <rect x="4.5" y="5" width="3" height="6" rx="1" fill="#191919"/>
+                    <rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#191919"/>
+                    <rect x="13.5" y="0" width="3" height="11" rx="1" fill="#191919"/>
+                  </svg>
+                  <svg className="w-[15px] h-[11px]" viewBox="0 0 15 11">
+                    <path d="M7.5 10.5C8.33 10.5 9 9.83 9 9C9 8.17 8.33 7.5 7.5 7.5C6.67 7.5 6 8.17 6 9C6 9.83 6.67 10.5 7.5 10.5Z" fill="#191919"/>
+                    <path d="M4.5 7C5.5 6 6.5 5.5 7.5 5.5C8.5 5.5 9.5 6 10.5 7" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                    <path d="M2.5 4.5C4 3 5.5 2.5 7.5 2.5C9.5 2.5 11 3 12.5 4.5" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                    <path d="M0.5 2C2.5 0.5 5 0 7.5 0C10 0 12.5 0.5 14.5 2" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                  </svg>
+                  <svg className="w-[25px] h-[12px]" viewBox="0 0 25 12">
+                    <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#191919" strokeOpacity="0.35"/>
+                    <rect x="2" y="2" width="18" height="8" rx="1.5" fill="#191919"/>
+                    <path d="M23 4V8C23.8 8 24 7 24 6C24 5 23.8 4 23 4Z" fill="#191919" fillOpacity="0.4"/>
+                  </svg>
+                </div>
+              </div>
+
+              {/* Header with drag handle and close button */}
+              <div className="flex-shrink-0">
                 {/* Drag handle */}
-                <div className="flex justify-center pt-[6px] pb-[6px]">
+                <div className="flex justify-center pt-1 pb-2">
                   <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
                 </div>
                 
                 {/* Header */}
-                <div className="flex items-start justify-between px-4 pt-2 pb-3">
+                <div className="flex items-start justify-between px-4 pt-1 pb-3">
                   <div className="flex flex-col">
                     <h3 className="text-[18px] font-bold text-[#191919] leading-[24px]">Shipping cost</h3>
                     <span className="text-[14px] text-[#707070] leading-[20px]">International service</span>
                   </div>
                   <button 
-                    onClick={() => setShowShippingCostSheet(false)}
+                    onClick={() => {
+                      setShowShippingCostSheet(false)
+                      setShowNumericKeyboard(false)
+                    }}
                     className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
                   >
                     <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
                   </button>
                 </div>
-                
-                {/* Content */}
-                <div className="px-4 pt-2 pb-6">
-                  {/* Section Header */}
-                  <div className="mb-4">
-                    <h4 className="text-[16px] font-bold text-[#191919] leading-[24px]">Enter the shipping cost</h4>
-                    <p className="text-[14px] text-[#707070] leading-[20px]">Choose the amount you want the buyer to pay.</p>
-                  </div>
-                  
-                  {/* Shipping Cost Input */}
-                  <div className="w-full h-[48px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center">
-                    <div className="flex flex-col flex-1">
-                      <span className="text-[12px] text-[#707070] leading-[16px]">Shipping cost</span>
-                      <input
-                        type="text"
-                        value={shippingCost}
-                        onChange={(e) => setShippingCost(e.target.value)}
-                        className="text-[14px] text-[#191919] leading-[20px] bg-transparent outline-none w-full"
-                        placeholder="0,00"
-                      />
-                    </div>
-                    <span className="text-[14px] text-[#191919]">€</span>
-                  </div>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 px-4 pt-4">
+                {/* Section Header */}
+                <div className="mb-4">
+                  <h4 className="text-[16px] font-bold text-[#191919] leading-[24px]">Enter the shipping cost</h4>
+                  <p className="text-[14px] text-[#707070] leading-[20px]">Choose the amount you want the buyer to pay.</p>
                 </div>
                 
-                {/* Footer with Save button */}
-                <div className="px-4 pb-4 pt-3 border-t border-[#E5E5E5]">
+                {/* Shipping Cost Input */}
+                <button 
+                  onClick={() => setShowNumericKeyboard(true)}
+                  className={`w-full h-[56px] px-4 bg-[#F7F7F7] rounded-[8px] flex items-center text-left ${showNumericKeyboard ? 'border-2 border-[#191919]' : 'border border-[#8F8F8F]'}`}
+                >
+                  <div className="flex flex-col flex-1">
+                    <span className="text-[12px] text-[#707070] leading-[16px]">Shipping cost</span>
+                    <span className="text-[16px] text-[#191919] leading-[24px]">{shippingCost || "0,00"}</span>
+                  </div>
+                  <span className="text-[16px] text-[#707070]">€</span>
+                </button>
+              </div>
+
+              {/* Bottom Section - Save button and Keyboard */}
+              <div className="flex-shrink-0">
+                {/* Save Button */}
+                <div className="px-4 pb-3 pt-3 border-t border-[#E5E5E5]">
                   <button 
-                    onClick={() => setShowShippingCostSheet(false)}
-                    className="w-full h-[48px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]"
+                    onClick={() => {
+                      setShowShippingCostSheet(false)
+                      setShowNumericKeyboard(false)
+                    }}
+                    className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]"
                   >
                     <span className="text-[16px] font-bold text-white">Save</span>
                   </button>
                 </div>
-                
+
+                {/* Numeric Keyboard */}
+                {showNumericKeyboard && (
+                  <div className="bg-[#D1D5DB] px-1 pt-2 pb-1">
+                    <div className="grid grid-cols-3 gap-[6px]">
+                      {["1", "2", "3", "4", "5", "6", "7", "8", "9", ",", "0", "backspace"].map((key) => (
+                        <button
+                          key={key}
+                          onClick={() => handleKeyPress(key)}
+                          className={`h-[42px] rounded-[5px] flex items-center justify-center ${
+                            key === "backspace" 
+                              ? "bg-[#ADB5BD]" 
+                              : "bg-white shadow-sm"
+                          } active:bg-[#E5E5E5]`}
+                        >
+                          {key === "backspace" ? (
+                            <svg className="w-6 h-6 text-[#191919]" viewBox="0 0 24 24" fill="none">
+                              <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="rotate(180 12 12)"/>
+                              <path d="M19 6H9L4 12L9 18H19C20.1046 18 21 17.1046 21 16V8C21 6.89543 20.1046 6 19 6Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              <line x1="12" y1="10" x2="16" y2="14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                              <line x1="16" y1="10" x2="12" y2="14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                            </svg>
+                          ) : (
+                            <span className="text-[22px] text-[#191919]">{key}</span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Home Indicator */}
-                <div className="h-[34px] flex items-center justify-center">
+                <div className={`h-[34px] flex items-center justify-center ${showNumericKeyboard ? 'bg-[#D1D5DB]' : 'bg-white'}`}>
                   <div className="w-[134px] h-[5px] bg-[#191919] rounded-full" />
                 </div>
               </div>
