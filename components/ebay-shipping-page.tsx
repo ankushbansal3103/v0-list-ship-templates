@@ -228,10 +228,10 @@ export function EbayShippingPage() {
 
             {/* International Shipping Section */}
             <div className="px-4 py-5">
-              <h2 className="text-[14px] font-bold text-[#191919] mb-3">International shipping</h2>
+              <h2 className="text-[14px] font-bold text-[#191919] mb-4">International shipping</h2>
               
               {/* Default Service */}
-              <div className="mb-4">
+              <div className="mb-5">
                 <span className="text-[13px] font-bold text-[#191919] mb-2 block">Default service</span>
                 
                 {/* eBay International Shipping Card - Selected state with blue border */}
@@ -252,7 +252,7 @@ export function EbayShippingPage() {
                       <p className="text-[13px] text-[#191919] mt-1 leading-[1.4]">
                         Send items to our domestic shipping hub and we&apos;ll handle the rest—at no extra cost.
                       </p>
-                      <button className="text-[13px] text-[#191919] underline text-left font-medium mt-1.5">
+                      <button className="text-[13px] text-[#191919] underline text-left font-medium mt-2">
                         How it works
                       </button>
                     </div>
@@ -261,7 +261,7 @@ export function EbayShippingPage() {
               </div>
 
               {/* Additional Service */}
-              <div className="mb-4">
+              <div className="mb-3">
                 <span className="text-[13px] font-bold text-[#191919] block">Additional service</span>
                 <span className="text-[13px] text-[#707070]">
                   <button className="underline text-[#3665F3]">Fees</button> apply for international sales.
@@ -269,7 +269,7 @@ export function EbayShippingPage() {
               </div>
 
               {/* Destination Dropdown */}
-              <div className="mb-4">
+              <div className="mb-3">
                 <button 
                   onClick={() => setShowDestinationSheet(true)}
                   className="w-full px-4 py-2.5 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between"
@@ -283,7 +283,7 @@ export function EbayShippingPage() {
               </div>
 
               {/* FedEx Service Card */}
-              <div className="w-full p-3 bg-white border border-[#E5E5E5] rounded-[16px] mb-4">
+              <div className="w-full p-3 bg-white border border-[#E5E5E5] rounded-[16px] mb-3">
                 <div className="flex gap-3 items-start">
                   <div className="w-[44px] h-[20px] flex items-center justify-center flex-shrink-0 mt-0.5">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
