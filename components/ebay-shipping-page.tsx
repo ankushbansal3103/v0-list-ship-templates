@@ -547,28 +547,28 @@ export function EbayShippingPage() {
 
                 {/* Custom Size Form - Only show when custom is selected */}
                 {packageSizeType === "custom" && (
-                  <div className="pl-[32px] flex flex-col gap-4 mt-5">
+                  <div className="flex flex-col gap-4 mt-5">
                     {/* Weight */}
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[13px] text-[#191919] leading-[18px]">Weight</label>
                       <div className="flex gap-2">
-                        <div className="flex-1 h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
+                        <div className="w-[calc(50%-4px)] h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
                           <input 
                             type="text" 
                             value={weightKg}
                             onChange={(e) => setWeightKg(e.target.value)}
-                            className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none"
+                            className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none min-w-0"
                           />
-                          <span className="text-[13px] text-[#707070]">kg.</span>
+                          <span className="text-[13px] text-[#707070] ml-1">kg.</span>
                         </div>
-                        <div className="flex-1 h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
+                        <div className="w-[calc(50%-4px)] h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
                           <input 
                             type="text" 
                             value={weightG}
                             onChange={(e) => setWeightG(e.target.value)}
-                            className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none"
+                            className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none min-w-0"
                           />
-                          <span className="text-[13px] text-[#707070]">g.</span>
+                          <span className="text-[13px] text-[#707070] ml-1">g.</span>
                         </div>
                       </div>
                     </div>
