@@ -590,7 +590,7 @@ export function EbayShippingPage() {
         </div>
       </div>
 
-      {/* Delivery Method Bottom Sheet */}
+      {/* Delivery Method Bottom Sheet Modal */}
       {showDeliverySheet && (
         <div 
           className="absolute inset-0 flex items-center justify-center"
