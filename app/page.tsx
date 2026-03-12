@@ -94,16 +94,31 @@ export default function PrototypeLibrary() {
     site.prototypes.some(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
   )
 
-  const handleCopy = (prototypeId: string) => {
+  const handleCopy = async (prototypeId: string) => {
     setCopiedId(prototypeId)
-    // Simulate creating a copy - in production this would trigger v0 to create a new project
-    // with the prototype files copied over
-    setTimeout(() => {
-      setCopiedId(null)
-      // In a real implementation, this would redirect to a new v0 chat/project
-      // with the prototype template pre-loaded
-      alert(`Template "${prototypeId}" is being copied to a new project. You can now customize it without affecting the original prototype.`)
-    }, 1500)
+    
+    // Fetch the template code from our API
+    try {
+      const response = await fetch(`/api/template/${prototypeId}`)
+      const { code, prompt } = await response.json()
+      
+      // Copy the prompt + code to clipboard
+      await navigator.clipboard.writeText(prompt)
+      
+      // Open v0.dev in a new tab
+      setTimeout(() => {
+        setCopiedId(null)
+        window.open('https://v0.dev', '_blank')
+      }, 1000)
+    } catch {
+      // Fallback: just open v0.dev with instructions
+      const fallbackPrompt = `Build an eBay shipping prototype based on "${prototypeId}". Include iPhone frame, iOS status bar, bottom sheets with blur overlay, and form fields for shipping configuration.`
+      await navigator.clipboard.writeText(fallbackPrompt)
+      setTimeout(() => {
+        setCopiedId(null)
+        window.open('https://v0.dev', '_blank')
+      }, 1000)
+    }
   }
 
   return (
@@ -238,12 +253,12 @@ export default function PrototypeLibrary() {
                           {copiedId === prototype.id ? (
                             <>
                               <Check className="w-4 h-4" />
-                              Creating Copy...
+                              Copied! Opening v0...
                             </>
                           ) : (
                             <>
                               <Copy className="w-4 h-4" />
-                              Use This Template
+                              Use Template
                             </>
                           )}
                         </button>
