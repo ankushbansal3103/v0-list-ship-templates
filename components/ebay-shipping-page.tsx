@@ -1,5 +1,13 @@
 "use client"
 
+/**
+ * US-Shelby-AG Prototype
+ * eBay Shipping Configuration Flow
+ * 
+ * Screens: L1 Shipping, L2 Package Details, L2 Services, L2 Delivery Details
+ * Plus multiple bottom sheet modals for selections
+ */
+
 import { useState } from "react"
 import { ChevronDown, ChevronRight, X } from "lucide-react"
 

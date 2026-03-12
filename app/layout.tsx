@@ -10,8 +10,8 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'eBay Shipping - Delivery',
-  description: 'eBay shipping configuration prototype',
+  title: 'US-Shelby-AG | eBay Shipping Prototype',
+  description: 'US-Shelby-AG: eBay shipping configuration prototype with Delivery, Package Details, Services, and Returns flows',
   generator: 'v0.app',
   icons: {
     icon: [
