@@ -45,20 +45,7 @@ export async function GET(
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
           }}
         >
-          {/* Dynamic Island */}
-          <div
-            style={{
-              width: '60px',
-              height: '18px',
-              backgroundColor: '#000',
-              borderRadius: '10px',
-              alignSelf: 'center',
-              marginTop: '4px',
-              position: 'absolute',
-              top: '12px',
-              zIndex: '10',
-            }}
-          />
+          {/* Dynamic Island - shown at top of screen */}
           
           {/* Screen */}
           <div
@@ -71,15 +58,32 @@ export async function GET(
               overflow: 'hidden',
             }}
           >
+            {/* Dynamic Island */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                paddingTop: '6px',
+              }}
+            >
+              <div
+                style={{
+                  width: '60px',
+                  height: '18px',
+                  backgroundColor: '#000',
+                  borderRadius: '10px',
+                }}
+              />
+            </div>
+            
             {/* Status Bar */}
             <div
               style={{
-                height: '28px',
+                height: '20px',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '0 16px',
-                paddingTop: '8px',
               }}
             >
               <span style={{ fontSize: '10px', fontWeight: 600, color: '#191919' }}>9:41</span>
