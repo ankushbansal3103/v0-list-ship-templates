@@ -29,9 +29,9 @@ function BackArrow({ className }: { className?: string }) {
   )
 }
 
-// Section Separator
+// Full-width Section Separator - extends edge to edge
 function Separator() {
-  return <div className="w-full h-[1px] bg-[#E5E5E5] my-4" />
+  return <div className="w-full h-[1px] bg-[#E5E5E5]" />
 }
 
 export function EbayShippingPage() {
@@ -90,228 +90,228 @@ export function EbayShippingPage() {
 
           {/* Scrollable Content */}
           <div className="flex-1 overflow-y-auto bg-white">
-            <div className="px-4 pb-28">
-              {/* Page Title */}
-              <h1 className="text-[22px] font-bold text-[#191919] leading-tight mt-2 mb-5">
+            {/* Page Title */}
+            <div className="px-4">
+              <h1 className="text-[22px] font-bold text-[#191919] leading-tight mt-2 mb-6">
                 Select delivery options
               </h1>
+            </div>
 
-              {/* Delivery Method Section */}
-              <div>
-                <h2 className="text-[14px] font-bold text-[#191919] mb-2">Delivery method</h2>
-                <button 
-                  onClick={() => setShowDeliverySheet(true)}
-                  className="w-full h-[48px] px-4 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between"
-                >
-                  <span className="text-[14px] text-[#191919]">
-                    {deliveryMethods.find(m => m.id === deliveryMethod)?.label}
-                  </span>
-                  <ChevronDown className="w-5 h-5 text-[#191919]" />
-                </button>
-              </div>
+            {/* Delivery Method Section */}
+            <div className="px-4 pb-5">
+              <h2 className="text-[14px] font-bold text-[#191919] mb-3">Delivery method</h2>
+              <button 
+                onClick={() => setShowDeliverySheet(true)}
+                className="w-full h-[48px] px-4 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between"
+              >
+                <span className="text-[14px] text-[#191919]">
+                  {deliveryMethods.find(m => m.id === deliveryMethod)?.label}
+                </span>
+                <ChevronDown className="w-5 h-5 text-[#191919]" />
+              </button>
+            </div>
 
-              <Separator />
+            <Separator />
 
-              {/* Package Details Section */}
-              <div>
-                <h2 className="text-[14px] font-bold text-[#191919] mb-2">Package details</h2>
-                <button className="w-full px-4 py-3 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between">
-                  <div className="flex flex-col items-start gap-0.5">
-                    <span className="text-[14px] text-[#191919]">X lb. XX oz., A x B x C in.</span>
-                    <span className="text-[12px] text-[#707070]">Estimated based on items like yours</span>
+            {/* Package Details Section */}
+            <div className="px-4 py-5">
+              <h2 className="text-[14px] font-bold text-[#191919] mb-3">Package details</h2>
+              <button className="w-full px-4 py-3 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between">
+                <div className="flex flex-col items-start">
+                  <span className="text-[14px] text-[#191919]">X lb. XX oz., A x B x C in.</span>
+                  <span className="text-[12px] text-[#707070] mt-0.5">Estimated based on items like yours</span>
+                </div>
+                <ChevronRight className="w-5 h-5 text-[#191919]" />
+              </button>
+            </div>
+
+            <Separator />
+
+            {/* Domestic Shipping Section */}
+            <div className="px-4 py-5">
+              <h2 className="text-[14px] font-bold text-[#191919] mb-4">Domestic shipping</h2>
+              
+              {/* Authenticity Guarantee Notice - Grey background */}
+              <div className="p-3 bg-[#F7F7F7] rounded-[16px] mb-4">
+                <div className="flex gap-3">
+                  <CheckCircle className="w-6 h-6 flex-shrink-0" />
+                  <div className="flex flex-col gap-2">
+                    <p className="text-[13px] text-[#191919] leading-[1.5]">
+                      This item is eligible for Authenticity Guarantee. An authenticator will verify the eligible item is authentic and matches the listing&apos;s details.
+                    </p>
+                    <button className="text-[13px] text-[#191919] underline text-left font-medium">
+                      How it works
+                    </button>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-[#191919]" />
-                </button>
+                </div>
               </div>
 
-              <Separator />
+              {/* eBay shipping powered by FedEx Card */}
+              <div className="w-full p-4 bg-white border border-[#E5E5E5] rounded-[16px]">
+                <div className="flex gap-3 items-center">
+                  <div className="w-[44px] h-[20px] flex items-center justify-center flex-shrink-0">
+                    <Image 
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png"
+                      alt="FedEx"
+                      width={44}
+                      height={20}
+                      className="object-contain"
+                      style={{ width: '44px', height: 'auto' }}
+                      unoptimized
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[14px] font-bold text-[#191919] leading-tight">
+                      eBay shipping powered by FedEx
+                    </span>
+                    <span className="text-[13px] text-[#707070] mt-0.5">
+                      Free shipping label provided to you
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-              {/* Domestic Shipping Section */}
-              <div>
-                <h2 className="text-[14px] font-bold text-[#191919] mb-3">Domestic shipping</h2>
+            <Separator />
+
+            {/* International Shipping Section */}
+            <div className="px-4 py-5">
+              <h2 className="text-[14px] font-bold text-[#191919] mb-3">International shipping</h2>
+              
+              {/* Default Service */}
+              <div className="mb-4">
+                <span className="text-[13px] text-[#707070] mb-2 block">Default service</span>
                 
-                {/* Authenticity Guarantee Notice - Grey background */}
-                <div className="p-3 bg-[#F7F7F7] rounded-[16px] mb-3">
-                  <div className="flex gap-3">
-                    <CheckCircle className="w-6 h-6 flex-shrink-0 mt-0" />
-                    <div className="flex flex-col gap-1.5">
-                      <p className="text-[13px] text-[#191919] leading-[1.5]">
-                        This item is eligible for Authenticity Guarantee. An authenticator will verify the eligible item is authentic and matches the listing&apos;s details.
-                      </p>
-                      <button className="text-[13px] text-[#191919] underline text-left font-medium">
-                        How it works
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                {/* eBay shipping powered by FedEx Card */}
-                <div className="w-full p-4 bg-white border border-[#E5E5E5] rounded-[16px]">
-                  <div className="flex gap-3 items-center">
-                    <div className="w-[44px] h-[20px] flex items-center justify-center flex-shrink-0">
-                      <Image 
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png"
-                        alt="FedEx"
-                        width={44}
-                        height={20}
-                        className="object-contain"
-                        style={{ width: '44px', height: 'auto' }}
-                        unoptimized
-                      />
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-[#191919] leading-tight">
-                        eBay shipping powered by FedEx
-                      </span>
-                      <span className="text-[13px] text-[#707070] mt-0.5">
-                        Free shipping label provided to you
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <Separator />
-
-              {/* International Shipping Section */}
-              <div>
-                <h2 className="text-[14px] font-bold text-[#191919] mb-2">International shipping</h2>
-                
-                {/* Default Service */}
-                <div className="mb-3">
-                  <span className="text-[13px] text-[#707070] mb-2 block">Default service</span>
-                  
-                  {/* eBay International Shipping Card - Selected state with blue border */}
-                  <div className="w-full p-3 bg-white border-2 border-[#3665F3] rounded-[16px]">
-                    <div className="flex gap-3 items-start">
-                      <div className="w-[44px] h-[28px] bg-[#F7F7F7] rounded-[6px] flex items-center justify-center flex-shrink-0">
-                        <Image 
-                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/2560px-EBay_logo.svg.png"
-                          alt="eBay"
-                          width={32}
-                          height={14}
-                          className="object-contain"
-                          style={{ width: '32px', height: 'auto' }}
-                          unoptimized
-                        />
-                      </div>
-                      <div className="flex flex-col flex-1">
-                        <span className="text-[14px] font-bold text-[#191919] leading-tight">
-                          eBay International Shipping
-                        </span>
-                        <p className="text-[13px] text-[#191919] mt-1 leading-[1.4]">
-                          Send items to our domestic shipping hub and we&apos;ll handle the rest—at no extra cost.
-                        </p>
-                        <button className="text-[13px] text-[#191919] underline text-left font-medium mt-1.5">
-                          How it works
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Additional Service */}
-                <div className="mb-3">
-                  <span className="text-[13px] text-[#707070] block">Additional service</span>
-                  <span className="text-[13px] text-[#707070]">
-                    <button className="underline text-[#3665F3]">Fees</button> apply for international sales.
-                  </span>
-                </div>
-
-                {/* Destination Dropdown */}
-                <div className="mb-3">
-                  <button 
-                    onClick={() => setShowDestinationSheet(true)}
-                    className="w-full px-4 py-2.5 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between"
-                  >
-                    <div className="flex flex-col items-start">
-                      <span className="text-[11px] text-[#707070] leading-tight">Destination</span>
-                      <span className="text-[14px] text-[#191919] leading-snug">{destination}</span>
-                    </div>
-                    <ChevronDown className="w-5 h-5 text-[#191919]" />
-                  </button>
-                </div>
-
-                {/* FedEx Service Card */}
-                <div className="w-full p-3 bg-white border border-[#E5E5E5] rounded-[16px] mb-3">
+                {/* eBay International Shipping Card - Selected state with blue border */}
+                <div className="w-full p-3 bg-white border-2 border-[#3665F3] rounded-[16px]">
                   <div className="flex gap-3 items-start">
-                    <div className="w-[44px] h-[20px] flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <div className="w-[44px] h-[28px] bg-[#F7F7F7] rounded-[6px] flex items-center justify-center flex-shrink-0">
                       <Image 
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png"
-                        alt="FedEx"
-                        width={44}
-                        height={20}
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/2560px-EBay_logo.svg.png"
+                        alt="eBay"
+                        width={32}
+                        height={14}
                         className="object-contain"
-                        style={{ width: '44px', height: 'auto' }}
+                        style={{ width: '32px', height: 'auto' }}
                         unoptimized
                       />
                     </div>
                     <div className="flex flex-col flex-1">
                       <span className="text-[14px] font-bold text-[#191919] leading-tight">
-                        FedEx
+                        eBay International Shipping
                       </span>
-                      <div className="text-[13px] text-[#191919] mt-0.5 leading-[1.5]">
-                        <div>X-X business days</div>
-                        <div>Up to $XXX.XX protection</div>
-                        <div>Up to X lb., AA x BB x CC in.</div>
-                        <div>$X.XX–$X.XX</div>
-                      </div>
+                      <p className="text-[13px] text-[#191919] mt-1 leading-[1.4]">
+                        Send items to our domestic shipping hub and we&apos;ll handle the rest—at no extra cost.
+                      </p>
+                      <button className="text-[13px] text-[#191919] underline text-left font-medium mt-1.5">
+                        How it works
+                      </button>
                     </div>
                   </div>
                 </div>
-
-                {/* View All Services Button */}
-                <button className="w-full h-[44px] border border-[#767676] rounded-full flex items-center justify-center">
-                  <span className="text-[14px] text-[#191919]">View all services</span>
-                </button>
               </div>
 
-              <Separator />
-
-              {/* Buyer Payment Info - Grey background section */}
-              <div className="flex flex-col items-center py-4 px-4 -mx-4 bg-[#F7F7F7]">
-                <span className="text-[13px] text-[#707070]">The buyer will pay:</span>
-                <span className="text-[18px] font-bold text-[#191919] mt-0.5">$X.XX–$XX.XX</span>
-                <span className="text-[13px] text-[#707070] mt-0.5">Cost is based on buyer&apos;s location.</span>
-                <button className="text-[13px] text-[#191919] underline mt-0.5">
-                  Edit shipping cost
-                </button>
-              </div>
-
-              <Separator />
-
-              {/* Delivery Details Section */}
+              {/* Additional Service */}
               <div className="mb-4">
-                <h2 className="text-[14px] font-bold text-[#191919] mb-2">Delivery details</h2>
-                
-                <button className="w-full p-4 bg-white border border-[#767676] rounded-[16px] flex justify-between">
-                  <div className="flex flex-col gap-4 text-left flex-1">
-                    <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-[#191919]">Item location</span>
-                      <span className="text-[13px] text-[#707070]">Located at 95117 (visible on listing)</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-[#191919]">Handling time</span>
-                      <span className="text-[13px] text-[#707070]">X business days</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-[#191919]">Domestic returns</span>
-                      <span className="text-[13px] text-[#707070]">14 Days, Buyer, Money back</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-[#191919]">eBay International Shipping returns</span>
-                      <span className="text-[13px] text-[#707070]">30 Days, eBay handles on your behalf</span>
-                    </div>
-                    <div className="flex flex-col">
-                      <span className="text-[14px] font-bold text-[#191919]">International returns</span>
-                      <span className="text-[13px] text-[#707070]">14 Days, Buyer, Money back</span>
-                    </div>
+                <span className="text-[13px] text-[#707070] block">Additional service</span>
+                <span className="text-[13px] text-[#707070]">
+                  <button className="underline text-[#3665F3]">Fees</button> apply for international sales.
+                </span>
+              </div>
+
+              {/* Destination Dropdown */}
+              <div className="mb-4">
+                <button 
+                  onClick={() => setShowDestinationSheet(true)}
+                  className="w-full px-4 py-2.5 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between"
+                >
+                  <div className="flex flex-col items-start">
+                    <span className="text-[11px] text-[#707070] leading-tight">Destination</span>
+                    <span className="text-[14px] text-[#191919] leading-snug">{destination}</span>
                   </div>
-                  <div className="flex items-center pl-3">
-                    <ChevronRight className="w-5 h-5 text-[#191919] flex-shrink-0" />
-                  </div>
+                  <ChevronDown className="w-5 h-5 text-[#191919]" />
                 </button>
               </div>
+
+              {/* FedEx Service Card */}
+              <div className="w-full p-3 bg-white border border-[#E5E5E5] rounded-[16px] mb-4">
+                <div className="flex gap-3 items-start">
+                  <div className="w-[44px] h-[20px] flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Image 
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png"
+                      alt="FedEx"
+                      width={44}
+                      height={20}
+                      className="object-contain"
+                      style={{ width: '44px', height: 'auto' }}
+                      unoptimized
+                    />
+                  </div>
+                  <div className="flex flex-col flex-1">
+                    <span className="text-[14px] font-bold text-[#191919] leading-tight">
+                      FedEx
+                    </span>
+                    <div className="text-[13px] text-[#191919] mt-0.5 leading-[1.5]">
+                      <div>X-X business days</div>
+                      <div>Up to $XXX.XX protection</div>
+                      <div>Up to X lb., AA x BB x CC in.</div>
+                      <div>$X.XX–$X.XX</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* View All Services Button */}
+              <button className="w-full h-[44px] border border-[#767676] rounded-full flex items-center justify-center">
+                <span className="text-[14px] text-[#191919]">View all services</span>
+              </button>
+            </div>
+
+            <Separator />
+
+            {/* Buyer Payment Info - Grey background section */}
+            <div className="flex flex-col items-center py-5 bg-[#F7F7F7]">
+              <span className="text-[13px] text-[#707070]">The buyer will pay:</span>
+              <span className="text-[18px] font-bold text-[#191919] mt-1">$X.XX–$XX.XX</span>
+              <span className="text-[13px] text-[#707070] mt-1">Cost is based on buyer&apos;s location.</span>
+              <button className="text-[13px] text-[#191919] underline mt-1">
+                Edit shipping cost
+              </button>
+            </div>
+
+            <Separator />
+
+            {/* Delivery Details Section */}
+            <div className="px-4 py-5 pb-28">
+              <h2 className="text-[14px] font-bold text-[#191919] mb-3">Delivery details</h2>
+              
+              <button className="w-full p-4 bg-white border border-[#767676] rounded-[16px] flex">
+                <div className="flex flex-col gap-4 text-left flex-1">
+                  <div className="flex flex-col">
+                    <span className="text-[14px] font-bold text-[#191919]">Item location</span>
+                    <span className="text-[13px] text-[#707070]">Located at 95117 (visible on listing)</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[14px] font-bold text-[#191919]">Handling time</span>
+                    <span className="text-[13px] text-[#707070]">X business days</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[14px] font-bold text-[#191919]">Domestic returns</span>
+                    <span className="text-[13px] text-[#707070]">14 Days, Buyer, Money back</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[14px] font-bold text-[#191919]">eBay International Shipping returns</span>
+                    <span className="text-[13px] text-[#707070]">30 Days, eBay handles on your behalf</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[14px] font-bold text-[#191919]">International returns</span>
+                    <span className="text-[13px] text-[#707070]">14 Days, Buyer, Money back</span>
+                  </div>
+                </div>
+                <div className="flex items-center pl-3">
+                  <ChevronRight className="w-5 h-5 text-[#191919] flex-shrink-0" />
+                </div>
+              </button>
             </div>
           </div>
 
