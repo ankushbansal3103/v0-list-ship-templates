@@ -89,6 +89,78 @@ function BackArrow({ className }: { className?: string }) {
   )
 }
 
+// Service Logo Component
+function ServiceLogo({ type, className }: { type: string; className?: string }) {
+  switch (type) {
+    case "mondial-relay":
+      return (
+        <div className={`flex flex-col items-center justify-center ${className}`}>
+          <div className="flex items-center gap-0.5">
+            <div className="w-3 h-3 bg-[#E4002B] rounded-sm flex items-center justify-center">
+              <span className="text-white text-[6px] font-bold">R</span>
+            </div>
+            <span className="text-[8px] font-bold text-[#E4002B]">Mondial</span>
+          </div>
+          <span className="text-[8px] font-bold text-[#E4002B]">Relay</span>
+        </div>
+      )
+    case "colissimo":
+      return (
+        <div className={`flex flex-col items-center justify-center ${className}`}>
+          <svg viewBox="0 0 40 40" className="w-8 h-8">
+            <rect x="8" y="12" width="24" height="18" rx="2" fill="#F5A623"/>
+            <rect x="12" y="8" width="16" height="8" fill="#F5A623"/>
+            <path d="M12 8L20 2L28 8" stroke="#F5A623" strokeWidth="2" fill="none"/>
+          </svg>
+          <span className="text-[7px] font-bold text-[#0055A4]">colissimo</span>
+        </div>
+      )
+    case "chronopost":
+      return (
+        <div className={`flex items-center gap-0.5 ${className}`}>
+          <svg viewBox="0 0 16 16" className="w-3 h-3">
+            <circle cx="8" cy="8" r="7" fill="#0055A4"/>
+            <path d="M8 4V8L11 10" stroke="white" strokeWidth="1.5" strokeLinecap="round" fill="none"/>
+          </svg>
+          <span className="text-[7px] font-bold text-[#0055A4]">chronopost</span>
+        </div>
+      )
+    case "dhl":
+      return (
+        <div className={`flex items-center justify-center ${className}`}>
+          <div className="bg-[#FFCC00] px-1.5 py-0.5 rounded-sm">
+            <span className="text-[10px] font-black text-[#D40511]">DHL</span>
+          </div>
+        </div>
+      )
+    case "ups":
+      return (
+        <div className={`flex items-center justify-center ${className}`}>
+          <div className="bg-[#351C15] px-1.5 py-1 rounded-t-full">
+            <span className="text-[9px] font-black text-[#FFB500]">UPS</span>
+          </div>
+        </div>
+      )
+    case "dpd":
+      return (
+        <div className={`flex items-center justify-center ${className}`}>
+          <span className="text-[12px] font-black text-[#DC0032]">dpd</span>
+        </div>
+      )
+    case "fedex":
+      return (
+        <div className={`flex items-center justify-center ${className}`}>
+          <span className="text-[10px] font-bold">
+            <span className="text-[#4D148C]">Fed</span>
+            <span className="text-[#FF6600]">Ex</span>
+          </span>
+        </div>
+      )
+    default:
+      return null
+  }
+}
+
 export function EbayShippingPage() {
   const [deliveryMethod, setDeliveryMethod] = useState("shipping")
   const [showDeliverySheet, setShowDeliverySheet] = useState(false)
@@ -114,7 +186,7 @@ export function EbayShippingPage() {
     {
       id: "mondial-relay-1",
       name: "Modial Relay",
-      logo: "https://www.mondial-relay.fr/media/dpvls2jn/mr-logo.png",
+      logoType: "mondial-relay",
       deliveryDays: "5-8",
       maxWeight: "30",
       tracking: true,
@@ -124,7 +196,7 @@ export function EbayShippingPage() {
     {
       id: "colissimo",
       name: "Colissimo",
-      logo: "https://www.laposte.fr/medias/site-laposte/colis/colissimo/logo-colissimo.png",
+      logoType: "colissimo",
       deliveryDays: "3-5",
       maxWeight: "30",
       tracking: true,
@@ -134,7 +206,7 @@ export function EbayShippingPage() {
     {
       id: "chronopost",
       name: "Chronopost",
-      logo: "https://www.chronopost.fr/sites/all/themes/chronopost/images/chronopost-logo.svg",
+      logoType: "chronopost",
       deliveryDays: "1-2",
       maxWeight: "30",
       tracking: true,
@@ -144,7 +216,7 @@ export function EbayShippingPage() {
     {
       id: "mondial-relay-2",
       name: "Modial Relay",
-      logo: "https://www.mondial-relay.fr/media/dpvls2jn/mr-logo.png",
+      logoType: "mondial-relay",
       deliveryDays: "7-10",
       maxWeight: "20",
       tracking: true,
@@ -154,7 +226,7 @@ export function EbayShippingPage() {
     {
       id: "dhl",
       name: "DHL Express",
-      logo: "https://www.dhl.com/content/dam/dhl/global/core/images/logos/dhl-logo.svg",
+      logoType: "dhl",
       deliveryDays: "2-4",
       maxWeight: "50",
       tracking: true,
@@ -164,7 +236,7 @@ export function EbayShippingPage() {
     {
       id: "ups",
       name: "UPS Standard",
-      logo: "https://www.ups.com/assets/resources/webcontent/images/ups-logo.svg",
+      logoType: "ups",
       deliveryDays: "3-6",
       maxWeight: "40",
       tracking: true,
@@ -174,7 +246,7 @@ export function EbayShippingPage() {
     {
       id: "dpd",
       name: "DPD Classic",
-      logo: "https://www.dpd.com/wp-content/uploads/2020/04/dpd_logo_redgrad_rgb.png",
+      logoType: "dpd",
       deliveryDays: "4-7",
       maxWeight: "31.5",
       tracking: true,
@@ -182,6 +254,11 @@ export function EbayShippingPage() {
       group: 2
     }
   ]
+  
+  // Get selected service for L1 display
+  const getSelectedService = () => {
+    return internationalServices.find(s => s.id === selectedService)
+  }
 
   const destinations = [
     { 
@@ -395,30 +472,31 @@ export function EbayShippingPage() {
                 </button>
               </div>
 
-              {/* FedEx Service Card */}
-              <div className="w-full p-3 bg-white border border-[#E5E5E5] rounded-[16px] mb-3">
-                <div className="flex gap-3 items-start">
-                  <div className="w-[44px] h-[20px] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img 
-                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png"
-                      alt="FedEx"
-                      className="w-[44px] h-auto object-contain"
-                    />
-                  </div>
-                  <div className="flex flex-col flex-1">
-                    <span className="text-[14px] font-bold text-[#191919] leading-tight">
-                      FedEx
-                    </span>
-                    <div className="text-[13px] text-[#191919] mt-0.5 leading-[1.5]">
-                      <div>X-X business days</div>
-                      <div>Up to $XXX.XX protection</div>
-                      <div>Up to X lb., AA x BB x CC in.</div>
-                      <div>$X.XX–$X.XX</div>
+              {/* Selected Service Card */}
+              {(() => {
+                const service = getSelectedService()
+                if (!service) return null
+                return (
+                  <div className="w-full p-3 bg-white border border-[#E5E5E5] rounded-[16px] mb-3">
+                    <div className="flex gap-3 items-start">
+                      <div className="w-[44px] h-[44px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0">
+                        <ServiceLogo type={service.logoType} />
+                      </div>
+                      <div className="flex flex-col flex-1">
+                        <span className="text-[14px] font-bold text-[#191919] leading-tight">
+                          {service.name}
+                        </span>
+                        <div className="text-[13px] text-[#707070] mt-0.5 leading-[1.4]">
+                          <div>{service.deliveryDays} business days</div>
+                          <div>Up to {service.maxWeight} lb.</div>
+                          <div>{service.tracking ? "Tracking included" : "No tracking"}</div>
+                          <div>{service.price} €</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </div>
+                )
+              })()}
 
               {/* View All Services Button */}
               <button 
@@ -913,62 +991,53 @@ export function EbayShippingPage() {
                 </div>
 
                 {/* Service Type Group 1 */}
-                <div className="mb-6">
-                  <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-4">
+                <div className="mb-5">
+                  <h2 className="text-[14px] font-bold text-[#191919] leading-[20px] mb-3">
                     Service type
                   </h2>
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-3">
                     {internationalServices.filter(s => s.group === 1).map((service) => {
                       const isSelected = selectedService === service.id
                       return (
                         <button
                           key={service.id}
                           onClick={() => setSelectedService(service.id)}
-                          className="flex items-start gap-4 w-full text-left"
+                          className="flex items-center gap-3 w-full text-left"
                         >
                           {/* Radio Button */}
-                          <div className="w-[24px] h-[24px] flex-shrink-0 mt-4">
+                          <div className="w-[22px] h-[22px] flex-shrink-0">
                             {isSelected ? (
-                              <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="11" stroke="#191919" strokeWidth="2"/>
-                                <circle cx="12" cy="12" r="6" fill="#191919"/>
+                              <svg viewBox="0 0 22 22" fill="none">
+                                <circle cx="11" cy="11" r="10" stroke="#191919" strokeWidth="2"/>
+                                <circle cx="11" cy="11" r="5.5" fill="#191919"/>
                               </svg>
                             ) : (
-                              <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="11" stroke="#767676" strokeWidth="2"/>
+                              <svg viewBox="0 0 22 22" fill="none">
+                                <circle cx="11" cy="11" r="10" stroke="#767676" strokeWidth="2"/>
                               </svg>
                             )}
                           </div>
                           
                           {/* Logo */}
-                          <div className="w-[56px] h-[56px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img 
-                              src={service.logo}
-                              alt={service.name}
-                              className="w-[40px] h-[40px] object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement
-                                target.style.display = 'none'
-                              }}
-                            />
+                          <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0">
+                            <ServiceLogo type={service.logoType} />
                           </div>
                           
                           {/* Content */}
-                          <div className="flex flex-col flex-1 py-1">
-                            <span className="text-[14px] font-bold text-[#191919] leading-[20px]">
+                          <div className="flex flex-col flex-1">
+                            <span className="text-[13px] font-bold text-[#191919] leading-[18px]">
                               {service.name}
                             </span>
-                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">
                               {service.deliveryDays} business days
                             </span>
-                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">
                               Up to {service.maxWeight} lb.
                             </span>
-                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">
                               {service.tracking ? "Tracking included" : "No tracking"}
                             </span>
-                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">
                               {service.price} €
                             </span>
                           </div>
@@ -979,62 +1048,53 @@ export function EbayShippingPage() {
                 </div>
 
                 {/* Service Type Group 2 */}
-                <div className="mb-6">
-                  <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-4">
+                <div className="mb-5">
+                  <h2 className="text-[14px] font-bold text-[#191919] leading-[20px] mb-3">
                     Service type
                   </h2>
-                  <div className="flex flex-col gap-4">
+                  <div className="flex flex-col gap-3">
                     {internationalServices.filter(s => s.group === 2).map((service) => {
                       const isSelected = selectedService === service.id
                       return (
                         <button
                           key={service.id}
                           onClick={() => setSelectedService(service.id)}
-                          className="flex items-start gap-4 w-full text-left"
+                          className="flex items-center gap-3 w-full text-left"
                         >
                           {/* Radio Button */}
-                          <div className="w-[24px] h-[24px] flex-shrink-0 mt-4">
+                          <div className="w-[22px] h-[22px] flex-shrink-0">
                             {isSelected ? (
-                              <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="11" stroke="#191919" strokeWidth="2"/>
-                                <circle cx="12" cy="12" r="6" fill="#191919"/>
+                              <svg viewBox="0 0 22 22" fill="none">
+                                <circle cx="11" cy="11" r="10" stroke="#191919" strokeWidth="2"/>
+                                <circle cx="11" cy="11" r="5.5" fill="#191919"/>
                               </svg>
                             ) : (
-                              <svg viewBox="0 0 24 24" fill="none">
-                                <circle cx="12" cy="12" r="11" stroke="#767676" strokeWidth="2"/>
+                              <svg viewBox="0 0 22 22" fill="none">
+                                <circle cx="11" cy="11" r="10" stroke="#767676" strokeWidth="2"/>
                               </svg>
                             )}
                           </div>
                           
                           {/* Logo */}
-                          <div className="w-[56px] h-[56px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img 
-                              src={service.logo}
-                              alt={service.name}
-                              className="w-[40px] h-[40px] object-contain"
-                              onError={(e) => {
-                                const target = e.target as HTMLImageElement
-                                target.style.display = 'none'
-                              }}
-                            />
+                          <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0">
+                            <ServiceLogo type={service.logoType} />
                           </div>
                           
                           {/* Content */}
-                          <div className="flex flex-col flex-1 py-1">
-                            <span className="text-[14px] font-bold text-[#191919] leading-[20px]">
+                          <div className="flex flex-col flex-1">
+                            <span className="text-[13px] font-bold text-[#191919] leading-[18px]">
                               {service.name}
                             </span>
-                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">
                               {service.deliveryDays} business days
                             </span>
-                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">
                               Up to {service.maxWeight} lb.
                             </span>
-                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">
                               {service.tracking ? "Tracking included" : "No tracking"}
                             </span>
-                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                            <span className="text-[12px] text-[#707070] leading-[16px]">
                               {service.price} €
                             </span>
                           </div>
