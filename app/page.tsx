@@ -96,7 +96,14 @@ export default function PrototypeLibrary() {
 
   const handleCopy = (prototypeId: string) => {
     setCopiedId(prototypeId)
-    setTimeout(() => setCopiedId(null), 2000)
+    // Simulate creating a copy - in production this would trigger v0 to create a new project
+    // with the prototype files copied over
+    setTimeout(() => {
+      setCopiedId(null)
+      // In a real implementation, this would redirect to a new v0 chat/project
+      // with the prototype template pre-loaded
+      alert(`Template "${prototypeId}" is being copied to a new project. You can now customize it without affecting the original prototype.`)
+    }, 1500)
   }
 
   return (
@@ -219,29 +226,39 @@ export default function PrototypeLibrary() {
                       <p className="text-[#666] text-sm mb-4">{prototype.description}</p>
                       
                       <div className="flex items-center gap-2">
-                        <Link
-                          href={prototype.route}
-                          className="flex-1 h-9 flex items-center justify-center gap-2 bg-white text-black rounded-lg text-sm font-medium hover:bg-gray-100 transition-colors"
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          Preview
-                        </Link>
                         <button
                           onClick={() => handleCopy(prototype.id)}
-                          className="h-9 px-4 flex items-center gap-2 bg-[#1a1a1a] border border-[#333] text-white rounded-lg text-sm hover:bg-[#222] transition-colors"
+                          disabled={prototype.status !== 'active'}
+                          className={`flex-1 h-10 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors ${
+                            prototype.status === 'active'
+                              ? 'bg-blue-600 text-white hover:bg-blue-700'
+                              : 'bg-[#222] text-[#666] cursor-not-allowed'
+                          }`}
                         >
                           {copiedId === prototype.id ? (
                             <>
-                              <Check className="w-4 h-4 text-green-400" />
-                              <span className="text-green-400">Copied!</span>
+                              <Check className="w-4 h-4" />
+                              Creating Copy...
                             </>
                           ) : (
                             <>
                               <Copy className="w-4 h-4" />
-                              Copy
+                              Use This Template
                             </>
                           )}
                         </button>
+                        <Link
+                          href={prototype.status === 'active' ? prototype.route : '#'}
+                          onClick={(e) => prototype.status !== 'active' && e.preventDefault()}
+                          className={`h-10 px-4 flex items-center gap-2 border rounded-lg text-sm transition-colors ${
+                            prototype.status === 'active'
+                              ? 'bg-[#1a1a1a] border-[#333] text-white hover:bg-[#222]'
+                              : 'bg-[#111] border-[#222] text-[#555] cursor-not-allowed'
+                          }`}
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Preview
+                        </Link>
                       </div>
                     </div>
                   </div>
