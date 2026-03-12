@@ -1,12 +1,6 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
-
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: "--font-sans",
-});
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -45,7 +39,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <head>
+        <link 
+          href="https://ir.ebaystatic.com/cr/v/c01/skin/v17.8.0/fonts.css" 
+          rel="stylesheet" 
+        />
+      </head>
+      <body className="font-sans antialiased">
         {children}
         <Analytics />
       </body>
