@@ -1,13 +1,26 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronDown, ChevronRight, X, Check } from "lucide-react"
+import { ChevronDown, ChevronRight, X } from "lucide-react"
 import Image from "next/image"
 
+// Delivery method options with icons
 const deliveryMethods = [
-  { id: "shipping", label: "Shipping only" },
-  { id: "pickup", label: "Local pickup only" },
-  { id: "both", label: "Shipping and local pickup" },
+  { 
+    id: "both", 
+    label: "Shipping or pickup",
+    description: "Let buyers choose how they get their items."
+  },
+  { 
+    id: "shipping", 
+    label: "Shipping only",
+    description: "Ship items directly to buyers."
+  },
+  { 
+    id: "pickup", 
+    label: "Pickup only",
+    description: "Arrange local pickup without any shipping costs."
+  },
 ]
 
 // Checkmark Circle Icon - Blue outline style
@@ -29,6 +42,44 @@ function BackArrow({ className }: { className?: string }) {
   )
 }
 
+// Shipping or Pickup Icon (box with location marker)
+function ShippingOrPickupIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M1 4L3 3V11L1 12V4Z" stroke="#191919" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M3 3L8 1L13 3V6" stroke="#191919" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M3 3V11L8 13V5L3 3Z" stroke="#191919" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M8 5L13 3" stroke="#191919" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="12" cy="10" r="2" stroke="#191919" strokeWidth="1.5"/>
+      <path d="M12 13V15" stroke="#191919" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  )
+}
+
+// Shipping Only Icon (package box)
+function ShippingOnlyIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="4" width="14" height="10" rx="1" stroke="#191919" strokeWidth="1.5"/>
+      <path d="M1 7H15" stroke="#191919" strokeWidth="1.5"/>
+      <path d="M6 7V4" stroke="#191919" strokeWidth="1.5"/>
+      <path d="M10 7V4" stroke="#191919" strokeWidth="1.5"/>
+      <path d="M3 1L6 4" stroke="#191919" strokeWidth="1.5" strokeLinecap="round"/>
+      <path d="M13 1L10 4" stroke="#191919" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  )
+}
+
+// Pickup Only Icon (location marker)
+function PickupOnlyIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 1C5.24 1 3 3.24 3 6C3 9.5 8 15 8 15C8 15 13 9.5 13 6C13 3.24 10.76 1 8 1Z" stroke="#191919" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      <circle cx="8" cy="6" r="2" stroke="#191919" strokeWidth="1.5"/>
+    </svg>
+  )
+}
+
 export function EbayShippingPage() {
   const [deliveryMethod, setDeliveryMethod] = useState("shipping")
   const [showDeliverySheet, setShowDeliverySheet] = useState(false)
@@ -36,6 +87,15 @@ export function EbayShippingPage() {
   const [showDestinationSheet, setShowDestinationSheet] = useState(false)
 
   const destinations = ["Worldwide", "United States", "Canada", "Europe", "Asia"]
+
+  const getDeliveryIcon = (id: string) => {
+    switch(id) {
+      case "both": return <ShippingOrPickupIcon className="w-4 h-4" />
+      case "shipping": return <ShippingOnlyIcon className="w-4 h-4" />
+      case "pickup": return <PickupOnlyIcon className="w-4 h-4" />
+      default: return null
+    }
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
@@ -329,38 +389,72 @@ export function EbayShippingPage() {
           style={{ pointerEvents: 'none' }}
         >
           <div className="relative w-[375px] h-[812px]" style={{ pointerEvents: 'auto' }}>
+            {/* Scrim overlay - rgba(0,0,0,0.32) per Figma */}
             <div 
-              className="absolute inset-0 bg-black/50 rounded-[50px]"
+              className="absolute inset-0 rounded-[50px]"
+              style={{ backgroundColor: 'rgba(0, 0, 0, 0.32)' }}
               onClick={() => setShowDeliverySheet(false)}
             />
+            
+            {/* Bottom Sheet - rounded top corners 38px */}
             <div 
-              className="absolute bottom-3 left-3 right-3 bg-white rounded-[32px] p-5 pb-8"
+              className="absolute bottom-0 left-0 right-0 bg-white"
+              style={{ 
+                borderRadius: '38px 38px 0 0',
+                boxShadow: '0px 15px 75px rgba(0, 0, 0, 0.18)'
+              }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="w-9 h-1 bg-[#E5E5E5] rounded-full mx-auto mb-5" />
-              <h3 className="text-[16px] font-bold text-[#191919] mb-4">Delivery method</h3>
-              <div className="flex flex-col gap-2">
-                {deliveryMethods.map((method) => (
-                  <button
-                    key={method.id}
-                    onClick={() => {
-                      setDeliveryMethod(method.id)
-                      setShowDeliverySheet(false)
-                    }}
-                    className={`w-full p-4 rounded-[16px] text-left flex items-center justify-between ${
-                      deliveryMethod === method.id 
-                        ? "bg-[#F7F7F7] border-2 border-[#191919]" 
-                        : "bg-[#F7F7F7] border-2 border-transparent"
-                    }`}
-                  >
-                    <span className="text-[14px] text-[#191919]">{method.label}</span>
-                    {deliveryMethod === method.id && (
-                      <div className="w-5 h-5 rounded-full bg-[#191919] flex items-center justify-center">
-                        <Check className="w-3 h-3 text-white" strokeWidth={3} />
+              {/* Drag Handle */}
+              <div className="flex justify-center pt-[6px] pb-[6px]">
+                <div className="w-[32px] h-[4px] bg-[#8F8F8F] rounded-full" />
+              </div>
+              
+              {/* Header */}
+              <div className="flex items-center justify-between px-4 pt-2 pb-2">
+                <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Delivery method</h3>
+                <button 
+                  onClick={() => setShowDeliverySheet(false)}
+                  className="w-[40px] h-[40px] bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                >
+                  <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                </button>
+              </div>
+              
+              {/* Toggle Button List - Main Content */}
+              <div className="px-4 pt-2 pb-8 flex flex-col gap-4">
+                {deliveryMethods.map((method) => {
+                  const isSelected = deliveryMethod === method.id
+                  return (
+                    <button
+                      key={method.id}
+                      onClick={() => {
+                        setDeliveryMethod(method.id)
+                        setShowDeliverySheet(false)
+                      }}
+                      className={`w-full p-3 rounded-[8px] text-left flex items-start gap-4 ${
+                        isSelected 
+                          ? "bg-[#F7F7F7] border-2 border-[#191919]" 
+                          : "bg-white border border-[#8F8F8F]"
+                      }`}
+                    >
+                      {/* Lead accessory - Icon */}
+                      <div className="pt-1 flex-shrink-0">
+                        {getDeliveryIcon(method.id)}
                       </div>
-                    )}
-                  </button>
-                ))}
+                      
+                      {/* Content */}
+                      <div className="flex flex-col gap-1 flex-1">
+                        <span className="text-[16px] font-bold text-[#191919] leading-[24px]">
+                          {method.label}
+                        </span>
+                        <span className={`text-[14px] leading-[20px] ${isSelected ? 'text-[#191919]' : 'text-[#707070]'}`}>
+                          {method.description}
+                        </span>
+                      </div>
+                    </button>
+                  )
+                })}
               </div>
             </div>
           </div>
@@ -374,38 +468,61 @@ export function EbayShippingPage() {
           style={{ pointerEvents: 'none' }}
         >
           <div className="relative w-[375px] h-[812px]" style={{ pointerEvents: 'auto' }}>
+            {/* Scrim overlay */}
             <div 
-              className="absolute inset-0 bg-black/50 rounded-[50px]"
+              className="absolute inset-0 rounded-[50px]"
+              style={{ backgroundColor: 'rgba(0, 0, 0, 0.32)' }}
               onClick={() => setShowDestinationSheet(false)}
             />
+            
+            {/* Bottom Sheet */}
             <div 
-              className="absolute bottom-3 left-3 right-3 bg-white rounded-[32px] p-5 pb-8"
+              className="absolute bottom-0 left-0 right-0 bg-white"
+              style={{ 
+                borderRadius: '38px 38px 0 0',
+                boxShadow: '0px 15px 75px rgba(0, 0, 0, 0.18)'
+              }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="w-9 h-1 bg-[#E5E5E5] rounded-full mx-auto mb-5" />
-              <h3 className="text-[16px] font-bold text-[#191919] mb-4">Destination</h3>
-              <div className="flex flex-col gap-2">
-                {destinations.map((dest) => (
-                  <button
-                    key={dest}
-                    onClick={() => {
-                      setDestination(dest)
-                      setShowDestinationSheet(false)
-                    }}
-                    className={`w-full p-4 rounded-[16px] text-left flex items-center justify-between ${
-                      destination === dest 
-                        ? "bg-[#F7F7F7] border-2 border-[#191919]" 
-                        : "bg-[#F7F7F7] border-2 border-transparent"
-                    }`}
-                  >
-                    <span className="text-[14px] text-[#191919]">{dest}</span>
-                    {destination === dest && (
-                      <div className="w-5 h-5 rounded-full bg-[#191919] flex items-center justify-center">
-                        <Check className="w-3 h-3 text-white" strokeWidth={3} />
-                      </div>
-                    )}
-                  </button>
-                ))}
+              {/* Drag Handle */}
+              <div className="flex justify-center pt-[6px] pb-[6px]">
+                <div className="w-[32px] h-[4px] bg-[#8F8F8F] rounded-full" />
+              </div>
+              
+              {/* Header */}
+              <div className="flex items-center justify-between px-4 pt-2 pb-2">
+                <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Destination</h3>
+                <button 
+                  onClick={() => setShowDestinationSheet(false)}
+                  className="w-[40px] h-[40px] bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                >
+                  <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                </button>
+              </div>
+              
+              {/* Options List */}
+              <div className="px-4 pt-2 pb-8 flex flex-col gap-4">
+                {destinations.map((dest) => {
+                  const isSelected = destination === dest
+                  return (
+                    <button
+                      key={dest}
+                      onClick={() => {
+                        setDestination(dest)
+                        setShowDestinationSheet(false)
+                      }}
+                      className={`w-full p-3 rounded-[8px] text-left ${
+                        isSelected 
+                          ? "bg-[#F7F7F7] border-2 border-[#191919]" 
+                          : "bg-white border border-[#8F8F8F]"
+                      }`}
+                    >
+                      <span className="text-[16px] font-bold text-[#191919] leading-[24px]">
+                        {dest}
+                      </span>
+                    </button>
+                  )
+                })}
               </div>
             </div>
           </div>
