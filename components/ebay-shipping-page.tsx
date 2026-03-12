@@ -144,16 +144,16 @@ export function EbayShippingPage() {
           </div>
 
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto bg-white">
+          <div className="flex-1 overflow-y-auto bg-white px-4">
             {/* Page Title */}
-            <div className="px-4">
+            <div>
               <h1 className="text-[22px] font-bold text-[#191919] leading-tight mt-2 mb-6">
                 Select delivery options
               </h1>
             </div>
 
             {/* Delivery Method Section */}
-            <div className="px-4 pb-5">
+            <div className="pb-5">
               <h2 className="text-[14px] font-bold text-[#191919] mb-3">Delivery method</h2>
               <button 
                 onClick={() => setShowDeliverySheet(true)}
@@ -166,10 +166,10 @@ export function EbayShippingPage() {
               </button>
             </div>
 
-            <div className="w-full h-[1px] bg-[#E5E5E5]" />
+            <div className="h-[1px] bg-[#E5E5E5] -mx-4" style={{ width: 'calc(100% + 32px)' }} />
 
             {/* Package Details Section */}
-            <div className="px-4 py-5">
+            <div className="py-5">
               <h2 className="text-[14px] font-bold text-[#191919] mb-3">Package details</h2>
               <button className="w-full px-4 py-3 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between">
                 <div className="flex flex-col items-start">
@@ -180,10 +180,10 @@ export function EbayShippingPage() {
               </button>
             </div>
 
-            <div className="w-full h-[1px] bg-[#E5E5E5]" />
+            <div className="h-[1px] bg-[#E5E5E5] -mx-4" style={{ width: 'calc(100% + 32px)' }} />
 
             {/* Domestic Shipping Section */}
-            <div className="px-4 py-5">
+            <div className="py-5">
               <h2 className="text-[14px] font-bold text-[#191919] mb-4">Domestic shipping</h2>
               
               {/* Authenticity Guarantee Notice - Grey background */}
@@ -224,10 +224,10 @@ export function EbayShippingPage() {
               </div>
             </div>
 
-            <div className="w-full h-[1px] bg-[#E5E5E5]" />
+            <div className="h-[1px] bg-[#E5E5E5] -mx-4" style={{ width: 'calc(100% + 32px)' }} />
 
             {/* International Shipping Section */}
-            <div className="px-4 py-5">
+            <div className="py-5">
               <h2 className="text-[14px] font-bold text-[#191919] mb-4">International shipping</h2>
               
               {/* Default Service */}
@@ -313,10 +313,10 @@ export function EbayShippingPage() {
               </button>
             </div>
 
-            <div className="w-full h-[1px] bg-[#E5E5E5]" />
+            <div className="h-[1px] bg-[#E5E5E5] -mx-4" style={{ width: 'calc(100% + 32px)' }} />
 
             {/* Buyer Payment Info - Card with grey background */}
-            <div className="px-4 py-5">
+            <div className="py-5">
               <div className="flex flex-col items-center py-4 bg-[#F7F7F7] rounded-[16px]">
                 <span className="text-[13px] text-[#707070]">The buyer will pay:</span>
                 <span className="text-[18px] font-bold text-[#191919] mt-1">$X.XX–$XX.XX</span>
@@ -327,10 +327,10 @@ export function EbayShippingPage() {
               </div>
             </div>
 
-            <div className="w-full h-[1px] bg-[#E5E5E5]" />
+            <div className="h-[1px] bg-[#E5E5E5] -mx-4" style={{ width: 'calc(100% + 32px)' }} />
 
             {/* Delivery Details Section */}
-            <div className="px-4 py-5 pb-28">
+            <div className="py-5 pb-28">
               <h2 className="text-[14px] font-bold text-[#191919] mb-3">Delivery details</h2>
               
               <button className="w-full p-4 bg-white border border-[#767676] rounded-[16px] flex">
