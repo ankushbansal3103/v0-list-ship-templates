@@ -12,8 +12,8 @@ const sites = [
     code: "US",
     flag: "🇺🇸",
     prototypes: [
-      { id: "us-shelby-ag", name: "US-Shelby-AG", description: "Shipping configuration with Delivery, Package Details, Services", status: "active", route: "/prototype/us-shelby-ag" },
-      { id: "us-flat-rate", name: "US-Flat-Rate", description: "Simplified flat rate shipping flow", status: "draft", route: "/prototype/us-flat-rate" },
+      { id: "us-shelby-ag", name: "US-Shelby-AG", description: "Shipping configuration with Delivery, Package Details, Services", status: "active", route: "/prototype/us-shelby-ag", image: "/images/prototypes/us-shelby-ag.jpg" },
+      { id: "us-flat-rate", name: "US-Flat-Rate", description: "Simplified flat rate shipping flow", status: "draft", route: "/prototype/us-flat-rate", image: null },
     ]
   },
   {
@@ -22,8 +22,8 @@ const sites = [
     code: "UK",
     flag: "🇬🇧",
     prototypes: [
-      { id: "uk-standard", name: "UK-Standard-V1", description: "Standard UK shipping with Royal Mail integration", status: "draft", route: "/prototype/uk-standard" },
-      { id: "uk-express", name: "UK-Express-V1", description: "Express delivery options for UK sellers", status: "draft", route: "/prototype/uk-express" },
+      { id: "uk-standard", name: "UK-Standard-V1", description: "Standard UK shipping with Royal Mail integration", status: "draft", route: "/prototype/uk-standard", image: null },
+      { id: "uk-express", name: "UK-Express-V1", description: "Express delivery options for UK sellers", status: "draft", route: "/prototype/uk-express", image: null },
     ]
   },
   {
@@ -32,8 +32,8 @@ const sites = [
     code: "DE",
     flag: "🇩🇪",
     prototypes: [
-      { id: "de-standard", name: "DE-Standard-V1", description: "German market shipping with DHL/Hermes", status: "draft", route: "/prototype/de-standard" },
-      { id: "de-returns", name: "DE-Returns-V1", description: "Enhanced returns flow for German regulations", status: "draft", route: "/prototype/de-returns" },
+      { id: "de-standard", name: "DE-Standard-V1", description: "German market shipping with DHL/Hermes", status: "draft", route: "/prototype/de-standard", image: null },
+      { id: "de-returns", name: "DE-Returns-V1", description: "Enhanced returns flow for German regulations", status: "draft", route: "/prototype/de-returns", image: null },
     ]
   },
   {
@@ -42,7 +42,7 @@ const sites = [
     code: "FR",
     flag: "🇫🇷",
     prototypes: [
-      { id: "fr-standard", name: "FR-Standard-V1", description: "French market with La Poste/Colissimo", status: "draft", route: "/prototype/fr-standard" },
+      { id: "fr-standard", name: "FR-Standard-V1", description: "French market with La Poste/Colissimo", status: "draft", route: "/prototype/fr-standard", image: null },
     ]
   },
   {
@@ -51,7 +51,7 @@ const sites = [
     code: "IT",
     flag: "🇮🇹",
     prototypes: [
-      { id: "it-standard", name: "IT-Standard-V1", description: "Italian market shipping configuration", status: "draft", route: "/prototype/it-standard" },
+      { id: "it-standard", name: "IT-Standard-V1", description: "Italian market shipping configuration", status: "draft", route: "/prototype/it-standard", image: null },
     ]
   },
   {
@@ -60,7 +60,7 @@ const sites = [
     code: "CA",
     flag: "🇨🇦",
     prototypes: [
-      { id: "ca-standard", name: "CA-Standard-V1", description: "Canada Post integration for Canadian sellers", status: "draft", route: "/prototype/ca-standard" },
+      { id: "ca-standard", name: "CA-Standard-V1", description: "Canada Post integration for Canadian sellers", status: "draft", route: "/prototype/ca-standard", image: null },
     ]
   },
   {
@@ -69,7 +69,7 @@ const sites = [
     code: "AU",
     flag: "🇦🇺",
     prototypes: [
-      { id: "au-standard", name: "AU-Standard-V1", description: "Australia Post shipping configuration", status: "draft", route: "/prototype/au-standard" },
+      { id: "au-standard", name: "AU-Standard-V1", description: "Australia Post shipping configuration", status: "draft", route: "/prototype/au-standard", image: null },
     ]
   },
   {
@@ -78,7 +78,7 @@ const sites = [
     code: "RoW",
     flag: "🌍",
     prototypes: [
-      { id: "row-international", name: "RoW-International-V1", description: "Generic international shipping template", status: "draft", route: "/prototype/row-international" },
+      { id: "row-international", name: "RoW-International-V1", description: "Generic international shipping template", status: "draft", route: "/prototype/row-international", image: null },
     ]
   },
 ]
@@ -229,11 +229,22 @@ export default function PrototypeLibrary() {
                     key={prototype.id}
                     className="bg-[#0a0a0a] border border-[#222] rounded-xl overflow-hidden hover:border-[#333] transition-colors"
                   >
-                    {/* Preview placeholder */}
-                    <div className="h-40 bg-gradient-to-br from-[#1a1a1a] to-[#111] flex items-center justify-center">
-                      <div className="w-20 h-40 bg-[#222] rounded-[10px] border border-[#333] flex items-center justify-center">
-                        <div className="w-16 h-36 bg-[#1a1a1a] rounded-[8px]" />
-                      </div>
+                    {/* Preview Image */}
+                    <div className="h-48 bg-gradient-to-br from-[#1a1a1a] to-[#111] flex items-center justify-center overflow-hidden">
+                      {prototype.image ? (
+                        <img 
+                          src={prototype.image} 
+                          alt={`${prototype.name} preview`}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="w-16 h-32 bg-[#222] rounded-[8px] border border-[#333] flex items-center justify-center">
+                            <div className="w-12 h-28 bg-[#1a1a1a] rounded-[6px]" />
+                          </div>
+                          <span className="text-[#555] text-xs">Coming Soon</span>
+                        </div>
+                      )}
                     </div>
                     
                     {/* Content */}
