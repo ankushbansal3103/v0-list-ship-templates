@@ -107,14 +107,12 @@ export function EbayShippingPage() {
 
   const destinations = ["Worldwide", "United States", "Canada", "Europe", "Asia"]
   
-  // Format package details for display
+  // Format package details for display - matching original eBay format
   const formatPackageDetails = () => {
     if (packageSizeType === "unknown") {
-      return "Custom shipping rate"
+      return "X lb. XX oz., A x B x C in."
     }
-    const totalWeight = `${weightKg} kg. ${weightG} g.`
-    const dimensions = `${length} x ${width} x ${height} cm.`
-    return `${totalWeight}, ${dimensions}`
+    return `X lb. XX oz., A x B x C in.`
   }
 
   return (
@@ -198,7 +196,7 @@ export function EbayShippingPage() {
                 <div className="flex flex-col items-start">
                   <span className="text-[14px] text-[#191919]">{formatPackageDetails()}</span>
                   <span className="text-[12px] text-[#707070] mt-0.5">
-                    {packageSizeType === "custom" ? "Custom size" : "Set your own shipping rate"}
+                    Estimated based on items like yours
                   </span>
                 </div>
                 <ChevronRight className="w-5 h-5 text-[#191919]" />
@@ -517,9 +515,9 @@ export function EbayShippingPage() {
               </div>
 
               {/* Scrollable Content */}
-              <div className="flex-1 overflow-y-auto px-4 pb-32">
+              <div className="flex-1 overflow-y-auto px-4 pb-24">
                 {/* Title */}
-                <h1 className="text-[24px] font-bold text-[#191919] leading-[32px] mt-3 mb-8">
+                <h1 className="text-[22px] font-bold text-[#191919] leading-[28px] mt-2 mb-6">
                   Package details
                 </h1>
 
@@ -529,91 +527,91 @@ export function EbayShippingPage() {
                   className="flex gap-3 items-start w-full text-left"
                 >
                   {/* Radio Button */}
-                  <div className="w-[22px] h-[22px] flex-shrink-0 mt-0.5">
+                  <div className="w-[20px] h-[20px] flex-shrink-0 mt-0.5">
                     {packageSizeType === "custom" ? (
-                      <svg viewBox="0 0 22 22" fill="none">
-                        <circle cx="11" cy="11" r="10" stroke="#191919" strokeWidth="2"/>
-                        <circle cx="11" cy="11" r="5.5" fill="#191919"/>
+                      <svg viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="9" stroke="#191919" strokeWidth="2"/>
+                        <circle cx="10" cy="10" r="5" fill="#191919"/>
                       </svg>
                     ) : (
-                      <svg viewBox="0 0 22 22" fill="none">
-                        <circle cx="11" cy="11" r="10" stroke="#767676" strokeWidth="2"/>
+                      <svg viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="9" stroke="#767676" strokeWidth="2"/>
                       </svg>
                     )}
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[15px] font-bold text-[#191919] leading-[22px]">Custom size</span>
-                    <span className="text-[14px] text-[#707070] leading-[20px]">Enter the weight and dimensions</span>
+                    <span className="text-[14px] font-bold text-[#191919] leading-[20px]">Custom size</span>
+                    <span className="text-[13px] text-[#707070] leading-[18px]">Enter the weight and dimensions</span>
                   </div>
                 </button>
 
                 {/* Custom Size Form - Only show when custom is selected */}
                 {packageSizeType === "custom" && (
-                  <div className="pl-[34px] flex flex-col gap-5 mt-6">
+                  <div className="pl-[32px] flex flex-col gap-4 mt-5">
                     {/* Weight */}
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[14px] text-[#191919] leading-[20px]">Weight</label>
-                      <div className="flex gap-3">
-                        <div className="flex-1 h-[52px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[13px] text-[#191919] leading-[18px]">Weight</label>
+                      <div className="flex gap-2">
+                        <div className="flex-1 h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
                           <input 
                             type="text" 
                             value={weightKg}
                             onChange={(e) => setWeightKg(e.target.value)}
-                            className="flex-1 bg-transparent text-[16px] text-[#191919] outline-none"
+                            className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none"
                           />
-                          <span className="text-[14px] text-[#707070]">kg.</span>
+                          <span className="text-[13px] text-[#707070]">kg.</span>
                         </div>
-                        <div className="flex-1 h-[52px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-4">
+                        <div className="flex-1 h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
                           <input 
                             type="text" 
                             value={weightG}
                             onChange={(e) => setWeightG(e.target.value)}
-                            className="flex-1 bg-transparent text-[16px] text-[#191919] outline-none"
+                            className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none"
                           />
-                          <span className="text-[14px] text-[#707070]">g.</span>
+                          <span className="text-[13px] text-[#707070]">g.</span>
                         </div>
                       </div>
                     </div>
 
                     {/* Length */}
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[14px] text-[#191919] leading-[20px]">Length</label>
-                      <div className="h-[52px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[13px] text-[#191919] leading-[18px]">Length</label>
+                      <div className="h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
                         <input 
                           type="text" 
                           value={length}
                           onChange={(e) => setLength(e.target.value)}
-                          className="flex-1 bg-transparent text-[16px] text-[#191919] outline-none"
+                          className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none"
                         />
-                        <span className="text-[14px] text-[#707070]">cm.</span>
+                        <span className="text-[13px] text-[#707070]">cm.</span>
                       </div>
                     </div>
 
                     {/* Width */}
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[14px] text-[#191919] leading-[20px]">Width</label>
-                      <div className="h-[52px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[13px] text-[#191919] leading-[18px]">Width</label>
+                      <div className="h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
                         <input 
                           type="text" 
                           value={width}
                           onChange={(e) => setWidth(e.target.value)}
-                          className="flex-1 bg-transparent text-[16px] text-[#191919] outline-none"
+                          className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none"
                         />
-                        <span className="text-[14px] text-[#707070]">cm.</span>
+                        <span className="text-[13px] text-[#707070]">cm.</span>
                       </div>
                     </div>
 
                     {/* Height */}
-                    <div className="flex flex-col gap-2">
-                      <label className="text-[14px] text-[#191919] leading-[20px]">Height</label>
-                      <div className="h-[52px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[13px] text-[#191919] leading-[18px]">Height</label>
+                      <div className="h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
                         <input 
                           type="text" 
                           value={height}
                           onChange={(e) => setHeight(e.target.value)}
-                          className="flex-1 bg-transparent text-[16px] text-[#191919] outline-none"
+                          className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none"
                         />
-                        <span className="text-[14px] text-[#707070]">cm.</span>
+                        <span className="text-[13px] text-[#707070]">cm.</span>
                       </div>
                     </div>
                   </div>
@@ -622,37 +620,37 @@ export function EbayShippingPage() {
                 {/* I don't know size Option */}
                 <button 
                   onClick={() => setPackageSizeType("unknown")}
-                  className="flex gap-3 items-start w-full text-left mt-6"
+                  className="flex gap-3 items-start w-full text-left mt-5"
                 >
-                  <div className="w-[22px] h-[22px] flex-shrink-0 mt-0.5">
+                  <div className="w-[20px] h-[20px] flex-shrink-0 mt-0.5">
                     {packageSizeType === "unknown" ? (
-                      <svg viewBox="0 0 22 22" fill="none">
-                        <circle cx="11" cy="11" r="10" stroke="#191919" strokeWidth="2"/>
-                        <circle cx="11" cy="11" r="5.5" fill="#191919"/>
+                      <svg viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="9" stroke="#191919" strokeWidth="2"/>
+                        <circle cx="10" cy="10" r="5" fill="#191919"/>
                       </svg>
                     ) : (
-                      <svg viewBox="0 0 22 22" fill="none">
-                        <circle cx="11" cy="11" r="10" stroke="#767676" strokeWidth="2"/>
+                      <svg viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="10" r="9" stroke="#767676" strokeWidth="2"/>
                       </svg>
                     )}
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[15px] font-bold text-[#191919] leading-[22px]">I don&apos;t know size</span>
-                    <span className="text-[14px] text-[#707070] leading-[20px]">Set your own shipping rate</span>
+                    <span className="text-[14px] font-bold text-[#191919] leading-[20px]">I don&apos;t know size</span>
+                    <span className="text-[13px] text-[#707070] leading-[18px]">Set your own shipping rate</span>
                   </div>
                 </button>
 
                 {/* Separator */}
-                <div className="h-[1px] bg-[#E5E5E5] -mx-4 mt-6 mb-5" style={{ width: 'calc(100% + 32px)' }} />
+                <div className="h-[1px] bg-[#E5E5E5] -mx-4 mt-5 mb-4" style={{ width: 'calc(100% + 32px)' }} />
 
                 {/* Irregular Package Toggle */}
                 <div className="flex items-start justify-between">
                   <div className="flex flex-col flex-1 pr-4">
-                    <span className="text-[15px] font-bold text-[#191919] leading-[22px]">Irregular package</span>
-                    <span className="text-[14px] text-[#707070] leading-[20px] mt-1">
+                    <span className="text-[14px] font-bold text-[#191919] leading-[20px]">Irregular package</span>
+                    <span className="text-[13px] text-[#707070] leading-[18px] mt-0.5">
                       Carriers may charge extra for items not shipped in standard packages.
                     </span>
-                    <button className="text-[14px] text-[#191919] underline text-left mt-1.5">
+                    <button className="text-[13px] text-[#191919] underline text-left mt-1">
                       Learn more
                     </button>
                   </div>
