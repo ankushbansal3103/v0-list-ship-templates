@@ -1312,7 +1312,7 @@ export function EbayShippingPage() {
             </div>
           </div>
         </div>
-      )}
+)}
 
       {/* Delivery Details Full Screen Sheet */}
       {showDeliveryDetailsSheet && (
