@@ -315,14 +315,16 @@ export function EbayShippingPage() {
 
             <div className="w-full h-[1px] bg-[#E5E5E5]" />
 
-            {/* Buyer Payment Info - Grey background section */}
-            <div className="flex flex-col items-center py-5 bg-[#F7F7F7]">
-              <span className="text-[13px] text-[#707070]">The buyer will pay:</span>
-              <span className="text-[18px] font-bold text-[#191919] mt-1">$X.XX–$XX.XX</span>
-              <span className="text-[13px] text-[#707070] mt-1">Cost is based on buyer&apos;s location.</span>
-              <button className="text-[13px] text-[#191919] underline mt-1">
-                Edit shipping cost
-              </button>
+            {/* Buyer Payment Info - Card with grey background */}
+            <div className="px-4 py-5">
+              <div className="flex flex-col items-center py-4 bg-[#F7F7F7] rounded-[16px]">
+                <span className="text-[13px] text-[#707070]">The buyer will pay:</span>
+                <span className="text-[18px] font-bold text-[#191919] mt-1">$X.XX–$XX.XX</span>
+                <span className="text-[13px] text-[#707070] mt-1">Cost is based on buyer&apos;s location.</span>
+                <button className="text-[13px] text-[#191919] underline mt-1">
+                  Edit shipping cost
+                </button>
+              </div>
             </div>
 
             <div className="w-full h-[1px] bg-[#E5E5E5]" />
