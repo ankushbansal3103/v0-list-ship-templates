@@ -56,7 +56,7 @@ export async function GET(
               marginTop: '4px',
               position: 'absolute',
               top: '12px',
-              zIndex: 10,
+              zIndex: '10',
             }}
           />
           
