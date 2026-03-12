@@ -104,6 +104,84 @@ export function EbayShippingPage() {
   const [width, setWidth] = useState("12")
   const [height, setHeight] = useState("9")
   const [irregularPackage, setIrregularPackage] = useState(false)
+  
+  // International services state
+  const [showServicesSheet, setShowServicesSheet] = useState(false)
+  const [selectedService, setSelectedService] = useState("colissimo")
+  
+  // International shipping services data
+  const internationalServices = [
+    {
+      id: "mondial-relay-1",
+      name: "Modial Relay",
+      logo: "https://www.mondial-relay.fr/media/dpvls2jn/mr-logo.png",
+      deliveryDays: "5-8",
+      maxWeight: "30",
+      tracking: true,
+      price: "4,99",
+      group: 1
+    },
+    {
+      id: "colissimo",
+      name: "Colissimo",
+      logo: "https://www.laposte.fr/medias/site-laposte/colis/colissimo/logo-colissimo.png",
+      deliveryDays: "3-5",
+      maxWeight: "30",
+      tracking: true,
+      price: "8,99",
+      group: 1
+    },
+    {
+      id: "chronopost",
+      name: "Chronopost",
+      logo: "https://www.chronopost.fr/sites/all/themes/chronopost/images/chronopost-logo.svg",
+      deliveryDays: "1-2",
+      maxWeight: "30",
+      tracking: true,
+      price: "15,99",
+      group: 1
+    },
+    {
+      id: "mondial-relay-2",
+      name: "Modial Relay",
+      logo: "https://www.mondial-relay.fr/media/dpvls2jn/mr-logo.png",
+      deliveryDays: "7-10",
+      maxWeight: "20",
+      tracking: true,
+      price: "3,49",
+      group: 2
+    },
+    {
+      id: "dhl",
+      name: "DHL Express",
+      logo: "https://www.dhl.com/content/dam/dhl/global/core/images/logos/dhl-logo.svg",
+      deliveryDays: "2-4",
+      maxWeight: "50",
+      tracking: true,
+      price: "19,99",
+      group: 2
+    },
+    {
+      id: "ups",
+      name: "UPS Standard",
+      logo: "https://www.ups.com/assets/resources/webcontent/images/ups-logo.svg",
+      deliveryDays: "3-6",
+      maxWeight: "40",
+      tracking: true,
+      price: "12,99",
+      group: 2
+    },
+    {
+      id: "dpd",
+      name: "DPD Classic",
+      logo: "https://www.dpd.com/wp-content/uploads/2020/04/dpd_logo_redgrad_rgb.png",
+      deliveryDays: "4-7",
+      maxWeight: "31.5",
+      tracking: true,
+      price: "6,99",
+      group: 2
+    }
+  ]
 
   const destinations = [
     { 
@@ -129,8 +207,8 @@ export function EbayShippingPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
       {/* iPhone 17 Frame - 402x874 logical resolution */}
-      {/* Hide L1 only when Package Details (full-screen) is shown to prevent double frame/island */}
-      <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet ? 'invisible' : ''}`}>
+      {/* Hide L1 when full-screen sheets are shown to prevent double frame/island */}
+      <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet || showServicesSheet ? 'invisible' : ''}`}>
         {/* Dynamic Island */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
         
@@ -343,7 +421,10 @@ export function EbayShippingPage() {
               </div>
 
               {/* View All Services Button */}
-              <button className="w-full h-[44px] border border-[#767676] rounded-full flex items-center justify-center">
+              <button 
+                onClick={() => setShowServicesSheet(true)}
+                className="w-full h-[44px] border border-[#767676] rounded-full flex items-center justify-center"
+              >
                 <span className="text-[14px] text-[#191919]">View all services</span>
               </button>
             </div>
@@ -763,6 +844,222 @@ export function EbayShippingPage() {
                     </button>
                   )
                 })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* International Services Full Screen Sheet */}
+      {showServicesSheet && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          {/* iPhone Frame - identical to L1 */}
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            {/* Dynamic Island - same as L1 */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            
+            {/* Screen - same as L1 */}
+            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+              {/* iOS Status Bar */}
+              <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
+                <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
+                <div className="flex items-center gap-[5px]">
+                  <svg className="w-[17px] h-[11px]" viewBox="0 0 17 11">
+                    <rect x="0" y="7" width="3" height="4" rx="1" fill="#191919"/>
+                    <rect x="4.5" y="5" width="3" height="6" rx="1" fill="#191919"/>
+                    <rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#191919"/>
+                    <rect x="13.5" y="0" width="3" height="11" rx="1" fill="#191919"/>
+                  </svg>
+                  <svg className="w-[15px] h-[11px]" viewBox="0 0 15 11">
+                    <path d="M7.5 10.5C8.33 10.5 9 9.83 9 9C9 8.17 8.33 7.5 7.5 7.5C6.67 7.5 6 8.17 6 9C6 9.83 6.67 10.5 7.5 10.5Z" fill="#191919"/>
+                    <path d="M4.5 7C5.5 6 6.5 5.5 7.5 5.5C8.5 5.5 9.5 6 10.5 7" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                    <path d="M2.5 4.5C4 3 5.5 2.5 7.5 2.5C9.5 2.5 11 3 12.5 4.5" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                    <path d="M0.5 2C2.5 0.5 5 0 7.5 0C10 0 12.5 0.5 14.5 2" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/>
+                  </svg>
+                  <svg className="w-[25px] h-[12px]" viewBox="0 0 25 12">
+                    <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#191919" strokeOpacity="0.35"/>
+                    <rect x="2" y="2" width="18" height="8" rx="1.5" fill="#191919"/>
+                    <path d="M23 4V8C23.8 8 24 7 24 6C24 5 23.8 4 23 4Z" fill="#191919" fillOpacity="0.4"/>
+                  </svg>
+                </div>
+              </div>
+
+              {/* Navigation Header - Back button */}
+              <div className="h-[44px] px-4 flex items-center bg-white flex-shrink-0">
+                <button 
+                  onClick={() => setShowServicesSheet(false)}
+                  className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                >
+                  <BackArrow className="w-6 h-6 text-[#191919]" />
+                </button>
+              </div>
+
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto px-4 pb-24">
+                {/* Header Section */}
+                <div className="mb-6">
+                  <h1 className="text-[24px] font-bold text-[#191919] leading-[32px] mt-2">
+                    International service
+                  </h1>
+                  <p className="text-[14px] text-[#707070] leading-[20px] mt-1">
+                    Lorem ipsum dolor sit amet
+                  </p>
+                  <button className="text-[12px] text-[#D50B0B] underline mt-2">
+                    Remove service
+                  </button>
+                </div>
+
+                {/* Service Type Group 1 */}
+                <div className="mb-6">
+                  <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-4">
+                    Service type
+                  </h2>
+                  <div className="flex flex-col gap-4">
+                    {internationalServices.filter(s => s.group === 1).map((service) => {
+                      const isSelected = selectedService === service.id
+                      return (
+                        <button
+                          key={service.id}
+                          onClick={() => setSelectedService(service.id)}
+                          className="flex items-start gap-4 w-full text-left"
+                        >
+                          {/* Radio Button */}
+                          <div className="w-[24px] h-[24px] flex-shrink-0 mt-4">
+                            {isSelected ? (
+                              <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="11" stroke="#191919" strokeWidth="2"/>
+                                <circle cx="12" cy="12" r="6" fill="#191919"/>
+                              </svg>
+                            ) : (
+                              <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="11" stroke="#767676" strokeWidth="2"/>
+                              </svg>
+                            )}
+                          </div>
+                          
+                          {/* Logo */}
+                          <div className="w-[56px] h-[56px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img 
+                              src={service.logo}
+                              alt={service.name}
+                              className="w-[40px] h-[40px] object-contain"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement
+                                target.style.display = 'none'
+                              }}
+                            />
+                          </div>
+                          
+                          {/* Content */}
+                          <div className="flex flex-col flex-1 py-1">
+                            <span className="text-[14px] font-bold text-[#191919] leading-[20px]">
+                              {service.name}
+                            </span>
+                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                              {service.deliveryDays} business days
+                            </span>
+                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                              Up to {service.maxWeight} lb.
+                            </span>
+                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                              {service.tracking ? "Tracking included" : "No tracking"}
+                            </span>
+                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                              {service.price} €
+                            </span>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Service Type Group 2 */}
+                <div className="mb-6">
+                  <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-4">
+                    Service type
+                  </h2>
+                  <div className="flex flex-col gap-4">
+                    {internationalServices.filter(s => s.group === 2).map((service) => {
+                      const isSelected = selectedService === service.id
+                      return (
+                        <button
+                          key={service.id}
+                          onClick={() => setSelectedService(service.id)}
+                          className="flex items-start gap-4 w-full text-left"
+                        >
+                          {/* Radio Button */}
+                          <div className="w-[24px] h-[24px] flex-shrink-0 mt-4">
+                            {isSelected ? (
+                              <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="11" stroke="#191919" strokeWidth="2"/>
+                                <circle cx="12" cy="12" r="6" fill="#191919"/>
+                              </svg>
+                            ) : (
+                              <svg viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="12" r="11" stroke="#767676" strokeWidth="2"/>
+                              </svg>
+                            )}
+                          </div>
+                          
+                          {/* Logo */}
+                          <div className="w-[56px] h-[56px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img 
+                              src={service.logo}
+                              alt={service.name}
+                              className="w-[40px] h-[40px] object-contain"
+                              onError={(e) => {
+                                const target = e.target as HTMLImageElement
+                                target.style.display = 'none'
+                              }}
+                            />
+                          </div>
+                          
+                          {/* Content */}
+                          <div className="flex flex-col flex-1 py-1">
+                            <span className="text-[14px] font-bold text-[#191919] leading-[20px]">
+                              {service.name}
+                            </span>
+                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                              {service.deliveryDays} business days
+                            </span>
+                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                              Up to {service.maxWeight} lb.
+                            </span>
+                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                              {service.tracking ? "Tracking included" : "No tracking"}
+                            </span>
+                            <span className="text-[14px] text-[#707070] leading-[20px]">
+                              {service.price} €
+                            </span>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* Fixed Bottom Button */}
+              <div className="absolute bottom-0 left-0 right-0 bg-white">
+                <div className="h-[1px] bg-[#E5E5E5]" />
+                <div className="px-4 pb-3 pt-3">
+                  <button 
+                    onClick={() => setShowServicesSheet(false)}
+                    className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]"
+                  >
+                    <span className="text-[16px] font-bold text-white">Done</span>
+                  </button>
+                </div>
+                {/* Home Indicator */}
+                <div className="h-[34px] flex items-center justify-center">
+                  <div className="w-[134px] h-[5px] bg-[#191919] rounded-full" />
+                </div>
               </div>
             </div>
           </div>
