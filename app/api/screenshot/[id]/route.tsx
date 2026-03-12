@@ -13,9 +13,6 @@ export async function GET(
 ) {
   const { id } = await params
   
-  // For active prototypes, we render a visual representation
-  // This creates a consistent preview image showing the prototype UI
-  
   const isActive = id in prototypeRoutes
   
   return new ImageResponse(
@@ -32,7 +29,6 @@ export async function GET(
           padding: '20px',
         }}
       >
-        {/* iPhone Frame */}
         <div
           style={{
             width: '180px',
@@ -45,9 +41,6 @@ export async function GET(
             boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
           }}
         >
-          {/* Dynamic Island - shown at top of screen */}
-          
-          {/* Screen */}
           <div
             style={{
               flex: 1,
@@ -58,7 +51,6 @@ export async function GET(
               overflow: 'hidden',
             }}
           >
-            {/* Dynamic Island */}
             <div
               style={{
                 display: 'flex',
@@ -76,7 +68,6 @@ export async function GET(
               />
             </div>
             
-            {/* Status Bar */}
             <div
               style={{
                 height: '20px',
@@ -92,7 +83,6 @@ export async function GET(
               </div>
             </div>
             
-            {/* Header */}
             <div
               style={{
                 padding: '8px 12px',
@@ -101,11 +91,10 @@ export async function GET(
                 gap: '8px',
               }}
             >
-              <div style={{ fontSize: '12px', color: '#191919' }}>{'<'}</div>
+              <span style={{ fontSize: '12px', color: '#191919' }}>{'<'}</span>
               <span style={{ fontSize: '14px', fontWeight: 700, color: '#191919' }}>Shipping</span>
             </div>
             
-            {/* Content Cards */}
             <div
               style={{
                 padding: '8px 12px',
@@ -114,7 +103,6 @@ export async function GET(
                 gap: '8px',
               }}
             >
-              {/* Package Details Card */}
               <div
                 style={{
                   backgroundColor: '#F7F7F7',
@@ -130,7 +118,6 @@ export async function GET(
                 <span style={{ fontSize: '8px', color: '#707070' }}>Dimensions: 12 x 8 x 4 in</span>
               </div>
               
-              {/* Services Card */}
               <div
                 style={{
                   backgroundColor: '#F7F7F7',
@@ -146,7 +133,6 @@ export async function GET(
                 <span style={{ fontSize: '8px', color: '#707070' }}>Standard: $6.99</span>
               </div>
               
-              {/* Delivery Details Card */}
               <div
                 style={{
                   backgroundColor: '#F7F7F7',
@@ -162,8 +148,7 @@ export async function GET(
               </div>
             </div>
             
-            {/* Bottom CTA */}
-            <div style={{ marginTop: 'auto', padding: '12px' }}>
+            <div style={{ marginTop: 'auto', padding: '12px', display: 'flex' }}>
               <div
                 style={{
                   backgroundColor: '#3665F3',
@@ -172,13 +157,13 @@ export async function GET(
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
+                  width: '100%',
                 }}
               >
                 <span style={{ fontSize: '11px', fontWeight: 600, color: '#fff' }}>Continue</span>
               </div>
             </div>
             
-            {/* Home Indicator */}
             <div
               style={{
                 display: 'flex',
@@ -198,7 +183,6 @@ export async function GET(
           </div>
         </div>
         
-        {/* Label */}
         <div
           style={{
             marginTop: '16px',
