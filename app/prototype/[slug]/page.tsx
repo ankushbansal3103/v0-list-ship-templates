@@ -2,9 +2,11 @@
 
 import Link from "next/link"
 import { ArrowLeft, Construction } from "lucide-react"
+import { use } from "react"
 
-export default function DraftPrototype({ params }: { params: { slug: string } }) {
-  const prototypeName = params.slug.toUpperCase().replace(/-/g, '-')
+export default function DraftPrototype({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = use(params)
+  const prototypeName = slug.toUpperCase().replace(/-/g, '-')
   
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex flex-col">
