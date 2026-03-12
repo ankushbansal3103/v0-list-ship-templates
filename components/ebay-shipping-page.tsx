@@ -29,6 +29,11 @@ function BackArrow({ className }: { className?: string }) {
   )
 }
 
+// Section Separator
+function Separator() {
+  return <div className="w-full h-[1px] bg-[#E5E5E5] my-4" />
+}
+
 export function EbayShippingPage() {
   const [deliveryMethod, setDeliveryMethod] = useState("shipping")
   const [showDeliverySheet, setShowDeliverySheet] = useState(false)
@@ -92,7 +97,7 @@ export function EbayShippingPage() {
               </h1>
 
               {/* Delivery Method Section */}
-              <div className="mb-5">
+              <div>
                 <h2 className="text-[14px] font-bold text-[#191919] mb-2">Delivery method</h2>
                 <button 
                   onClick={() => setShowDeliverySheet(true)}
@@ -105,8 +110,10 @@ export function EbayShippingPage() {
                 </button>
               </div>
 
+              <Separator />
+
               {/* Package Details Section */}
-              <div className="mb-5">
+              <div>
                 <h2 className="text-[14px] font-bold text-[#191919] mb-2">Package details</h2>
                 <button className="w-full px-4 py-3 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between">
                   <div className="flex flex-col items-start gap-0.5">
@@ -117,8 +124,10 @@ export function EbayShippingPage() {
                 </button>
               </div>
 
+              <Separator />
+
               {/* Domestic Shipping Section */}
-              <div className="mb-5">
+              <div>
                 <h2 className="text-[14px] font-bold text-[#191919] mb-3">Domestic shipping</h2>
                 
                 {/* Authenticity Guarantee Notice - Grey background */}
@@ -162,8 +171,10 @@ export function EbayShippingPage() {
                 </div>
               </div>
 
+              <Separator />
+
               {/* International Shipping Section */}
-              <div className="mb-4">
+              <div>
                 <h2 className="text-[14px] font-bold text-[#191919] mb-2">International shipping</h2>
                 
                 {/* Default Service */}
@@ -203,7 +214,7 @@ export function EbayShippingPage() {
                 <div className="mb-3">
                   <span className="text-[13px] text-[#707070] block">Additional service</span>
                   <span className="text-[13px] text-[#707070]">
-                    <button className="underline text-[#191919]">Fees</button> apply for international sales.
+                    <button className="underline text-[#3665F3]">Fees</button> apply for international sales.
                   </span>
                 </div>
 
@@ -211,7 +222,7 @@ export function EbayShippingPage() {
                 <div className="mb-3">
                   <button 
                     onClick={() => setShowDestinationSheet(true)}
-                    className="w-full px-4 py-2 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between min-h-[52px]"
+                    className="w-full px-4 py-2.5 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between"
                   >
                     <div className="flex flex-col items-start">
                       <span className="text-[11px] text-[#707070] leading-tight">Destination</span>
@@ -253,24 +264,28 @@ export function EbayShippingPage() {
                 <button className="w-full h-[44px] border border-[#767676] rounded-full flex items-center justify-center">
                   <span className="text-[14px] text-[#191919]">View all services</span>
                 </button>
-
-                {/* Buyer Payment Info */}
-                <div className="flex flex-col items-center py-5">
-                  <span className="text-[13px] text-[#707070]">The buyer will pay:</span>
-                  <span className="text-[18px] font-bold text-[#191919] mt-0.5">$X.XX–$XX.XX</span>
-                  <span className="text-[13px] text-[#707070] mt-0.5">Cost is based on buyer&apos;s location.</span>
-                  <button className="text-[13px] text-[#191919] underline mt-0.5">
-                    Edit shipping cost
-                  </button>
-                </div>
               </div>
+
+              <Separator />
+
+              {/* Buyer Payment Info - Grey background section */}
+              <div className="flex flex-col items-center py-4 px-4 -mx-4 bg-[#F7F7F7]">
+                <span className="text-[13px] text-[#707070]">The buyer will pay:</span>
+                <span className="text-[18px] font-bold text-[#191919] mt-0.5">$X.XX–$XX.XX</span>
+                <span className="text-[13px] text-[#707070] mt-0.5">Cost is based on buyer&apos;s location.</span>
+                <button className="text-[13px] text-[#191919] underline mt-0.5">
+                  Edit shipping cost
+                </button>
+              </div>
+
+              <Separator />
 
               {/* Delivery Details Section */}
               <div className="mb-4">
                 <h2 className="text-[14px] font-bold text-[#191919] mb-2">Delivery details</h2>
                 
-                <button className="w-full p-4 bg-white border border-[#767676] rounded-[16px] flex items-start justify-between">
-                  <div className="flex flex-col gap-3 text-left">
+                <button className="w-full p-4 bg-white border border-[#767676] rounded-[16px] flex justify-between">
+                  <div className="flex flex-col gap-4 text-left flex-1">
                     <div className="flex flex-col">
                       <span className="text-[14px] font-bold text-[#191919]">Item location</span>
                       <span className="text-[13px] text-[#707070]">Located at 95117 (visible on listing)</span>
@@ -292,7 +307,9 @@ export function EbayShippingPage() {
                       <span className="text-[13px] text-[#707070]">14 Days, Buyer, Money back</span>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-[#191919] flex-shrink-0 mt-1" />
+                  <div className="flex items-center pl-3">
+                    <ChevronRight className="w-5 h-5 text-[#191919] flex-shrink-0" />
+                  </div>
                 </button>
               </div>
             </div>
