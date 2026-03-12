@@ -104,12 +104,12 @@ export default function PrototypeLibrary() {
       {/* Header */}
       <header className="border-b border-[#1f1f1f] bg-[#0a0a0a] sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
               <span className="text-white font-bold text-sm">eb</span>
             </div>
             <span className="text-white font-semibold text-lg">Prototype Library</span>
-          </div>
+          </Link>
           <div className="flex items-center gap-4">
             <Link 
               href="/library" 
