@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Search, Copy, ExternalLink, ChevronRight, Check } from "lucide-react"
+import { Search, Copy, ExternalLink, ChevronRight, Check, X } from "lucide-react"
 
 // Site data with prototypes
 const sites = [
