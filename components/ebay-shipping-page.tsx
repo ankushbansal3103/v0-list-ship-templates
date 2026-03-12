@@ -2,38 +2,13 @@
 
 import { useState } from "react"
 import { ChevronDown, ChevronRight, X, Check } from "lucide-react"
+import Image from "next/image"
 
 const deliveryMethods = [
   { id: "shipping", label: "Shipping only" },
   { id: "pickup", label: "Local pickup only" },
   { id: "both", label: "Shipping and local pickup" },
 ]
-
-// FedEx Logo Component - accurate recreation
-function FedExLogo({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 960 420" xmlns="http://www.w3.org/2000/svg">
-      <g>
-        <path fill="#4D148C" d="M0 140h220v55H75v60h130v55H75v110H0V140z"/>
-        <path fill="#FF6600" d="M265 195h145c50 0 85 35 85 75 0 35-25 65-65 75l85 75h-80l-70-70h-30v70h-70V195zm70 55v50h60c25 0 40-12 40-25s-15-25-40-25h-60z"/>
-        <path fill="#4D148C" d="M510 140h220v55h-145v45h130v55h-130v60h150v55H510V140z"/>
-        <path fill="#FF6600" d="M750 195h75l55 80 55-80h75l-90 120 95 105h-80l-60-70-55 70h-80l95-105-85-120z"/>
-      </g>
-    </svg>
-  )
-}
-
-// eBay Logo Component - accurate with correct colors
-function EbayLogo({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg">
-      <path d="M0 60c0-33 25-55 55-55 28 0 50 20 50 52v8H18c3 18 18 30 38 30 15 0 28-8 35-22h18c-8 22-30 37-53 37C25 110 0 88 0 60zm18-8h70c-3-18-18-32-35-32s-32 14-35 32z" fill="#E53238"/>
-      <path d="M120 107V5h18v38c8-15 25-25 45-25 30 0 55 25 55 55s-25 55-55 55c-20 0-37-10-45-25v7h-18zm18-35c0 22 18 40 42 40s42-18 42-40-18-40-42-40-42 18-42 40z" fill="#0064D2"/>
-      <path d="M335 107c-30 0-55-25-55-55s25-55 55-55c20 0 37 10 45 25V5h18v102h-18v-25c-8 15-25 25-45 25zm5-95c-24 0-42 18-42 40s18 40 42 40 42-18 42-40-18-40-42-40z" fill="#F5AF02"/>
-      <path d="M415 17h20l40 70 40-70h20l-55 95c-8 15-20 23-38 23v-18c12 0 20-5 25-15l-52-85z" fill="#86B817"/>
-    </svg>
-  )
-}
 
 // Checkmark Circle Icon - Blue outline style
 function CheckCircle({ className }: { className?: string }) {
@@ -70,7 +45,7 @@ export function EbayShippingPage() {
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[35px] bg-black rounded-b-[20px] z-50" />
         
         {/* Screen */}
-        <div className="relative w-full h-full bg-[#F7F7F7] rounded-[40px] overflow-hidden flex flex-col">
+        <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
           {/* iOS Status Bar */}
           <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
             <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
@@ -109,10 +84,10 @@ export function EbayShippingPage() {
           </div>
 
           {/* Scrollable Content */}
-          <div className="flex-1 overflow-y-auto bg-[#F7F7F7]">
+          <div className="flex-1 overflow-y-auto bg-white">
             <div className="px-4 pb-28">
               {/* Page Title */}
-              <h1 className="text-[24px] font-bold text-[#191919] leading-tight mt-3 mb-5">
+              <h1 className="text-[22px] font-bold text-[#191919] leading-tight mt-2 mb-5">
                 Select delivery options
               </h1>
 
@@ -144,14 +119,14 @@ export function EbayShippingPage() {
 
               {/* Domestic Shipping Section */}
               <div className="mb-5">
-                <h2 className="text-[14px] font-bold text-[#191919] mb-2">Domestic shipping</h2>
+                <h2 className="text-[14px] font-bold text-[#191919] mb-3">Domestic shipping</h2>
                 
-                {/* Authenticity Guarantee Notice */}
-                <div className="p-3 bg-[#F7F7F7] border border-[#E5E5E5] rounded-[16px] mb-3">
+                {/* Authenticity Guarantee Notice - Grey background */}
+                <div className="p-3 bg-[#F7F7F7] rounded-[16px] mb-3">
                   <div className="flex gap-3">
-                    <CheckCircle className="w-5 h-5 flex-shrink-0 mt-0.5" />
+                    <CheckCircle className="w-6 h-6 flex-shrink-0 mt-0" />
                     <div className="flex flex-col gap-1.5">
-                      <p className="text-[13px] text-[#191919] leading-[1.45]">
+                      <p className="text-[13px] text-[#191919] leading-[1.5]">
                         This item is eligible for Authenticity Guarantee. An authenticator will verify the eligible item is authentic and matches the listing&apos;s details.
                       </p>
                       <button className="text-[13px] text-[#191919] underline text-left font-medium">
@@ -162,16 +137,23 @@ export function EbayShippingPage() {
                 </div>
 
                 {/* eBay shipping powered by FedEx Card */}
-                <div className="w-full px-4 py-3 bg-white border border-[#E5E5E5] rounded-[16px]">
+                <div className="w-full p-4 bg-white border border-[#E5E5E5] rounded-[16px]">
                   <div className="flex gap-3 items-center">
-                    <div className="w-[40px] h-[24px] flex items-center justify-center flex-shrink-0">
-                      <FedExLogo className="w-[40px] h-auto" />
+                    <div className="w-[44px] h-[20px] flex items-center justify-center flex-shrink-0">
+                      <Image 
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png"
+                        alt="FedEx"
+                        width={44}
+                        height={20}
+                        className="object-contain"
+                        unoptimized
+                      />
                     </div>
                     <div className="flex flex-col">
                       <span className="text-[14px] font-bold text-[#191919] leading-tight">
                         eBay shipping powered by FedEx
                       </span>
-                      <span className="text-[12px] text-[#707070] mt-0.5">
+                      <span className="text-[13px] text-[#707070] mt-0.5">
                         Free shipping label provided to you
                       </span>
                     </div>
@@ -180,30 +162,34 @@ export function EbayShippingPage() {
               </div>
 
               {/* International Shipping Section */}
-              <div className="mb-5">
+              <div className="mb-4">
                 <h2 className="text-[14px] font-bold text-[#191919] mb-2">International shipping</h2>
                 
                 {/* Default Service */}
                 <div className="mb-3">
-                  <span className="text-[12px] text-[#707070] mb-2 block">Default service</span>
+                  <span className="text-[13px] text-[#707070] mb-2 block">Default service</span>
                   
                   {/* eBay International Shipping Card - Selected state with blue border */}
                   <div className="w-full p-3 bg-white border-2 border-[#3665F3] rounded-[16px]">
                     <div className="flex gap-3 items-start">
-                      <div className="w-[40px] h-[40px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0">
-                        <span className="text-[11px] font-bold text-[#E53238]">e</span>
-                        <span className="text-[11px] font-bold text-[#0064D2]">b</span>
-                        <span className="text-[11px] font-bold text-[#F5AF02]">a</span>
-                        <span className="text-[11px] font-bold text-[#86B817]">y</span>
+                      <div className="w-[44px] h-[28px] bg-[#F7F7F7] rounded-[6px] flex items-center justify-center flex-shrink-0">
+                        <Image 
+                          src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/2560px-EBay_logo.svg.png"
+                          alt="eBay"
+                          width={32}
+                          height={14}
+                          className="object-contain"
+                          unoptimized
+                        />
                       </div>
                       <div className="flex flex-col flex-1">
                         <span className="text-[14px] font-bold text-[#191919] leading-tight">
                           eBay International Shipping
                         </span>
-                        <p className="text-[12px] text-[#191919] mt-1 leading-[1.4]">
+                        <p className="text-[13px] text-[#191919] mt-1 leading-[1.4]">
                           Send items to our domestic shipping hub and we&apos;ll handle the rest—at no extra cost.
                         </p>
-                        <button className="text-[12px] text-[#191919] underline text-left font-medium mt-1.5">
+                        <button className="text-[13px] text-[#191919] underline text-left font-medium mt-1.5">
                           How it works
                         </button>
                       </div>
@@ -213,8 +199,8 @@ export function EbayShippingPage() {
 
                 {/* Additional Service */}
                 <div className="mb-3">
-                  <span className="text-[12px] text-[#707070] block">Additional service</span>
-                  <span className="text-[12px] text-[#191919]">
+                  <span className="text-[13px] text-[#707070] block">Additional service</span>
+                  <span className="text-[13px] text-[#707070]">
                     <button className="underline text-[#191919]">Fees</button> apply for international sales.
                   </span>
                 </div>
@@ -223,11 +209,11 @@ export function EbayShippingPage() {
                 <div className="mb-3">
                   <button 
                     onClick={() => setShowDestinationSheet(true)}
-                    className="w-full px-4 py-2.5 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between"
+                    className="w-full px-4 py-2 bg-white border border-[#767676] rounded-[16px] flex items-center justify-between min-h-[52px]"
                   >
-                    <div className="flex flex-col items-start gap-0">
+                    <div className="flex flex-col items-start">
                       <span className="text-[11px] text-[#707070] leading-tight">Destination</span>
-                      <span className="text-[14px] text-[#191919] leading-tight">{destination}</span>
+                      <span className="text-[14px] text-[#191919] leading-snug">{destination}</span>
                     </div>
                     <ChevronDown className="w-5 h-5 text-[#191919]" />
                   </button>
@@ -236,14 +222,21 @@ export function EbayShippingPage() {
                 {/* FedEx Service Card */}
                 <div className="w-full p-3 bg-white border border-[#E5E5E5] rounded-[16px] mb-3">
                   <div className="flex gap-3 items-start">
-                    <div className="w-[40px] h-[24px] flex items-center justify-center flex-shrink-0 mt-1">
-                      <FedExLogo className="w-[40px] h-auto" />
+                    <div className="w-[44px] h-[20px] flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <Image 
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png"
+                        alt="FedEx"
+                        width={44}
+                        height={20}
+                        className="object-contain"
+                        unoptimized
+                      />
                     </div>
                     <div className="flex flex-col flex-1">
                       <span className="text-[14px] font-bold text-[#191919] leading-tight">
                         FedEx
                       </span>
-                      <div className="text-[12px] text-[#191919] mt-0.5 leading-[1.5]">
+                      <div className="text-[13px] text-[#191919] mt-0.5 leading-[1.5]">
                         <div>X-X business days</div>
                         <div>Up to $XXX.XX protection</div>
                         <div>Up to X lb., AA x BB x CC in.</div>
@@ -260,10 +253,10 @@ export function EbayShippingPage() {
 
                 {/* Buyer Payment Info */}
                 <div className="flex flex-col items-center py-5">
-                  <span className="text-[12px] text-[#707070]">The buyer will pay:</span>
+                  <span className="text-[13px] text-[#707070]">The buyer will pay:</span>
                   <span className="text-[18px] font-bold text-[#191919] mt-0.5">$X.XX–$XX.XX</span>
-                  <span className="text-[12px] text-[#707070] mt-0.5">Cost is based on buyer&apos;s location.</span>
-                  <button className="text-[12px] text-[#191919] underline mt-0.5">
+                  <span className="text-[13px] text-[#707070] mt-0.5">Cost is based on buyer&apos;s location.</span>
+                  <button className="text-[13px] text-[#191919] underline mt-0.5">
                     Edit shipping cost
                   </button>
                 </div>
@@ -274,29 +267,29 @@ export function EbayShippingPage() {
                 <h2 className="text-[14px] font-bold text-[#191919] mb-2">Delivery details</h2>
                 
                 <button className="w-full p-4 bg-white border border-[#767676] rounded-[16px] flex items-start justify-between">
-                  <div className="flex flex-col gap-4 text-left">
+                  <div className="flex flex-col gap-3 text-left">
                     <div className="flex flex-col">
-                      <span className="text-[13px] font-bold text-[#191919]">Item location</span>
+                      <span className="text-[14px] font-bold text-[#191919]">Item location</span>
                       <span className="text-[13px] text-[#707070]">Located at 95117 (visible on listing)</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[13px] font-bold text-[#191919]">Handling time</span>
+                      <span className="text-[14px] font-bold text-[#191919]">Handling time</span>
                       <span className="text-[13px] text-[#707070]">X business days</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[13px] font-bold text-[#191919]">Domestic returns</span>
+                      <span className="text-[14px] font-bold text-[#191919]">Domestic returns</span>
                       <span className="text-[13px] text-[#707070]">14 Days, Buyer, Money back</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[13px] font-bold text-[#191919]">eBay International Shipping returns</span>
+                      <span className="text-[14px] font-bold text-[#191919]">eBay International Shipping returns</span>
                       <span className="text-[13px] text-[#707070]">30 Days, eBay handles on your behalf</span>
                     </div>
                     <div className="flex flex-col">
-                      <span className="text-[13px] font-bold text-[#191919]">International returns</span>
+                      <span className="text-[14px] font-bold text-[#191919]">International returns</span>
                       <span className="text-[13px] text-[#707070]">14 Days, Buyer, Money back</span>
                     </div>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-[#191919] flex-shrink-0 mt-0.5" />
+                  <ChevronRight className="w-5 h-5 text-[#191919] flex-shrink-0 mt-1" />
                 </button>
               </div>
             </div>
