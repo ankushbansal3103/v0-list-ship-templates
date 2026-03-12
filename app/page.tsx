@@ -7,15 +7,15 @@ import { EbayShippingPage } from "@/components/ebay-shipping-page"
 
 // Filter options
 const platforms = [
-  { id: "ios", name: "iOS" },
-  { id: "android", name: "Android" },
-  { id: "mweb", name: "mWeb" },
-  { id: "dweb", name: "dWeb" },
+  { id: "ios", name: "iOS", icon: "" },
+  { id: "android", name: "Android", icon: "🤖" },
+  { id: "mweb", name: "mWeb", icon: "📱" },
+  { id: "dweb", name: "dWeb", icon: "🖥️" },
 ]
 
 const segments = [
-  { id: "c2c", name: "C2C" },
-  { id: "b2c", name: "B2C" },
+  { id: "c2c", name: "C2C", icon: "👤" },
+  { id: "b2c", name: "B2C", icon: "🏪" },
 ]
 
 // Site data with prototypes
@@ -216,13 +216,14 @@ export default function PrototypeLibrary() {
                   <button
                     key={site.id}
                     onClick={() => setSelectedSite(selectedSite === site.id ? null : site.id)}
-                    className={`px-3 py-1.5 rounded-lg border text-sm transition-all ${
+                    className={`px-3 py-1.5 rounded-lg border text-sm transition-all flex items-center gap-1.5 ${
                       selectedSite === site.id 
                         ? "bg-blue-600 border-blue-500 text-white" 
                         : "bg-[#1a1a1a] border-[#333] text-[#888] hover:border-[#444] hover:text-white"
                     }`}
                   >
-                    {site.code}
+                    <span>{site.flag}</span>
+                    <span>{site.code}</span>
                   </button>
                 ))}
               </div>
@@ -236,13 +237,14 @@ export default function PrototypeLibrary() {
                   <button
                     key={platform.id}
                     onClick={() => setSelectedPlatform(selectedPlatform === platform.id ? null : platform.id)}
-                    className={`px-3 py-1.5 rounded-lg border text-sm transition-all ${
+                    className={`px-3 py-1.5 rounded-lg border text-sm transition-all flex items-center gap-1.5 ${
                       selectedPlatform === platform.id 
                         ? "bg-blue-600 border-blue-500 text-white" 
                         : "bg-[#1a1a1a] border-[#333] text-[#888] hover:border-[#444] hover:text-white"
                     }`}
                   >
-                    {platform.name}
+                    <span>{platform.icon}</span>
+                    <span>{platform.name}</span>
                   </button>
                 ))}
               </div>
@@ -256,13 +258,14 @@ export default function PrototypeLibrary() {
                   <button
                     key={segment.id}
                     onClick={() => setSelectedSegment(selectedSegment === segment.id ? null : segment.id)}
-                    className={`px-3 py-1.5 rounded-lg border text-sm transition-all ${
+                    className={`px-3 py-1.5 rounded-lg border text-sm transition-all flex items-center gap-1.5 ${
                       selectedSegment === segment.id 
                         ? "bg-blue-600 border-blue-500 text-white" 
                         : "bg-[#1a1a1a] border-[#333] text-[#888] hover:border-[#444] hover:text-white"
                     }`}
                   >
-                    {segment.name}
+                    <span>{segment.icon}</span>
+                    <span>{segment.name}</span>
                   </button>
                 ))}
               </div>
