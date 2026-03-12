@@ -636,7 +636,7 @@ export function EbayShippingPage() {
             <div className="relative w-full h-full rounded-[40px] overflow-hidden">
               {/* Scrim overlay - 32% opacity as per Figma */}
               <div 
-                className="absolute inset-0 bg-black/[0.32]"
+                className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowDeliverySheet(false)}
               />
               {/* Sheet content */}
@@ -934,7 +934,7 @@ export function EbayShippingPage() {
             {/* Screen with scrim */}
             <div className="relative w-full h-full rounded-[40px] overflow-hidden">
               <div 
-                className="absolute inset-0 bg-black/[0.32]"
+                className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowDestinationSheet(false)}
               />
               
@@ -1612,7 +1612,7 @@ export function EbayShippingPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             <div className="relative w-full h-full rounded-[40px] overflow-hidden">
               <div 
-                className="absolute inset-0 bg-black/[0.32]"
+                className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowHandlingTimeSheet(false)}
               />
               <div 
@@ -1666,7 +1666,7 @@ export function EbayShippingPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             <div className="relative w-full h-full rounded-[40px] overflow-hidden">
               <div 
-                className="absolute inset-0 bg-black/[0.32]"
+                className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowDomesticAllowedWithinSheet(false)}
               />
               <div 
@@ -1723,7 +1723,7 @@ export function EbayShippingPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             <div className="relative w-full h-full rounded-[40px] overflow-hidden">
               <div 
-                className="absolute inset-0 bg-black/[0.32]"
+                className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowDomesticReturnsPaidBySheet(false)}
               />
               <div 
@@ -1780,7 +1780,7 @@ export function EbayShippingPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             <div className="relative w-full h-full rounded-[40px] overflow-hidden">
               <div 
-                className="absolute inset-0 bg-black/[0.32]"
+                className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowDomesticRefundMethodSheet(false)}
               />
               <div 
@@ -1837,7 +1837,7 @@ export function EbayShippingPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             <div className="relative w-full h-full rounded-[40px] overflow-hidden">
               <div 
-                className="absolute inset-0 bg-black/[0.32]"
+                className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowInternationalAllowedWithinSheet(false)}
               />
               <div 
@@ -1894,7 +1894,7 @@ export function EbayShippingPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             <div className="relative w-full h-full rounded-[40px] overflow-hidden">
               <div 
-                className="absolute inset-0 bg-black/[0.32]"
+                className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowInternationalReturnsPaidBySheet(false)}
               />
               <div 
@@ -1951,7 +1951,7 @@ export function EbayShippingPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             <div className="relative w-full h-full rounded-[40px] overflow-hidden">
               <div 
-                className="absolute inset-0 bg-black/[0.32]"
+                className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowInternationalRefundMethodSheet(false)}
               />
               <div 
@@ -2008,7 +2008,7 @@ export function EbayShippingPage() {
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             <div className="relative w-full h-full rounded-[40px] overflow-hidden">
               <div 
-                className="absolute inset-0 bg-black/[0.32]"
+                className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowCountrySheet(false)}
               />
               <div 
