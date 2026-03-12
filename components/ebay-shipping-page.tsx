@@ -29,11 +29,6 @@ function BackArrow({ className }: { className?: string }) {
   )
 }
 
-// Full-width Section Separator - extends edge to edge
-function Separator() {
-  return <div className="w-full h-[1px] bg-[#E5E5E5]" />
-}
-
 export function EbayShippingPage() {
   const [deliveryMethod, setDeliveryMethod] = useState("shipping")
   const [showDeliverySheet, setShowDeliverySheet] = useState(false)
@@ -111,7 +106,7 @@ export function EbayShippingPage() {
               </button>
             </div>
 
-            <Separator />
+            <div className="w-full h-[1px] bg-[#E5E5E5]" />
 
             {/* Package Details Section */}
             <div className="px-4 py-5">
@@ -125,7 +120,7 @@ export function EbayShippingPage() {
               </button>
             </div>
 
-            <Separator />
+            <div className="w-full h-[1px] bg-[#E5E5E5]" />
 
             {/* Domestic Shipping Section */}
             <div className="px-4 py-5">
@@ -172,7 +167,7 @@ export function EbayShippingPage() {
               </div>
             </div>
 
-            <Separator />
+            <div className="w-full h-[1px] bg-[#E5E5E5]" />
 
             {/* International Shipping Section */}
             <div className="px-4 py-5">
@@ -180,7 +175,7 @@ export function EbayShippingPage() {
               
               {/* Default Service */}
               <div className="mb-4">
-                <span className="text-[13px] text-[#707070] mb-2 block">Default service</span>
+                <span className="text-[13px] font-bold text-[#191919] mb-2 block">Default service</span>
                 
                 {/* eBay International Shipping Card - Selected state with blue border */}
                 <div className="w-full p-3 bg-white border-2 border-[#3665F3] rounded-[16px]">
@@ -213,7 +208,7 @@ export function EbayShippingPage() {
 
               {/* Additional Service */}
               <div className="mb-4">
-                <span className="text-[13px] text-[#707070] block">Additional service</span>
+                <span className="text-[13px] font-bold text-[#191919] block">Additional service</span>
                 <span className="text-[13px] text-[#707070]">
                   <button className="underline text-[#3665F3]">Fees</button> apply for international sales.
                 </span>
@@ -267,7 +262,7 @@ export function EbayShippingPage() {
               </button>
             </div>
 
-            <Separator />
+            <div className="w-full h-[1px] bg-[#E5E5E5]" />
 
             {/* Buyer Payment Info - Grey background section */}
             <div className="flex flex-col items-center py-5 bg-[#F7F7F7]">
@@ -279,7 +274,7 @@ export function EbayShippingPage() {
               </button>
             </div>
 
-            <Separator />
+            <div className="w-full h-[1px] bg-[#E5E5E5]" />
 
             {/* Delivery Details Section */}
             <div className="px-4 py-5 pb-28">
