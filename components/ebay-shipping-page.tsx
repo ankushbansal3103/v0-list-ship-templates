@@ -962,12 +962,12 @@ export function EbayShippingPage() {
                     </button>
                   )
                 })}
-</div>
+              </div>
             </div>
-</div>
-  </div>
-  </div>
-  )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Shipping Cost Full Screen Sheet */}
       {showShippingCostSheet && (
