@@ -474,12 +474,9 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3" style={{ pointerEvents: 'auto' }}>
-            {/* Dynamic Island - matches L1 */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
-            
-            {/* Screen */}
-            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+          <div className="relative w-[402px] h-[874px]" style={{ pointerEvents: 'auto' }}>
+            {/* White screen that covers the L1 - positioned to match the screen area inside the phone frame */}
+            <div className="absolute inset-[12px] bg-white rounded-[43px] overflow-hidden flex flex-col">
               {/* iOS Status Bar */}
               <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
                 <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
