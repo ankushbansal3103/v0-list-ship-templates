@@ -474,13 +474,13 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          {/* Container matching L1 dimensions - no frame, just positions the white screen overlay */}
-          <div className="relative w-[402px] h-[874px]" style={{ pointerEvents: 'auto' }}>
-            {/* White screen overlay - positioned to exactly cover L1's screen area (inside the p-3 padding = 12px) */}
-            <div 
-              className="absolute bg-white rounded-[40px] overflow-hidden flex flex-col"
-              style={{ top: '12px', left: '12px', right: '12px', bottom: '12px' }}
-            >
+          {/* iPhone Frame - identical to L1 */}
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            {/* Dynamic Island - same as L1 */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            
+            {/* Screen - same as L1 */}
+            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
               {/* iOS Status Bar */}
               <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
                 <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
