@@ -396,8 +396,6 @@ export default function PrototypeLibrary() {
           </div>
         </div>
       </section>
-        </section>
-      )}
 
       {/* Footer */}
       <footer className="border-t border-[#1f1f1f] py-6 px-6">
