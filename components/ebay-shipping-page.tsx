@@ -92,7 +92,7 @@ function BackArrow({ className }: { className?: string }) {
 export function EbayShippingPage() {
   const [deliveryMethod, setDeliveryMethod] = useState("shipping")
   const [showDeliverySheet, setShowDeliverySheet] = useState(false)
-  const [destination, setDestination] = useState("Worldwide")
+  const [destination, setDestination] = useState("eu")
   const [showDestinationSheet, setShowDestinationSheet] = useState(false)
   
   // Package details state
@@ -105,7 +105,18 @@ export function EbayShippingPage() {
   const [height, setHeight] = useState("9")
   const [irregularPackage, setIrregularPackage] = useState(false)
 
-  const destinations = ["Worldwide", "United States", "Canada", "Europe", "Asia"]
+  const destinations = [
+    { 
+      id: "eu", 
+      label: "European Union",
+      description: "Easy selling in the EU with uniform costs and no customs or import charges."
+    },
+    { 
+      id: "worldwide", 
+      label: "Worldwide",
+      description: "Shipping costs are dependent on buyer location. Customs and import charges may apply."
+    },
+  ]
   
   // Format package details for display - show actual values from L2
   const formatPackageDetails = () => {
@@ -300,7 +311,7 @@ export function EbayShippingPage() {
                 >
                   <div className="flex flex-col items-start">
                     <span className="text-[11px] text-[#707070] leading-tight">Destination</span>
-                    <span className="text-[14px] text-[#191919] leading-snug">{destination}</span>
+                    <span className="text-[14px] text-[#191919] leading-snug">{destinations.find(d => d.id === destination)?.label || destination}</span>
                   </div>
                   <ChevronDown className="w-5 h-5 text-[#191919]" />
                 </button>
@@ -713,8 +724,11 @@ export function EbayShippingPage() {
               </div>
               
               {/* Header */}
-              <div className="flex items-center justify-between px-4 pt-2 pb-2">
-                <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Destination</h3>
+              <div className="flex items-start justify-between px-4 pt-2 pb-3">
+                <div className="flex flex-col">
+                  <h3 className="text-[18px] font-bold text-[#191919] leading-[24px]">Destination</h3>
+                  <span className="text-[14px] text-[#707070] leading-[20px]">International service</span>
+                </div>
                 <button 
                   onClick={() => setShowDestinationSheet(false)}
                   className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
@@ -724,24 +738,27 @@ export function EbayShippingPage() {
               </div>
               
               {/* Options */}
-              <div className="px-4 pt-2 pb-8 flex flex-col gap-2">
+              <div className="px-4 pt-1 pb-8 flex flex-col gap-3">
                 {destinations.map((dest) => {
-                  const isSelected = destination === dest
+                  const isSelected = destination === dest.id
                   return (
                     <button
-                      key={dest}
+                      key={dest.id}
                       onClick={() => {
-                        setDestination(dest)
+                        setDestination(dest.id)
                         setShowDestinationSheet(false)
                       }}
-                      className={`w-full p-4 rounded-[8px] text-left flex items-center justify-between ${
+                      className={`w-full px-3 py-3 rounded-[8px] text-left flex flex-col ${
                         isSelected 
                           ? "bg-[#F7F7F7] border-2 border-[#191919]" 
                           : "bg-white border border-[#8F8F8F]"
                       }`}
                     >
-                      <span className={`text-[16px] leading-[24px] ${isSelected ? 'font-bold text-[#191919]' : 'text-[#191919]'}`}>
-                        {dest}
+                      <span className="text-[14px] font-bold text-[#191919] leading-[20px]">
+                        {dest.label}
+                      </span>
+                      <span className={`text-[13px] leading-[18px] mt-0.5 ${isSelected ? 'text-[#191919]' : 'text-[#707070]'}`}>
+                        {dest.description}
                       </span>
                     </button>
                   )
