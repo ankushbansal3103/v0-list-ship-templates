@@ -107,12 +107,12 @@ export function EbayShippingPage() {
 
   const destinations = ["Worldwide", "United States", "Canada", "Europe", "Asia"]
   
-  // Format package details for display - matching original eBay format
+  // Format package details for display - show actual values from L2
   const formatPackageDetails = () => {
     if (packageSizeType === "unknown") {
-      return "X lb. XX oz., A x B x C in."
+      return "Set your own shipping rate"
     }
-    return `X lb. XX oz., A x B x C in.`
+    return `${weightKg} kg. ${weightG} g., ${length} x ${width} x ${height} cm.`
   }
 
   return (
@@ -196,7 +196,7 @@ export function EbayShippingPage() {
                 <div className="flex flex-col items-start">
                   <span className="text-[14px] text-[#191919]">{formatPackageDetails()}</span>
                   <span className="text-[12px] text-[#707070] mt-0.5">
-                    Estimated based on items like yours
+                    {packageSizeType === "custom" ? "Custom size" : "I don't know size"}
                   </span>
                 </div>
                 <ChevronRight className="w-5 h-5 text-[#191919]" />
