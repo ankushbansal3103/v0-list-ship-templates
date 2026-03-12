@@ -87,6 +87,8 @@ export default function PrototypeLibrary() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedSite, setSelectedSite] = useState<string | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [showModal, setShowModal] = useState(false)
+  const [modalPrompt, setModalPrompt] = useState("")
 
   const filteredSites = sites.filter(site => 
     site.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -97,27 +99,50 @@ export default function PrototypeLibrary() {
   const handleCopy = async (prototypeId: string) => {
     setCopiedId(prototypeId)
     
-    // Fetch the template code from our API
+    // Fetch the template prompt from our API
     try {
       const response = await fetch(`/api/template/${prototypeId}`)
-      const { code, prompt } = await response.json()
+      const data = await response.json()
+      const prompt = data.prompt
       
-      // Copy the prompt + code to clipboard
-      await navigator.clipboard.writeText(prompt)
+      // Show modal with the prompt
+      setModalPrompt(prompt)
+      setShowModal(true)
+      setCopiedId(null)
       
-      // Open v0.dev in a new tab
-      setTimeout(() => {
-        setCopiedId(null)
-        window.open('https://v0.dev', '_blank')
-      }, 1000)
     } catch {
-      // Fallback: just open v0.dev with instructions
-      const fallbackPrompt = `Build an eBay shipping prototype based on "${prototypeId}". Include iPhone frame, iOS status bar, bottom sheets with blur overlay, and form fields for shipping configuration.`
-      await navigator.clipboard.writeText(fallbackPrompt)
-      setTimeout(() => {
-        setCopiedId(null)
-        window.open('https://v0.dev', '_blank')
-      }, 1000)
+      // Fallback prompt
+      const fallbackPrompt = `Create an eBay shipping configuration prototype (${prototypeId}) with:
+      
+## Design System
+- iPhone 15 Pro frame: 402x874px, black, rounded-[55px]
+- Dynamic Island: 126x37px centered at top
+- Screen: white, rounded-[40px]
+- Colors: #191919 (text), #707070 (secondary), #3665F3 (blue CTA), #F7F7F7 (backgrounds)
+- Typography: 24px bold titles, 16px headers, 14px body
+
+## Screens
+1. L1 Shipping page with package details, services, delivery details cards
+2. L2 Package Details with weight, dimensions, numeric keyboard
+3. L2 Delivery Details with location, handling time, returns toggles
+4. Bottom sheets with blur overlay (bg-white/60 backdrop-blur-md)
+
+Build as single React component with useState for all interactions.`
+      
+      setModalPrompt(fallbackPrompt)
+      setShowModal(true)
+      setCopiedId(null)
+    }
+  }
+  
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(modalPrompt)
+      // Open v0.dev after successful copy
+      window.open('https://v0.dev', '_blank')
+    } catch {
+      // Fallback for clipboard failure
+      console.log("[v0] Clipboard failed, prompt available in textarea")
     }
   }
 
@@ -313,6 +338,53 @@ export default function PrototypeLibrary() {
           <span>US-Shelby-AG v1.0</span>
         </div>
       </footer>
+
+      {/* Copy Template Modal */}
+      {showModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#111] border border-[#333] rounded-2xl max-w-2xl w-full max-h-[80vh] flex flex-col">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 border-b border-[#222]">
+              <div>
+                <h2 className="text-white font-semibold text-lg">Copy Template to v0</h2>
+                <p className="text-[#888] text-sm">Copy the prompt below and paste it into v0.dev</p>
+              </div>
+              <button 
+                onClick={() => setShowModal(false)}
+                className="w-8 h-8 flex items-center justify-center text-[#666] hover:text-white transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            {/* Modal Content */}
+            <div className="flex-1 p-4 overflow-hidden">
+              <textarea
+                readOnly
+                value={modalPrompt}
+                className="w-full h-64 bg-[#0a0a0a] border border-[#333] rounded-lg p-4 text-[#ccc] text-sm font-mono resize-none focus:outline-none focus:border-blue-500"
+              />
+            </div>
+            
+            {/* Modal Actions */}
+            <div className="p-4 border-t border-[#222] flex items-center gap-3">
+              <button
+                onClick={copyToClipboard}
+                className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              >
+                <Copy className="w-4 h-4" />
+                Copy & Open v0.dev
+              </button>
+              <button
+                onClick={() => setShowModal(false)}
+                className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
