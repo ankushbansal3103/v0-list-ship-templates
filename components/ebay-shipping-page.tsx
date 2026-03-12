@@ -146,6 +146,7 @@ export function EbayShippingPage() {
                         width={44}
                         height={20}
                         className="object-contain"
+                        style={{ width: '44px', height: 'auto' }}
                         unoptimized
                       />
                     </div>
@@ -179,6 +180,7 @@ export function EbayShippingPage() {
                           width={32}
                           height={14}
                           className="object-contain"
+                          style={{ width: '32px', height: 'auto' }}
                           unoptimized
                         />
                       </div>
@@ -229,6 +231,7 @@ export function EbayShippingPage() {
                         width={44}
                         height={20}
                         className="object-contain"
+                        style={{ width: '44px', height: 'auto' }}
                         unoptimized
                       />
                     </div>
