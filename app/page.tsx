@@ -5,6 +5,19 @@ import Link from "next/link"
 import { Search, Copy, ExternalLink, ChevronRight, Check, X } from "lucide-react"
 import { EbayShippingPage } from "@/components/ebay-shipping-page"
 
+// Filter options
+const platforms = [
+  { id: "ios", name: "iOS", icon: "📱" },
+  { id: "android", name: "Android", icon: "🤖" },
+  { id: "mweb", name: "mWeb", icon: "🌐" },
+  { id: "desktop", name: "Desktop", icon: "🖥️" },
+]
+
+const segments = [
+  { id: "c2c", name: "C2C", description: "Consumer to Consumer" },
+  { id: "b2c", name: "B2C", description: "Business to Consumer" },
+]
+
 // Site data with prototypes
 const sites = [
   {
@@ -13,8 +26,8 @@ const sites = [
     code: "US",
     flag: "🇺🇸",
     prototypes: [
-      { id: "us-shelby-ag", name: "US-Shelby-AG", description: "Shipping configuration with Delivery, Package Details, Services", status: "active", route: "/prototype/us-shelby-ag" },
-      { id: "us-flat-rate", name: "US-Flat-Rate", description: "Simplified flat rate shipping flow", status: "draft", route: "/prototype/us-flat-rate" },
+      { id: "us-shelby-ag", name: "US-Shelby-AG", description: "Shipping configuration with Delivery, Package Details, Services", status: "active", route: "/prototype/us-shelby-ag", platform: "ios", segment: "c2c" },
+      { id: "us-flat-rate", name: "US-Flat-Rate", description: "Simplified flat rate shipping flow", status: "draft", route: "/prototype/us-flat-rate", platform: "ios", segment: "b2c" },
     ]
   },
   {
@@ -23,8 +36,8 @@ const sites = [
     code: "UK",
     flag: "🇬🇧",
     prototypes: [
-      { id: "uk-standard", name: "UK-Standard-V1", description: "Standard UK shipping with Royal Mail integration", status: "draft", route: "/prototype/uk-standard" },
-      { id: "uk-express", name: "UK-Express-V1", description: "Express delivery options for UK sellers", status: "draft", route: "/prototype/uk-express" },
+      { id: "uk-standard", name: "UK-Standard-V1", description: "Standard UK shipping with Royal Mail integration", status: "draft", route: "/prototype/uk-standard", platform: "android", segment: "c2c" },
+      { id: "uk-express", name: "UK-Express-V1", description: "Express delivery options for UK sellers", status: "draft", route: "/prototype/uk-express", platform: "mweb", segment: "b2c" },
     ]
   },
   {
@@ -33,8 +46,8 @@ const sites = [
     code: "DE",
     flag: "🇩🇪",
     prototypes: [
-      { id: "de-standard", name: "DE-Standard-V1", description: "German market shipping with DHL/Hermes", status: "draft", route: "/prototype/de-standard" },
-      { id: "de-returns", name: "DE-Returns-V1", description: "Enhanced returns flow for German regulations", status: "draft", route: "/prototype/de-returns" },
+      { id: "de-standard", name: "DE-Standard-V1", description: "German market shipping with DHL/Hermes", status: "draft", route: "/prototype/de-standard", platform: "ios", segment: "c2c" },
+      { id: "de-returns", name: "DE-Returns-V1", description: "Enhanced returns flow for German regulations", status: "draft", route: "/prototype/de-returns", platform: "desktop", segment: "b2c" },
     ]
   },
   {
@@ -43,7 +56,7 @@ const sites = [
     code: "FR",
     flag: "🇫🇷",
     prototypes: [
-      { id: "fr-standard", name: "FR-Standard-V1", description: "French market with La Poste/Colissimo", status: "draft", route: "/prototype/fr-standard" },
+      { id: "fr-standard", name: "FR-Standard-V1", description: "French market with La Poste/Colissimo", status: "draft", route: "/prototype/fr-standard", platform: "android", segment: "c2c" },
     ]
   },
   {
@@ -52,7 +65,7 @@ const sites = [
     code: "IT",
     flag: "🇮🇹",
     prototypes: [
-      { id: "it-standard", name: "IT-Standard-V1", description: "Italian market shipping configuration", status: "draft", route: "/prototype/it-standard" },
+      { id: "it-standard", name: "IT-Standard-V1", description: "Italian market shipping configuration", status: "draft", route: "/prototype/it-standard", platform: "mweb", segment: "c2c" },
     ]
   },
   {
@@ -61,7 +74,7 @@ const sites = [
     code: "CA",
     flag: "🇨🇦",
     prototypes: [
-      { id: "ca-standard", name: "CA-Standard-V1", description: "Canada Post integration for Canadian sellers", status: "draft", route: "/prototype/ca-standard" },
+      { id: "ca-standard", name: "CA-Standard-V1", description: "Canada Post integration for Canadian sellers", status: "draft", route: "/prototype/ca-standard", platform: "ios", segment: "b2c" },
     ]
   },
   {
@@ -70,7 +83,7 @@ const sites = [
     code: "AU",
     flag: "🇦🇺",
     prototypes: [
-      { id: "au-standard", name: "AU-Standard-V1", description: "Australia Post shipping configuration", status: "draft", route: "/prototype/au-standard" },
+      { id: "au-standard", name: "AU-Standard-V1", description: "Australia Post shipping configuration", status: "draft", route: "/prototype/au-standard", platform: "desktop", segment: "c2c" },
     ]
   },
   {
@@ -79,7 +92,7 @@ const sites = [
     code: "RoW",
     flag: "🌍",
     prototypes: [
-      { id: "row-international", name: "RoW-International-V1", description: "Generic international shipping template", status: "draft", route: "/prototype/row-international" },
+      { id: "row-international", name: "RoW-International-V1", description: "Generic international shipping template", status: "draft", route: "/prototype/row-international", platform: "mweb", segment: "b2c" },
     ]
   },
 ]
@@ -87,15 +100,32 @@ const sites = [
 export default function PrototypeLibrary() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedSite, setSelectedSite] = useState<string | null>(null)
+  const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
+  const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showModal, setShowModal] = useState(false)
   const [modalPrompt, setModalPrompt] = useState("")
 
-  const filteredSites = sites.filter(site => 
-    site.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    site.code.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    site.prototypes.some(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()))
-  )
+  // Filter sites and prototypes based on all filters
+  const filteredSites = sites.map(site => ({
+    ...site,
+    prototypes: site.prototypes.filter(p => {
+      const matchesPlatform = !selectedPlatform || p.platform === selectedPlatform
+      const matchesSegment = !selectedSegment || p.segment === selectedSegment
+      const matchesSearch = !searchQuery || 
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        p.description.toLowerCase().includes(searchQuery.toLowerCase())
+      return matchesPlatform && matchesSegment && matchesSearch
+    })
+  })).filter(site => {
+    const matchesSearch = !searchQuery || 
+      site.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      site.code.toLowerCase().includes(searchQuery.toLowerCase())
+    return site.prototypes.length > 0 || matchesSearch
+  })
+
+  const totalPrototypes = filteredSites.reduce((acc, site) => acc + site.prototypes.length, 0)
+  const activeFiltersCount = [selectedPlatform, selectedSegment].filter(Boolean).length
 
   const handleCopy = async (prototypeId: string) => {
     setCopiedId(prototypeId)
@@ -168,7 +198,7 @@ export default function PrototypeLibrary() {
           </p>
           
           {/* Search */}
-          <div className="max-w-xl mx-auto relative">
+          <div className="max-w-xl mx-auto relative mb-8">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#666]" />
             <input
               type="text"
@@ -178,6 +208,68 @@ export default function PrototypeLibrary() {
               className="w-full h-12 pl-12 pr-4 bg-[#1a1a1a] border border-[#333] rounded-xl text-white placeholder:text-[#666] focus:outline-none focus:border-[#555] transition-colors"
             />
           </div>
+
+          {/* Filters */}
+          <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-6 justify-center">
+            {/* Platform Filter */}
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-[#666] text-xs uppercase tracking-wider">Platform</span>
+              <div className="flex gap-2">
+                {platforms.map((platform) => (
+                  <button
+                    key={platform.id}
+                    onClick={() => setSelectedPlatform(selectedPlatform === platform.id ? null : platform.id)}
+                    className={`px-4 py-2 rounded-lg border text-sm flex items-center gap-2 transition-all ${
+                      selectedPlatform === platform.id 
+                        ? "bg-blue-600 border-blue-500 text-white" 
+                        : "bg-[#1a1a1a] border-[#333] text-[#888] hover:border-[#444] hover:text-white"
+                    }`}
+                  >
+                    <span>{platform.icon}</span>
+                    <span>{platform.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Segment Filter */}
+            <div className="flex flex-col items-center gap-2">
+              <span className="text-[#666] text-xs uppercase tracking-wider">Seller Segment</span>
+              <div className="flex gap-2">
+                {segments.map((segment) => (
+                  <button
+                    key={segment.id}
+                    onClick={() => setSelectedSegment(selectedSegment === segment.id ? null : segment.id)}
+                    className={`px-4 py-2 rounded-lg border text-sm flex items-center gap-2 transition-all ${
+                      selectedSegment === segment.id 
+                        ? "bg-blue-600 border-blue-500 text-white" 
+                        : "bg-[#1a1a1a] border-[#333] text-[#888] hover:border-[#444] hover:text-white"
+                    }`}
+                  >
+                    <span className="font-medium">{segment.name}</span>
+                    <span className="text-xs opacity-70">({segment.description})</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Active Filters Summary */}
+          {activeFiltersCount > 0 && (
+            <div className="max-w-4xl mx-auto mt-6 flex items-center justify-center gap-2">
+              <span className="text-[#666] text-sm">{totalPrototypes} prototypes found</span>
+              <button
+                onClick={() => {
+                  setSelectedPlatform(null)
+                  setSelectedSegment(null)
+                }}
+                className="text-blue-400 text-sm hover:text-blue-300 flex items-center gap-1"
+              >
+                <X className="w-3 h-3" />
+                Clear filters
+              </button>
+            </div>
+          )}
         </div>
       </section>
 
@@ -218,14 +310,17 @@ export default function PrototypeLibrary() {
           <div className="max-w-7xl mx-auto">
             <div className="bg-[#111] border border-[#222] rounded-xl p-6">
               <div className="flex items-center gap-3 mb-6">
-                <span className="text-2xl">{sites.find(s => s.id === selectedSite)?.flag}</span>
+                <span className="text-2xl">{filteredSites.find(s => s.id === selectedSite)?.flag}</span>
                 <h3 className="text-white font-semibold text-lg">
-                  {sites.find(s => s.id === selectedSite)?.name} Prototypes
+                  {filteredSites.find(s => s.id === selectedSite)?.name} Prototypes
                 </h3>
+                <span className="text-[#666] text-sm">
+                  ({filteredSites.find(s => s.id === selectedSite)?.prototypes.length} matching)
+                </span>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {sites.find(s => s.id === selectedSite)?.prototypes.map((prototype) => (
+                {filteredSites.find(s => s.id === selectedSite)?.prototypes.map((prototype) => (
                   <div 
                     key={prototype.id}
                     className="bg-[#0a0a0a] border border-[#222] rounded-xl overflow-hidden hover:border-[#333] transition-colors"
@@ -264,6 +359,17 @@ export default function PrototypeLibrary() {
                           {prototype.status}
                         </span>
                       </div>
+                      
+                      {/* Platform & Segment Tags */}
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
+                          {platforms.find(p => p.id === prototype.platform)?.icon} {platforms.find(p => p.id === prototype.platform)?.name}
+                        </span>
+                        <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
+                          {prototype.segment.toUpperCase()}
+                        </span>
+                      </div>
+                      
                       <p className="text-[#666] text-sm mb-4">{prototype.description}</p>
                       
                       <div className="flex items-center gap-2">
