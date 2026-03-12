@@ -7,15 +7,15 @@ import { EbayShippingPage } from "@/components/ebay-shipping-page"
 
 // Filter options
 const platforms = [
-  { id: "ios", name: "iOS", icon: "📱" },
-  { id: "android", name: "Android", icon: "🤖" },
-  { id: "mweb", name: "mWeb", icon: "🌐" },
-  { id: "desktop", name: "Desktop", icon: "🖥️" },
+  { id: "ios", name: "iOS" },
+  { id: "android", name: "Android" },
+  { id: "mweb", name: "mWeb" },
+  { id: "dweb", name: "dWeb" },
 ]
 
 const segments = [
-  { id: "c2c", name: "C2C", description: "Consumer to Consumer" },
-  { id: "b2c", name: "B2C", description: "Business to Consumer" },
+  { id: "c2c", name: "C2C" },
+  { id: "b2c", name: "B2C" },
 ]
 
 // Site data with prototypes
@@ -47,7 +47,7 @@ const sites = [
     flag: "🇩🇪",
     prototypes: [
       { id: "de-standard", name: "DE-Standard-V1", description: "German market shipping with DHL/Hermes", status: "draft", route: "/prototype/de-standard", platform: "ios", segment: "c2c" },
-      { id: "de-returns", name: "DE-Returns-V1", description: "Enhanced returns flow for German regulations", status: "draft", route: "/prototype/de-returns", platform: "desktop", segment: "b2c" },
+      { id: "de-returns", name: "DE-Returns-V1", description: "Enhanced returns flow for German regulations", status: "draft", route: "/prototype/de-returns", platform: "dweb", segment: "b2c" },
     ]
   },
   {
@@ -83,7 +83,7 @@ const sites = [
     code: "AU",
     flag: "🇦🇺",
     prototypes: [
-      { id: "au-standard", name: "AU-Standard-V1", description: "Australia Post shipping configuration", status: "draft", route: "/prototype/au-standard", platform: "desktop", segment: "c2c" },
+      { id: "au-standard", name: "AU-Standard-V1", description: "Australia Post shipping configuration", status: "draft", route: "/prototype/au-standard", platform: "dweb", segment: "c2c" },
     ]
   },
   {
@@ -210,44 +210,42 @@ export default function PrototypeLibrary() {
           </div>
 
           {/* Filters */}
-          <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-6 justify-center">
+          <div className="max-w-4xl mx-auto flex flex-wrap gap-8 justify-center">
             {/* Platform Filter */}
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex items-center gap-3">
               <span className="text-[#666] text-xs uppercase tracking-wider">Platform</span>
               <div className="flex gap-2">
                 {platforms.map((platform) => (
                   <button
                     key={platform.id}
                     onClick={() => setSelectedPlatform(selectedPlatform === platform.id ? null : platform.id)}
-                    className={`px-4 py-2 rounded-lg border text-sm flex items-center gap-2 transition-all ${
+                    className={`px-3 py-1.5 rounded-lg border text-sm transition-all ${
                       selectedPlatform === platform.id 
                         ? "bg-blue-600 border-blue-500 text-white" 
                         : "bg-[#1a1a1a] border-[#333] text-[#888] hover:border-[#444] hover:text-white"
                     }`}
                   >
-                    <span>{platform.icon}</span>
-                    <span>{platform.name}</span>
+                    {platform.name}
                   </button>
                 ))}
               </div>
             </div>
 
             {/* Segment Filter */}
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-[#666] text-xs uppercase tracking-wider">Seller Segment</span>
+            <div className="flex items-center gap-3">
+              <span className="text-[#666] text-xs uppercase tracking-wider">Segment</span>
               <div className="flex gap-2">
                 {segments.map((segment) => (
                   <button
                     key={segment.id}
                     onClick={() => setSelectedSegment(selectedSegment === segment.id ? null : segment.id)}
-                    className={`px-4 py-2 rounded-lg border text-sm flex items-center gap-2 transition-all ${
+                    className={`px-3 py-1.5 rounded-lg border text-sm transition-all ${
                       selectedSegment === segment.id 
                         ? "bg-blue-600 border-blue-500 text-white" 
                         : "bg-[#1a1a1a] border-[#333] text-[#888] hover:border-[#444] hover:text-white"
                     }`}
                   >
-                    <span className="font-medium">{segment.name}</span>
-                    <span className="text-xs opacity-70">({segment.description})</span>
+                    {segment.name}
                   </button>
                 ))}
               </div>
@@ -363,7 +361,7 @@ export default function PrototypeLibrary() {
                       {/* Platform & Segment Tags */}
                       <div className="flex items-center gap-2 mb-3">
                         <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
-                          {platforms.find(p => p.id === prototype.platform)?.icon} {platforms.find(p => p.id === prototype.platform)?.name}
+                          {platforms.find(p => p.id === prototype.platform)?.name}
                         </span>
                         <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
                           {prototype.segment.toUpperCase()}
