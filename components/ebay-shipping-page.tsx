@@ -117,10 +117,10 @@ export function EbayShippingPage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
-      {/* iPhone Frame */}
-      <div className="relative w-[375px] h-[812px] bg-black rounded-[50px] p-3 shadow-2xl">
+      {/* iPhone 17 Frame - 402x874 logical resolution */}
+      <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl">
         {/* Dynamic Island */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[35px] bg-black rounded-b-[20px] z-50" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
         
         {/* Screen */}
         <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
@@ -404,10 +404,10 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[375px] h-[812px]" style={{ pointerEvents: 'auto' }}>
+          <div className="relative w-[402px] h-[874px]" style={{ pointerEvents: 'auto' }}>
             {/* Scrim overlay - 32% opacity as per Figma */}
             <div 
-              className="absolute inset-0 bg-black/[0.32] rounded-[50px]"
+              className="absolute inset-0 bg-black/[0.32] rounded-[55px]"
               onClick={() => setShowDeliverySheet(false)}
             />
             {/* Sheet content */}
@@ -474,7 +474,7 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[375px] h-[812px] bg-black rounded-[50px] p-3" style={{ pointerEvents: 'auto' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3" style={{ pointerEvents: 'auto' }}>
             {/* Dynamic Island */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[120px] h-[35px] bg-black rounded-b-[20px] z-50" />
             
@@ -694,9 +694,9 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[375px] h-[812px]" style={{ pointerEvents: 'auto' }}>
+          <div className="relative w-[402px] h-[874px]" style={{ pointerEvents: 'auto' }}>
             <div 
-              className="absolute inset-0 bg-black/[0.32] rounded-[50px]"
+              className="absolute inset-0 bg-black/[0.32] rounded-[55px]"
               onClick={() => setShowDestinationSheet(false)}
             />
             <div 
