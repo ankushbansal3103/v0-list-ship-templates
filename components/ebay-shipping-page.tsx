@@ -2,26 +2,73 @@
 
 import { useState } from "react"
 import { ChevronDown, ChevronRight, X } from "lucide-react"
-import Image from "next/image"
 
-// Delivery method options with icons
 const deliveryMethods = [
   { 
     id: "both", 
     label: "Shipping or pickup",
-    description: "Let buyers choose how they get their items."
+    description: "Let buyers choose how they get their items.",
+    icon: "shipping-pickup"
   },
   { 
     id: "shipping", 
     label: "Shipping only",
-    description: "Ship items directly to buyers."
+    description: "Ship items directly to buyers.",
+    icon: "shipping"
   },
   { 
     id: "pickup", 
     label: "Pickup only",
-    description: "Arrange local pickup without any shipping costs."
+    description: "Arrange local pickup without any shipping costs.",
+    icon: "pickup"
   },
 ]
+
+// Shipping or Pickup Icon (box with location marker)
+function ShippingPickupIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="4" width="9" height="8" rx="1" stroke="#191919" strokeWidth="1.5" fill="none"/>
+      <path d="M4 4V2.5C4 1.67 4.67 1 5.5 1H10.5C11.33 1 12 1.67 12 2.5V4" stroke="#191919" strokeWidth="1.5" fill="none"/>
+      <circle cx="12" cy="11" r="3" stroke="#191919" strokeWidth="1.5" fill="none"/>
+      <circle cx="12" cy="10.5" r="1" fill="#191919"/>
+    </svg>
+  )
+}
+
+// Shipping Only Icon (box)
+function ShippingIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="1" y="4" width="14" height="11" rx="1" stroke="#191919" strokeWidth="1.5" fill="none"/>
+      <path d="M1 7h14" stroke="#191919" strokeWidth="1.5"/>
+      <path d="M8 4V1M5 1h6" stroke="#191919" strokeWidth="1.5" strokeLinecap="round"/>
+    </svg>
+  )
+}
+
+// Pickup Only Icon (location marker)
+function PickupIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M8 1C5.24 1 3 3.24 3 6C3 9.75 8 15 8 15C8 15 13 9.75 13 6C13 3.24 10.76 1 8 1Z" stroke="#191919" strokeWidth="1.5" fill="none"/>
+      <circle cx="8" cy="6" r="2" stroke="#191919" strokeWidth="1.5" fill="none"/>
+    </svg>
+  )
+}
+
+function DeliveryMethodIcon({ type, className }: { type: string; className?: string }) {
+  switch (type) {
+    case "shipping-pickup":
+      return <ShippingPickupIcon className={className} />
+    case "shipping":
+      return <ShippingIcon className={className} />
+    case "pickup":
+      return <PickupIcon className={className} />
+    default:
+      return null
+  }
+}
 
 // Checkmark Circle Icon - Blue outline style
 function CheckCircle({ className }: { className?: string }) {
@@ -42,44 +89,6 @@ function BackArrow({ className }: { className?: string }) {
   )
 }
 
-// Shipping or Pickup Icon (box with location marker)
-function ShippingOrPickupIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M1 4L3 3V11L1 12V4Z" stroke="#191919" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M3 3L8 1L13 3V6" stroke="#191919" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M3 3V11L8 13V5L3 3Z" stroke="#191919" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M8 5L13 3" stroke="#191919" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="12" cy="10" r="2" stroke="#191919" strokeWidth="1.5"/>
-      <path d="M12 13V15" stroke="#191919" strokeWidth="1.5" strokeLinecap="round"/>
-    </svg>
-  )
-}
-
-// Shipping Only Icon (package box)
-function ShippingOnlyIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect x="1" y="4" width="14" height="10" rx="1" stroke="#191919" strokeWidth="1.5"/>
-      <path d="M1 7H15" stroke="#191919" strokeWidth="1.5"/>
-      <path d="M6 7V4" stroke="#191919" strokeWidth="1.5"/>
-      <path d="M10 7V4" stroke="#191919" strokeWidth="1.5"/>
-      <path d="M3 1L6 4" stroke="#191919" strokeWidth="1.5" strokeLinecap="round"/>
-      <path d="M13 1L10 4" stroke="#191919" strokeWidth="1.5" strokeLinecap="round"/>
-    </svg>
-  )
-}
-
-// Pickup Only Icon (location marker)
-function PickupOnlyIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M8 1C5.24 1 3 3.24 3 6C3 9.5 8 15 8 15C8 15 13 9.5 13 6C13 3.24 10.76 1 8 1Z" stroke="#191919" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-      <circle cx="8" cy="6" r="2" stroke="#191919" strokeWidth="1.5"/>
-    </svg>
-  )
-}
-
 export function EbayShippingPage() {
   const [deliveryMethod, setDeliveryMethod] = useState("shipping")
   const [showDeliverySheet, setShowDeliverySheet] = useState(false)
@@ -87,15 +96,6 @@ export function EbayShippingPage() {
   const [showDestinationSheet, setShowDestinationSheet] = useState(false)
 
   const destinations = ["Worldwide", "United States", "Canada", "Europe", "Asia"]
-
-  const getDeliveryIcon = (id: string) => {
-    switch(id) {
-      case "both": return <ShippingOrPickupIcon className="w-4 h-4" />
-      case "shipping": return <ShippingOnlyIcon className="w-4 h-4" />
-      case "pickup": return <PickupOnlyIcon className="w-4 h-4" />
-      default: return null
-    }
-  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
@@ -205,14 +205,11 @@ export function EbayShippingPage() {
               <div className="w-full p-4 bg-white border border-[#E5E5E5] rounded-[16px]">
                 <div className="flex gap-3 items-center">
                   <div className="w-[44px] h-[20px] flex items-center justify-center flex-shrink-0">
-                    <Image 
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img 
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png"
                       alt="FedEx"
-                      width={44}
-                      height={20}
-                      className="object-contain"
-                      style={{ width: '44px', height: 'auto' }}
-                      unoptimized
+                      className="w-[44px] h-auto object-contain"
                     />
                   </div>
                   <div className="flex flex-col">
@@ -241,14 +238,11 @@ export function EbayShippingPage() {
                 <div className="w-full p-3 bg-white border-2 border-[#3665F3] rounded-[16px]">
                   <div className="flex gap-3 items-start">
                     <div className="w-[44px] h-[28px] bg-[#F7F7F7] rounded-[6px] flex items-center justify-center flex-shrink-0">
-                      <Image 
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img 
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/2560px-EBay_logo.svg.png"
                         alt="eBay"
-                        width={32}
-                        height={14}
-                        className="object-contain"
-                        style={{ width: '32px', height: 'auto' }}
-                        unoptimized
+                        className="w-[32px] h-auto object-contain"
                       />
                     </div>
                     <div className="flex flex-col flex-1">
@@ -292,14 +286,11 @@ export function EbayShippingPage() {
               <div className="w-full p-3 bg-white border border-[#E5E5E5] rounded-[16px] mb-4">
                 <div className="flex gap-3 items-start">
                   <div className="w-[44px] h-[20px] flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Image 
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img 
                       src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png"
                       alt="FedEx"
-                      width={44}
-                      height={20}
-                      className="object-contain"
-                      style={{ width: '44px', height: 'auto' }}
-                      unoptimized
+                      className="w-[44px] h-auto object-contain"
                     />
                   </div>
                   <div className="flex flex-col flex-1">
@@ -389,25 +380,19 @@ export function EbayShippingPage() {
           style={{ pointerEvents: 'none' }}
         >
           <div className="relative w-[375px] h-[812px]" style={{ pointerEvents: 'auto' }}>
-            {/* Scrim overlay - rgba(0,0,0,0.32) per Figma */}
+            {/* Scrim overlay - 32% opacity as per Figma */}
             <div 
-              className="absolute inset-0 rounded-[50px]"
-              style={{ backgroundColor: 'rgba(0, 0, 0, 0.32)' }}
+              className="absolute inset-0 bg-black/[0.32] rounded-[50px]"
               onClick={() => setShowDeliverySheet(false)}
             />
-            
-            {/* Bottom Sheet - rounded top corners 38px */}
+            {/* Sheet content */}
             <div 
-              className="absolute bottom-0 left-0 right-0 bg-white"
-              style={{ 
-                borderRadius: '38px 38px 0 0',
-                boxShadow: '0px 15px 75px rgba(0, 0, 0, 0.18)'
-              }}
+              className="absolute bottom-3 left-3 right-3 bg-white rounded-t-[38px] rounded-b-[40px] overflow-hidden shadow-[0_15px_75px_rgba(0,0,0,0.18)]"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Drag Handle */}
+              {/* Drag handle */}
               <div className="flex justify-center pt-[6px] pb-[6px]">
-                <div className="w-[32px] h-[4px] bg-[#8F8F8F] rounded-full" />
+                <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
               </div>
               
               {/* Header */}
@@ -415,13 +400,13 @@ export function EbayShippingPage() {
                 <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Delivery method</h3>
                 <button 
                   onClick={() => setShowDeliverySheet(false)}
-                  className="w-[40px] h-[40px] bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
                 >
                   <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
                 </button>
               </div>
               
-              {/* Toggle Button List - Main Content */}
+              {/* Options */}
               <div className="px-4 pt-2 pb-8 flex flex-col gap-4">
                 {deliveryMethods.map((method) => {
                   const isSelected = deliveryMethod === method.id
@@ -432,18 +417,15 @@ export function EbayShippingPage() {
                         setDeliveryMethod(method.id)
                         setShowDeliverySheet(false)
                       }}
-                      className={`w-full p-3 rounded-[8px] text-left flex items-start gap-4 ${
+                      className={`w-full p-3 rounded-[8px] text-left flex gap-4 ${
                         isSelected 
                           ? "bg-[#F7F7F7] border-2 border-[#191919]" 
                           : "bg-white border border-[#8F8F8F]"
                       }`}
                     >
-                      {/* Lead accessory - Icon */}
-                      <div className="pt-1 flex-shrink-0">
-                        {getDeliveryIcon(method.id)}
+                      <div className="pt-1">
+                        <DeliveryMethodIcon type={method.icon} className="w-4 h-4" />
                       </div>
-                      
-                      {/* Content */}
                       <div className="flex flex-col gap-1 flex-1">
                         <span className="text-[16px] font-bold text-[#191919] leading-[24px]">
                           {method.label}
@@ -468,25 +450,17 @@ export function EbayShippingPage() {
           style={{ pointerEvents: 'none' }}
         >
           <div className="relative w-[375px] h-[812px]" style={{ pointerEvents: 'auto' }}>
-            {/* Scrim overlay */}
             <div 
-              className="absolute inset-0 rounded-[50px]"
-              style={{ backgroundColor: 'rgba(0, 0, 0, 0.32)' }}
+              className="absolute inset-0 bg-black/[0.32] rounded-[50px]"
               onClick={() => setShowDestinationSheet(false)}
             />
-            
-            {/* Bottom Sheet */}
             <div 
-              className="absolute bottom-0 left-0 right-0 bg-white"
-              style={{ 
-                borderRadius: '38px 38px 0 0',
-                boxShadow: '0px 15px 75px rgba(0, 0, 0, 0.18)'
-              }}
+              className="absolute bottom-3 left-3 right-3 bg-white rounded-t-[38px] rounded-b-[40px] overflow-hidden shadow-[0_15px_75px_rgba(0,0,0,0.18)]"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Drag Handle */}
+              {/* Drag handle */}
               <div className="flex justify-center pt-[6px] pb-[6px]">
-                <div className="w-[32px] h-[4px] bg-[#8F8F8F] rounded-full" />
+                <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
               </div>
               
               {/* Header */}
@@ -494,14 +468,14 @@ export function EbayShippingPage() {
                 <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Destination</h3>
                 <button 
                   onClick={() => setShowDestinationSheet(false)}
-                  className="w-[40px] h-[40px] bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
                 >
                   <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
                 </button>
               </div>
               
-              {/* Options List */}
-              <div className="px-4 pt-2 pb-8 flex flex-col gap-4">
+              {/* Options */}
+              <div className="px-4 pt-2 pb-8 flex flex-col gap-2">
                 {destinations.map((dest) => {
                   const isSelected = destination === dest
                   return (
@@ -511,13 +485,13 @@ export function EbayShippingPage() {
                         setDestination(dest)
                         setShowDestinationSheet(false)
                       }}
-                      className={`w-full p-3 rounded-[8px] text-left ${
+                      className={`w-full p-4 rounded-[8px] text-left flex items-center justify-between ${
                         isSelected 
                           ? "bg-[#F7F7F7] border-2 border-[#191919]" 
                           : "bg-white border border-[#8F8F8F]"
                       }`}
                     >
-                      <span className="text-[16px] font-bold text-[#191919] leading-[24px]">
+                      <span className={`text-[16px] leading-[24px] ${isSelected ? 'font-bold text-[#191919]' : 'text-[#191919]'}`}>
                         {dest}
                       </span>
                     </button>
