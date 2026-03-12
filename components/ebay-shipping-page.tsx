@@ -868,13 +868,18 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px]" style={{ pointerEvents: 'auto' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3" style={{ pointerEvents: 'auto' }}>
+            {/* Dynamic Island */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            
+            {/* Screen with scrim */}
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-black/[0.32]"
+                onClick={() => setShowDestinationSheet(false)}
+              />
             <div 
-              className="absolute inset-0 bg-black/[0.32] rounded-[55px]"
-              onClick={() => setShowDestinationSheet(false)}
-            />
-            <div 
-              className="absolute bottom-3 left-3 right-3 bg-white rounded-t-[38px] rounded-b-[40px] overflow-hidden shadow-[0_15px_75px_rgba(0,0,0,0.18)]"
+              className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Drag handle */}
@@ -922,12 +927,13 @@ export function EbayShippingPage() {
                     </button>
                   )
                 })}
-              </div>
+</div>
+            </div>
             </div>
           </div>
         </div>
       )}
-
+      
       {/* International Services Full Screen Sheet */}
       {showServicesSheet && (
         <div 
