@@ -123,6 +123,18 @@ export default function PrototypeLibrary() {
 
   const totalPrototypes = filteredSites.reduce((acc, site) => acc + site.prototypes.length, 0)
   const activeFiltersCount = [selectedSite, selectedPlatform, selectedSegment].filter(Boolean).length
+  const hasActiveFilters = activeFiltersCount > 0 || searchQuery.length > 0
+
+  // Recently used prototypes (in production, this would come from localStorage or a database)
+  const recentlyUsed = [
+    { siteId: "us", prototypeId: "us-shelby-ag" },
+  ]
+  
+  const recentPrototypes = recentlyUsed.map(r => {
+    const site = sites.find(s => s.id === r.siteId)
+    const prototype = site?.prototypes.find(p => p.id === r.prototypeId)
+    return prototype ? { ...prototype, siteCode: site?.code, siteFlag: site?.flag } : null
+  }).filter(Boolean)
 
   const handleCopy = async (prototypeId: string) => {
     setCopiedId(prototypeId)
@@ -292,11 +304,70 @@ export default function PrototypeLibrary() {
         </div>
       </section>
 
+      {/* Recently Used Carousel - shown when no filters active */}
+      {!hasActiveFilters && recentPrototypes.length > 0 && (
+        <section className="px-6 pb-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center gap-3 mb-4">
+              <h2 className="text-white font-semibold">Recently Used</h2>
+              <span className="text-[#666] text-sm">Pick up where you left off</span>
+            </div>
+            
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {recentPrototypes.map((prototype) => prototype && (
+                <div 
+                  key={prototype.id}
+                  className="flex-shrink-0 w-72 bg-[#111] border border-[#222] rounded-xl overflow-hidden hover:border-blue-500/50 transition-colors"
+                >
+                  <div className="h-40 bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
+                    {prototype.id === 'us-shelby-ag' ? (
+                      <div 
+                        className="pointer-events-none"
+                        style={{ transform: 'scale(0.16)', transformOrigin: 'center center' }}
+                      >
+                        <EbayShippingPage />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-24 bg-[#222] rounded-lg border border-[#333]" />
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
+                        {prototype.siteFlag} {prototype.siteCode}
+                      </span>
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-green-500/20 text-green-400">
+                        {prototype.status}
+                      </span>
+                    </div>
+                    <h4 className="text-white text-sm font-medium truncate">{prototype.name}</h4>
+                    <div className="flex gap-2 mt-2">
+                      <button
+                        onClick={() => handleCopy(prototype.id)}
+                        className="flex-1 text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        Use Template
+                      </button>
+                      <Link
+                        href={prototype.route}
+                        className="px-3 py-1.5 text-xs bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
+                      >
+                        Preview
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Prototypes Grid */}
-      <section className="px-6 pb-20">
+      <section className="px-6 pb-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-6">
-            <h2 className="text-white font-semibold">Prototypes</h2>
+            <h2 className="text-white font-semibold">{hasActiveFilters ? 'Search Results' : 'All Prototypes'}</h2>
             <span className="text-[#666] text-sm">({totalPrototypes} results)</span>
           </div>
           
@@ -399,6 +470,61 @@ export default function PrototypeLibrary() {
           </div>
         </div>
       </section>
+
+      {/* Recently Used Carousel - shown at bottom when filters are active */}
+      {hasActiveFilters && recentPrototypes.length > 0 && (
+        <section className="px-6 pb-8">
+          <div className="max-w-7xl mx-auto">
+            <div className="flex items-center gap-3 mb-4">
+              <h2 className="text-white font-semibold">Recently Used</h2>
+            </div>
+            
+            <div className="flex gap-4 overflow-x-auto pb-2">
+              {recentPrototypes.map((prototype) => prototype && (
+                <div 
+                  key={prototype.id}
+                  className="flex-shrink-0 w-72 bg-[#111] border border-[#222] rounded-xl overflow-hidden hover:border-blue-500/50 transition-colors"
+                >
+                  <div className="h-40 bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
+                    {prototype.id === 'us-shelby-ag' ? (
+                      <div 
+                        className="pointer-events-none"
+                        style={{ transform: 'scale(0.16)', transformOrigin: 'center center' }}
+                      >
+                        <EbayShippingPage />
+                      </div>
+                    ) : (
+                      <div className="w-12 h-24 bg-[#222] rounded-lg border border-[#333]" />
+                    )}
+                  </div>
+                  <div className="p-3">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span className="text-xs px-1.5 py-0.5 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
+                        {prototype.siteFlag} {prototype.siteCode}
+                      </span>
+                    </div>
+                    <h4 className="text-white text-sm font-medium truncate">{prototype.name}</h4>
+                    <div className="flex gap-2 mt-2">
+                      <button
+                        onClick={() => handleCopy(prototype.id)}
+                        className="flex-1 text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                      >
+                        Use Template
+                      </button>
+                      <Link
+                        href={prototype.route}
+                        className="px-3 py-1.5 text-xs bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
+                      >
+                        Preview
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Footer */}
       <footer className="border-t border-[#1f1f1f] py-6 px-6">
