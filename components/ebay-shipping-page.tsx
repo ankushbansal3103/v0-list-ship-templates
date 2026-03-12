@@ -234,8 +234,8 @@ export function EbayShippingPage() {
               <div className="mb-5">
                 <span className="text-[13px] font-bold text-[#191919] mb-2 block">Default service</span>
                 
-                {/* eBay International Shipping Card - Selected state with blue border */}
-                <div className="w-full p-3 bg-white border-2 border-[#3665F3] rounded-[16px]">
+                {/* eBay International Shipping Card - Selected state with dark border and grey bg */}
+                <div className="w-full p-3 bg-[#F7F7F7] border-2 border-[#191919] rounded-[16px]">
                   <div className="flex gap-3 items-start">
                     <div className="w-[44px] h-[28px] bg-[#F7F7F7] rounded-[6px] flex items-center justify-center flex-shrink-0">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
