@@ -99,37 +99,22 @@ export default function PrototypeLibrary() {
   const handleCopy = async (prototypeId: string) => {
     setCopiedId(prototypeId)
     
-    // Fetch the template prompt from our API
+    // Fetch the actual template code from our API
     try {
       const response = await fetch(`/api/template/${prototypeId}`)
       const data = await response.json()
-      const prompt = data.prompt
       
-      // Show modal with the prompt
-      setModalPrompt(prompt)
+      // Use the actual code, not just instructions
+      const code = data.code
+      
+      // Show modal with the actual code
+      setModalPrompt(code)
       setShowModal(true)
       setCopiedId(null)
       
     } catch {
-      // Fallback prompt
-      const fallbackPrompt = `Create an eBay shipping configuration prototype (${prototypeId}) with:
-      
-## Design System
-- iPhone 15 Pro frame: 402x874px, black, rounded-[55px]
-- Dynamic Island: 126x37px centered at top
-- Screen: white, rounded-[40px]
-- Colors: #191919 (text), #707070 (secondary), #3665F3 (blue CTA), #F7F7F7 (backgrounds)
-- Typography: 24px bold titles, 16px headers, 14px body
-
-## Screens
-1. L1 Shipping page with package details, services, delivery details cards
-2. L2 Package Details with weight, dimensions, numeric keyboard
-3. L2 Delivery Details with location, handling time, returns toggles
-4. Bottom sheets with blur overlay (bg-white/60 backdrop-blur-md)
-
-Build as single React component with useState for all interactions.`
-      
-      setModalPrompt(fallbackPrompt)
+      // Fallback - tell user to contact support
+      setModalPrompt(`Error loading template "${prototypeId}". Please try again or contact support.`)
       setShowModal(true)
       setCopiedId(null)
     }
@@ -342,12 +327,12 @@ Build as single React component with useState for all interactions.`
       {/* Copy Template Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#111] border border-[#333] rounded-2xl max-w-2xl w-full max-h-[80vh] flex flex-col">
+          <div className="bg-[#111] border border-[#333] rounded-2xl max-w-4xl w-full max-h-[85vh] flex flex-col">
             {/* Modal Header */}
             <div className="flex items-center justify-between p-4 border-b border-[#222]">
               <div>
-                <h2 className="text-white font-semibold text-lg">Copy Template to v0</h2>
-                <p className="text-[#888] text-sm">Copy the prompt below and paste it into v0.dev</p>
+                <h2 className="text-white font-semibold text-lg">Copy Prototype Code</h2>
+                <p className="text-[#888] text-sm">This is the exact code for the prototype. Paste into v0 to create your copy.</p>
               </div>
               <button 
                 onClick={() => setShowModal(false)}
@@ -358,11 +343,11 @@ Build as single React component with useState for all interactions.`
             </div>
             
             {/* Modal Content */}
-            <div className="flex-1 p-4 overflow-hidden">
+            <div className="flex-1 p-4 overflow-auto">
               <textarea
                 readOnly
                 value={modalPrompt}
-                className="w-full h-64 bg-[#0a0a0a] border border-[#333] rounded-lg p-4 text-[#ccc] text-sm font-mono resize-none focus:outline-none focus:border-blue-500"
+                className="w-full h-[400px] bg-[#0a0a0a] border border-[#333] rounded-lg p-4 text-[#ccc] text-xs font-mono resize-none focus:outline-none focus:border-blue-500"
               />
             </div>
             
@@ -373,7 +358,7 @@ Build as single React component with useState for all interactions.`
                 className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
               >
                 <Copy className="w-4 h-4" />
-                Copy & Open v0.dev
+                Copy Code & Open v0.dev
               </button>
               <button
                 onClick={() => setShowModal(false)}
