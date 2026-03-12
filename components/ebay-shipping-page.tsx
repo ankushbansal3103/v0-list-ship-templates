@@ -474,21 +474,16 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px]" style={{ pointerEvents: 'auto' }}>
-            {/* Full screen white background with proper status bar area */}
-            <div className="absolute inset-0 bg-white rounded-[55px] overflow-hidden flex flex-col">
-              {/* Status Bar Area with Dynamic Island */}
-              <div className="h-[59px] bg-white flex-shrink-0 relative">
-                {/* Dynamic Island */}
-                <div className="absolute top-[12px] left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-[20px]" />
-                
-                {/* Time - left of Dynamic Island */}
-                <div className="absolute top-[16px] left-[28px]">
-                  <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
-                </div>
-                
-                {/* Status Icons - right of Dynamic Island */}
-                <div className="absolute top-[18px] right-[20px] flex items-center gap-[5px]">
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3" style={{ pointerEvents: 'auto' }}>
+            {/* Dynamic Island - matches L1 */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            
+            {/* Screen */}
+            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+              {/* iOS Status Bar */}
+              <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
+                <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
+                <div className="flex items-center gap-[5px]">
                   <svg className="w-[17px] h-[11px]" viewBox="0 0 17 11">
                     <rect x="0" y="7" width="3" height="4" rx="1" fill="#191919"/>
                     <rect x="4.5" y="5" width="3" height="6" rx="1" fill="#191919"/>
