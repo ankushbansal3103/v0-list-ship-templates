@@ -895,7 +895,7 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-<div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
             {/* Dynamic Island */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             
@@ -921,49 +921,42 @@ export function EbayShippingPage() {
                     <h3 className="text-[18px] font-bold text-[#191919] leading-[24px]">Destination</h3>
                     <span className="text-[14px] text-[#707070] leading-[20px]">International service</span>
                   </div>
-              
-              {/* Header */}
-              <div className="flex items-start justify-between px-4 pt-2 pb-3">
-                <div className="flex flex-col">
-                  <h3 className="text-[18px] font-bold text-[#191919] leading-[24px]">Destination</h3>
-                  <span className="text-[14px] text-[#707070] leading-[20px]">International service</span>
+                  <button 
+                    onClick={() => setShowDestinationSheet(false)}
+                    className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                  </button>
                 </div>
-                <button 
-                  onClick={() => setShowDestinationSheet(false)}
-                  className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
-                >
-                  <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
-                </button>
+                
+                {/* Options */}
+                <div className="px-4 pt-1 pb-8 flex flex-col gap-3">
+                  {destinations.map((dest) => {
+                    const isSelected = destination === dest.id
+                    return (
+                      <button
+                        key={dest.id}
+                        onClick={() => {
+                          setDestination(dest.id)
+                          setShowDestinationSheet(false)
+                        }}
+                        className={`w-full px-3 py-3 rounded-[8px] text-left flex flex-col ${
+                          isSelected 
+                            ? "bg-[#F7F7F7] border-2 border-[#191919]" 
+                            : "bg-white border border-[#8F8F8F]"
+                        }`}
+                      >
+                        <span className="text-[14px] font-bold text-[#191919] leading-[20px]">
+                          {dest.label}
+                        </span>
+                        <span className={`text-[13px] leading-[18px] mt-0.5 ${isSelected ? 'text-[#191919]' : 'text-[#707070]'}`}>
+                          {dest.description}
+                        </span>
+                      </button>
+                    )
+                  })}
+                </div>
               </div>
-              
-              {/* Options */}
-              <div className="px-4 pt-1 pb-8 flex flex-col gap-3">
-                {destinations.map((dest) => {
-                  const isSelected = destination === dest.id
-                  return (
-                    <button
-                      key={dest.id}
-                      onClick={() => {
-                        setDestination(dest.id)
-                        setShowDestinationSheet(false)
-                      }}
-                      className={`w-full px-3 py-3 rounded-[8px] text-left flex flex-col ${
-                        isSelected 
-                          ? "bg-[#F7F7F7] border-2 border-[#191919]" 
-                          : "bg-white border border-[#8F8F8F]"
-                      }`}
-                    >
-                      <span className="text-[14px] font-bold text-[#191919] leading-[20px]">
-                        {dest.label}
-                      </span>
-                      <span className={`text-[13px] leading-[18px] mt-0.5 ${isSelected ? 'text-[#191919]' : 'text-[#707070]'}`}>
-                        {dest.description}
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-            </div>
             </div>
           </div>
         </div>
