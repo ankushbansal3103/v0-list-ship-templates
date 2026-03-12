@@ -181,6 +181,10 @@ export function EbayShippingPage() {
   const [showServicesSheet, setShowServicesSheet] = useState(false)
   const [selectedService, setSelectedService] = useState("colissimo")
   
+  // Shipping cost state
+  const [showShippingCostSheet, setShowShippingCostSheet] = useState(false)
+  const [shippingCost, setShippingCost] = useState("5,99")
+  
   // International shipping services data
   const internationalServices = [
     {
@@ -515,7 +519,10 @@ export function EbayShippingPage() {
                 <span className="text-[13px] text-[#707070]">The buyer will pay:</span>
                 <span className="text-[18px] font-bold text-[#191919] mt-1">$X.XX–$XX.XX</span>
                 <span className="text-[13px] text-[#707070] mt-1">Cost is based on buyer&apos;s location.</span>
-                <button className="text-[13px] text-[#191919] underline mt-1">
+                <button 
+                  onClick={() => setShowShippingCostSheet(true)}
+                  className="text-[13px] text-[#191919] underline mt-1"
+                >
                   Edit shipping cost
                 </button>
               </div>
@@ -929,11 +936,95 @@ export function EbayShippingPage() {
                 })}
 </div>
             </div>
+</div>
+  </div>
+  </div>
+  )}
+
+      {/* Shipping Cost Bottom Sheet */}
+      {showShippingCostSheet && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3" style={{ pointerEvents: 'auto' }}>
+            {/* Dynamic Island */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            
+            {/* Screen with scrim */}
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-black/[0.32]"
+                onClick={() => setShowShippingCostSheet(false)}
+              />
+              
+              <div 
+                className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Drag handle */}
+                <div className="flex justify-center pt-[6px] pb-[6px]">
+                  <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
+                </div>
+                
+                {/* Header */}
+                <div className="flex items-start justify-between px-4 pt-2 pb-3">
+                  <div className="flex flex-col">
+                    <h3 className="text-[18px] font-bold text-[#191919] leading-[24px]">Shipping cost</h3>
+                    <span className="text-[14px] text-[#707070] leading-[20px]">International service</span>
+                  </div>
+                  <button 
+                    onClick={() => setShowShippingCostSheet(false)}
+                    className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                  </button>
+                </div>
+                
+                {/* Content */}
+                <div className="px-4 pt-2 pb-6">
+                  {/* Section Header */}
+                  <div className="mb-4">
+                    <h4 className="text-[16px] font-bold text-[#191919] leading-[24px]">Enter the shipping cost</h4>
+                    <p className="text-[14px] text-[#707070] leading-[20px]">Choose the amount you want the buyer to pay.</p>
+                  </div>
+                  
+                  {/* Shipping Cost Input */}
+                  <div className="w-full h-[48px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center">
+                    <div className="flex flex-col flex-1">
+                      <span className="text-[12px] text-[#707070] leading-[16px]">Shipping cost</span>
+                      <input
+                        type="text"
+                        value={shippingCost}
+                        onChange={(e) => setShippingCost(e.target.value)}
+                        className="text-[14px] text-[#191919] leading-[20px] bg-transparent outline-none w-full"
+                        placeholder="0,00"
+                      />
+                    </div>
+                    <span className="text-[14px] text-[#191919]">€</span>
+                  </div>
+                </div>
+                
+                {/* Footer with Save button */}
+                <div className="px-4 pb-4 pt-3 border-t border-[#E5E5E5]">
+                  <button 
+                    onClick={() => setShowShippingCostSheet(false)}
+                    className="w-full h-[48px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]"
+                  >
+                    <span className="text-[16px] font-bold text-white">Save</span>
+                  </button>
+                </div>
+                
+                {/* Home Indicator */}
+                <div className="h-[34px] flex items-center justify-center">
+                  <div className="w-[134px] h-[5px] bg-[#191919] rounded-full" />
+                </div>
+              </div>
             </div>
           </div>
         </div>
       )}
-      
+  
       {/* International Services Full Screen Sheet */}
       {showServicesSheet && (
         <div 
