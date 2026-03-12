@@ -129,8 +129,8 @@ export function EbayShippingPage() {
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
       {/* iPhone 17 Frame - 402x874 logical resolution */}
-      {/* Hide L1 when any full-screen sheet is shown to prevent double frame/island */}
-      <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet || showDestinationSheet ? 'invisible' : ''}`}>
+      {/* Hide L1 only when Package Details (full-screen) is shown to prevent double frame/island */}
+      <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet ? 'invisible' : ''}`}>
         {/* Dynamic Island */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
         
