@@ -661,7 +661,6 @@ export function EbayShippingPage() {
                 })}
               </div>
             </div>
-            </div>
           </div>
         </div>
       )}
