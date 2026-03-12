@@ -199,6 +199,22 @@ export function EbayShippingPage() {
   const [internationalReturnsPaidBy, setInternationalReturnsPaidBy] = useState("Buyer")
   const [internationalRefundMethod, setInternationalRefundMethod] = useState("Money back")
   
+  // Item location fields
+  const [itemCountry, setItemCountry] = useState("Germany")
+  const [itemCity, setItemCity] = useState("Berlin")
+  const [itemZipCode, setItemZipCode] = useState("10115")
+  
+  // Bottom sheet dropdowns for Delivery Details
+  const [showItemLocationEdit, setShowItemLocationEdit] = useState(false)
+  const [showHandlingTimeSheet, setShowHandlingTimeSheet] = useState(false)
+  const [showDomesticAllowedWithinSheet, setShowDomesticAllowedWithinSheet] = useState(false)
+  const [showDomesticReturnsPaidBySheet, setShowDomesticReturnsPaidBySheet] = useState(false)
+  const [showDomesticRefundMethodSheet, setShowDomesticRefundMethodSheet] = useState(false)
+  const [showInternationalAllowedWithinSheet, setShowInternationalAllowedWithinSheet] = useState(false)
+  const [showInternationalReturnsPaidBySheet, setShowInternationalReturnsPaidBySheet] = useState(false)
+  const [showInternationalRefundMethodSheet, setShowInternationalRefundMethodSheet] = useState(false)
+  const [showCountrySheet, setShowCountrySheet] = useState(false)
+  
   // Handle numeric keyboard input
   const handleKeyPress = (key: string) => {
     if (key === "backspace") {
@@ -565,10 +581,10 @@ export function EbayShippingPage() {
                 onClick={() => setShowDeliveryDetailsSheet(true)}
                 className="w-full p-4 bg-white border border-[#767676] rounded-[16px] flex"
               >
-                <div className="flex flex-col gap-4 text-left flex-1">
+<div className="flex flex-col gap-4 text-left flex-1">
                   <div className="flex flex-col">
                     <span className="text-[14px] font-bold text-[#191919]">Item location</span>
-                    <span className="text-[13px] text-[#707070]">{itemLocation}</span>
+                    <span className="text-[13px] text-[#707070]">{`${itemCity}, ${itemCountry}, ${itemZipCode}`}</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[14px] font-bold text-[#191919]">Handling time</span>
@@ -1377,13 +1393,59 @@ export function EbayShippingPage() {
                 {/* Item Location Section */}
                 <div className="mb-4">
                   <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-3">Item location</h2>
-                  <div className="w-full p-3 bg-[#F7F7F7] rounded-[8px] flex items-start justify-between">
-                    <div className="flex flex-col">
-                      <span className="text-[14px] text-[#191919] leading-[20px]">{itemLocation}</span>
-                      <span className="text-[14px] text-[#707070] leading-[20px]">The item location appears on the listing.</span>
+                  
+                  {!showItemLocationEdit ? (
+                    <div className="w-full p-3 bg-[#F7F7F7] rounded-[8px] flex items-start justify-between">
+                      <div className="flex flex-col">
+                        <span className="text-[14px] text-[#191919] leading-[20px]">{`${itemCity}, ${itemCountry}, ${itemZipCode}`}</span>
+                        <span className="text-[14px] text-[#707070] leading-[20px]">The item location appears on the listing.</span>
+                      </div>
+                      <button 
+                        onClick={() => setShowItemLocationEdit(true)}
+                        className="text-[14px] text-[#191919] underline ml-3 flex-shrink-0"
+                      >
+                        Edit
+                      </button>
                     </div>
-                    <button className="text-[14px] text-[#191919] underline ml-3 flex-shrink-0">Edit</button>
-                  </div>
+                  ) : (
+                    <div className="w-full p-4 bg-[#F7F7F7] rounded-[12px] flex flex-col gap-3">
+                      {/* Country or region dropdown */}
+                      <button 
+                        onClick={() => setShowCountrySheet(true)}
+                        className="w-full h-[56px] px-4 bg-white border border-[#8F8F8F] rounded-[8px] flex items-center justify-between"
+                      >
+                        <div className="flex flex-col items-start">
+                          <span className="text-[12px] text-[#707070] leading-[16px]">Country or region</span>
+                          <span className="text-[14px] text-[#191919] leading-[20px]">{itemCountry}</span>
+                        </div>
+                        <ChevronDown className="w-4 h-4 text-[#191919]" />
+                      </button>
+                      
+                      {/* City input */}
+                      <div className="w-full h-[56px] px-4 bg-white border border-[#8F8F8F] rounded-[8px] flex flex-col justify-center">
+                        <span className="text-[12px] text-[#707070] leading-[16px]">City</span>
+                        <input
+                          type="text"
+                          value={itemCity}
+                          onChange={(e) => setItemCity(e.target.value)}
+                          className="text-[14px] text-[#191919] leading-[20px] bg-transparent outline-none w-full"
+                          placeholder="City"
+                        />
+                      </div>
+                      
+                      {/* ZIP code input */}
+                      <div className="w-full h-[56px] px-4 bg-white border border-[#8F8F8F] rounded-[8px] flex flex-col justify-center">
+                        <span className="text-[12px] text-[#707070] leading-[16px]">ZIP code</span>
+                        <input
+                          type="text"
+                          value={itemZipCode}
+                          onChange={(e) => setItemZipCode(e.target.value)}
+                          className="text-[14px] text-[#191919] leading-[20px] bg-transparent outline-none w-full"
+                          placeholder="12345"
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Divider */}
@@ -1392,7 +1454,10 @@ export function EbayShippingPage() {
                 {/* Handling Time Section */}
                 <div className="mb-4">
                   <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-3">Handling time</h2>
-                  <button className="w-full h-[48px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                  <button 
+                    onClick={() => setShowHandlingTimeSheet(true)}
+                    className="w-full h-[48px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between"
+                  >
                     <span className="text-[14px] text-[#191919]">{handlingTime}</span>
                     <ChevronDown className="w-4 h-4 text-[#191919]" />
                   </button>
@@ -1423,7 +1488,10 @@ export function EbayShippingPage() {
                     {domesticReturns && (
                       <div className="flex flex-col gap-3">
                         {/* Allowed within */}
-                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                        <button 
+                          onClick={() => setShowDomesticAllowedWithinSheet(true)}
+                          className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between"
+                        >
                           <div className="flex flex-col items-start">
                             <span className="text-[12px] text-[#707070] leading-[16px]">Allowed within</span>
                             <span className="text-[14px] text-[#191919] leading-[20px]">{domesticAllowedWithin}</span>
@@ -1432,7 +1500,10 @@ export function EbayShippingPage() {
                         </button>
 
                         {/* Returns shipping paid by */}
-                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                        <button 
+                          onClick={() => setShowDomesticReturnsPaidBySheet(true)}
+                          className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between"
+                        >
                           <div className="flex flex-col items-start">
                             <span className="text-[12px] text-[#707070] leading-[16px]">Returns shipping paid by</span>
                             <span className="text-[14px] text-[#191919] leading-[20px]">{domesticReturnsPaidBy}</span>
@@ -1441,7 +1512,10 @@ export function EbayShippingPage() {
                         </button>
 
                         {/* Refund method */}
-                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                        <button 
+                          onClick={() => setShowDomesticRefundMethodSheet(true)}
+                          className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between"
+                        >
                           <div className="flex flex-col items-start">
                             <span className="text-[12px] text-[#707070] leading-[16px]">Refund method</span>
                             <span className="text-[14px] text-[#191919] leading-[20px]">{domesticRefundMethod}</span>
@@ -1467,7 +1541,10 @@ export function EbayShippingPage() {
                     {internationalReturns && (
                       <div className="flex flex-col gap-3">
                         {/* Allowed within */}
-                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                        <button 
+                          onClick={() => setShowInternationalAllowedWithinSheet(true)}
+                          className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between"
+                        >
                           <div className="flex flex-col items-start">
                             <span className="text-[12px] text-[#707070] leading-[16px]">Allowed within</span>
                             <span className="text-[14px] text-[#191919] leading-[20px]">{internationalAllowedWithin}</span>
@@ -1476,7 +1553,10 @@ export function EbayShippingPage() {
                         </button>
 
                         {/* Returns shipping paid by */}
-                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                        <button 
+                          onClick={() => setShowInternationalReturnsPaidBySheet(true)}
+                          className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between"
+                        >
                           <div className="flex flex-col items-start">
                             <span className="text-[12px] text-[#707070] leading-[16px]">Returns shipping paid by</span>
                             <span className="text-[14px] text-[#191919] leading-[20px]">{internationalReturnsPaidBy}</span>
@@ -1485,7 +1565,10 @@ export function EbayShippingPage() {
                         </button>
 
                         {/* Refund method */}
-                        <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                        <button 
+                          onClick={() => setShowInternationalRefundMethodSheet(true)}
+                          className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between"
+                        >
                           <div className="flex flex-col items-start">
                             <span className="text-[12px] text-[#707070] leading-[16px]">Refund method</span>
                             <span className="text-[14px] text-[#191919] leading-[20px]">{internationalRefundMethod}</span>
@@ -1512,6 +1595,456 @@ export function EbayShippingPage() {
                 {/* Home Indicator */}
                 <div className="h-[34px] flex items-center justify-center">
                   <div className="w-[134px] h-[5px] bg-[#191919] rounded-full" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Handling Time Bottom Sheet */}
+      {showHandlingTimeSheet && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-black/[0.32]"
+                onClick={() => setShowHandlingTimeSheet(false)}
+              />
+              <div 
+                className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-center pt-[6px] pb-[6px]">
+                  <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
+                </div>
+                <div className="flex items-start justify-between px-4 pt-2 pb-3">
+                  <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Handling time</h3>
+                  <button 
+                    onClick={() => setShowHandlingTimeSheet(false)}
+                    className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                  </button>
+                </div>
+                <div className="px-4 pb-8">
+                  {["Same business day", "1 business day", "2 business days", "3 business days"].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => {
+                        setHandlingTime(option)
+                        setShowHandlingTimeSheet(false)
+                      }}
+                      className="w-full h-[48px] flex items-center justify-between"
+                    >
+                      <span className="text-[14px] text-[#191919] leading-[20px]">{option}</span>
+                      {handlingTime === option && (
+                        <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Domestic Allowed Within Bottom Sheet */}
+      {showDomesticAllowedWithinSheet && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-black/[0.32]"
+                onClick={() => setShowDomesticAllowedWithinSheet(false)}
+              />
+              <div 
+                className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-center pt-[6px] pb-[6px]">
+                  <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
+                </div>
+                <div className="flex items-start justify-between px-4 pt-2 pb-1">
+                  <div className="flex flex-col">
+                    <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Allowed within</h3>
+                    <span className="text-[14px] text-[#707070] leading-[20px]">Domestic returns</span>
+                  </div>
+                  <button 
+                    onClick={() => setShowDomesticAllowedWithinSheet(false)}
+                    className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                  </button>
+                </div>
+                <div className="px-4 pb-8 pt-2">
+                  {["14 days", "30 days", "60 days"].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => {
+                        setDomesticAllowedWithin(option)
+                        setShowDomesticAllowedWithinSheet(false)
+                      }}
+                      className="w-full h-[48px] flex items-center justify-between"
+                    >
+                      <span className="text-[14px] text-[#191919] leading-[20px]">{option}</span>
+                      {domesticAllowedWithin === option && (
+                        <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Domestic Returns Paid By Bottom Sheet */}
+      {showDomesticReturnsPaidBySheet && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-black/[0.32]"
+                onClick={() => setShowDomesticReturnsPaidBySheet(false)}
+              />
+              <div 
+                className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-center pt-[6px] pb-[6px]">
+                  <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
+                </div>
+                <div className="flex items-start justify-between px-4 pt-2 pb-1">
+                  <div className="flex flex-col">
+                    <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Return shipping paid by</h3>
+                    <span className="text-[14px] text-[#707070] leading-[20px]">Domestic returns</span>
+                  </div>
+                  <button 
+                    onClick={() => setShowDomesticReturnsPaidBySheet(false)}
+                    className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                  </button>
+                </div>
+                <div className="px-4 pb-8 pt-2">
+                  {["Buyer", "Seller"].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => {
+                        setDomesticReturnsPaidBy(option)
+                        setShowDomesticReturnsPaidBySheet(false)
+                      }}
+                      className="w-full h-[48px] flex items-center justify-between"
+                    >
+                      <span className="text-[14px] text-[#191919] leading-[20px]">{option}</span>
+                      {domesticReturnsPaidBy === option && (
+                        <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Domestic Refund Method Bottom Sheet */}
+      {showDomesticRefundMethodSheet && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-black/[0.32]"
+                onClick={() => setShowDomesticRefundMethodSheet(false)}
+              />
+              <div 
+                className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-center pt-[6px] pb-[6px]">
+                  <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
+                </div>
+                <div className="flex items-start justify-between px-4 pt-2 pb-1">
+                  <div className="flex flex-col">
+                    <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Refund method</h3>
+                    <span className="text-[14px] text-[#707070] leading-[20px]">Domestic returns</span>
+                  </div>
+                  <button 
+                    onClick={() => setShowDomesticRefundMethodSheet(false)}
+                    className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                  </button>
+                </div>
+                <div className="px-4 pb-8 pt-2">
+                  {["Money back", "Money back or replacement"].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => {
+                        setDomesticRefundMethod(option)
+                        setShowDomesticRefundMethodSheet(false)
+                      }}
+                      className="w-full h-[48px] flex items-center justify-between"
+                    >
+                      <span className="text-[14px] text-[#191919] leading-[20px]">{option}</span>
+                      {domesticRefundMethod === option && (
+                        <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* International Allowed Within Bottom Sheet */}
+      {showInternationalAllowedWithinSheet && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-black/[0.32]"
+                onClick={() => setShowInternationalAllowedWithinSheet(false)}
+              />
+              <div 
+                className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-center pt-[6px] pb-[6px]">
+                  <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
+                </div>
+                <div className="flex items-start justify-between px-4 pt-2 pb-1">
+                  <div className="flex flex-col">
+                    <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Allowed within</h3>
+                    <span className="text-[14px] text-[#707070] leading-[20px]">International returns</span>
+                  </div>
+                  <button 
+                    onClick={() => setShowInternationalAllowedWithinSheet(false)}
+                    className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                  </button>
+                </div>
+                <div className="px-4 pb-8 pt-2">
+                  {["14 days", "30 days", "60 days"].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => {
+                        setInternationalAllowedWithin(option)
+                        setShowInternationalAllowedWithinSheet(false)
+                      }}
+                      className="w-full h-[48px] flex items-center justify-between"
+                    >
+                      <span className="text-[14px] text-[#191919] leading-[20px]">{option}</span>
+                      {internationalAllowedWithin === option && (
+                        <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* International Returns Paid By Bottom Sheet */}
+      {showInternationalReturnsPaidBySheet && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-black/[0.32]"
+                onClick={() => setShowInternationalReturnsPaidBySheet(false)}
+              />
+              <div 
+                className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-center pt-[6px] pb-[6px]">
+                  <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
+                </div>
+                <div className="flex items-start justify-between px-4 pt-2 pb-1">
+                  <div className="flex flex-col">
+                    <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Return shipping paid by</h3>
+                    <span className="text-[14px] text-[#707070] leading-[20px]">International returns</span>
+                  </div>
+                  <button 
+                    onClick={() => setShowInternationalReturnsPaidBySheet(false)}
+                    className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                  </button>
+                </div>
+                <div className="px-4 pb-8 pt-2">
+                  {["Buyer", "Seller"].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => {
+                        setInternationalReturnsPaidBy(option)
+                        setShowInternationalReturnsPaidBySheet(false)
+                      }}
+                      className="w-full h-[48px] flex items-center justify-between"
+                    >
+                      <span className="text-[14px] text-[#191919] leading-[20px]">{option}</span>
+                      {internationalReturnsPaidBy === option && (
+                        <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* International Refund Method Bottom Sheet */}
+      {showInternationalRefundMethodSheet && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-black/[0.32]"
+                onClick={() => setShowInternationalRefundMethodSheet(false)}
+              />
+              <div 
+                className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-center pt-[6px] pb-[6px]">
+                  <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
+                </div>
+                <div className="flex items-start justify-between px-4 pt-2 pb-1">
+                  <div className="flex flex-col">
+                    <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Refund method</h3>
+                    <span className="text-[14px] text-[#707070] leading-[20px]">International returns</span>
+                  </div>
+                  <button 
+                    onClick={() => setShowInternationalRefundMethodSheet(false)}
+                    className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                  </button>
+                </div>
+                <div className="px-4 pb-8 pt-2">
+                  {["Money back", "Money back or replacement"].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => {
+                        setInternationalRefundMethod(option)
+                        setShowInternationalRefundMethodSheet(false)
+                      }}
+                      className="w-full h-[48px] flex items-center justify-between"
+                    >
+                      <span className="text-[14px] text-[#191919] leading-[20px]">{option}</span>
+                      {internationalRefundMethod === option && (
+                        <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Country Selection Bottom Sheet */}
+      {showCountrySheet && (
+        <div 
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ pointerEvents: 'none' }}
+        >
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div 
+                className="absolute inset-0 bg-black/[0.32]"
+                onClick={() => setShowCountrySheet(false)}
+              />
+              <div 
+                className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex justify-center pt-[6px] pb-[6px]">
+                  <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
+                </div>
+                <div className="flex items-start justify-between px-4 pt-2 pb-3">
+                  <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Country or region</h3>
+                  <button 
+                    onClick={() => setShowCountrySheet(false)}
+                    className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  >
+                    <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                  </button>
+                </div>
+                <div className="px-4 pb-8">
+                  {["Germany", "France", "United Kingdom", "Spain", "Italy", "Netherlands"].map((country) => (
+                    <button
+                      key={country}
+                      onClick={() => {
+                        setItemCountry(country)
+                        setShowCountrySheet(false)
+                      }}
+                      className="w-full h-[48px] flex items-center justify-between"
+                    >
+                      <span className="text-[14px] text-[#191919] leading-[20px]">{country}</span>
+                      {itemCountry === country && (
+                        <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
