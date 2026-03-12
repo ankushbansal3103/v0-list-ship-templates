@@ -396,8 +396,8 @@ export function EbayShippingPage() {
               </div>
               
               {/* Header */}
-              <div className="flex items-center justify-between px-4 pt-2 pb-2">
-                <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]">Delivery method</h3>
+              <div className="flex items-center justify-between px-4 pt-2 pb-3">
+                <h3 className="text-[18px] font-bold text-[#191919] leading-[24px]">Delivery method</h3>
                 <button 
                   onClick={() => setShowDeliverySheet(false)}
                   className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
@@ -407,7 +407,7 @@ export function EbayShippingPage() {
               </div>
               
               {/* Options */}
-              <div className="px-4 pt-2 pb-8 flex flex-col gap-4">
+              <div className="px-4 pt-1 pb-8 flex flex-col gap-3">
                 {deliveryMethods.map((method) => {
                   const isSelected = deliveryMethod === method.id
                   return (
@@ -417,20 +417,20 @@ export function EbayShippingPage() {
                         setDeliveryMethod(method.id)
                         setShowDeliverySheet(false)
                       }}
-                      className={`w-full p-3 rounded-[8px] text-left flex gap-4 ${
+                      className={`w-full px-3 py-3 rounded-[8px] text-left flex gap-3 ${
                         isSelected 
                           ? "bg-[#F7F7F7] border-2 border-[#191919]" 
                           : "bg-white border border-[#8F8F8F]"
                       }`}
                     >
-                      <div className="pt-1">
-                        <DeliveryMethodIcon type={method.icon} className="w-4 h-4" />
+                      <div className="pt-0.5">
+                        <DeliveryMethodIcon type={method.icon} className="w-[18px] h-[18px]" />
                       </div>
-                      <div className="flex flex-col gap-1 flex-1">
-                        <span className="text-[16px] font-bold text-[#191919] leading-[24px]">
+                      <div className="flex flex-col flex-1">
+                        <span className="text-[14px] font-bold text-[#191919] leading-[20px]">
                           {method.label}
                         </span>
-                        <span className={`text-[14px] leading-[20px] ${isSelected ? 'text-[#191919]' : 'text-[#707070]'}`}>
+                        <span className={`text-[13px] leading-[18px] mt-0.5 ${isSelected ? 'text-[#191919]' : 'text-[#707070]'}`}>
                           {method.description}
                         </span>
                       </div>
