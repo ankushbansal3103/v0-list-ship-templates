@@ -103,6 +103,10 @@ export default function PrototypeLibrary() {
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
   const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [showProjectModal, setShowProjectModal] = useState(false)
+  const [selectedPrototypeId, setSelectedPrototypeId] = useState<string | null>(null)
+  const [projectName, setProjectName] = useState("")
+  const [isCreating, setIsCreating] = useState(false)
 
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
@@ -134,31 +138,43 @@ export default function PrototypeLibrary() {
     return prototype ? { ...prototype, siteCode: site?.code, siteFlag: site?.flag } : null
   }).filter(Boolean)
 
-  const handleCopy = async (prototypeId: string) => {
-    setCopiedId(prototypeId)
+  const handleUseTemplate = (prototypeId: string) => {
+    setSelectedPrototypeId(prototypeId)
+    setProjectName("")
+    setShowProjectModal(true)
+  }
+
+  const handleCreateProject = async () => {
+    if (!projectName.trim() || !selectedPrototypeId) return
+    
+    setIsCreating(true)
+    setCopiedId(selectedPrototypeId)
     
     try {
-      // Fetch the template code from API
-      const response = await fetch(`/api/template/${prototypeId}`)
+      const response = await fetch('/api/create-branch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectName: projectName.trim(),
+          prototypeId: selectedPrototypeId
+        })
+      })
+      
       const data = await response.json()
       
-      if (data.error) {
-        throw new Error(data.error)
+      if (data.url) {
+        // Open v0 with the new branch or fallback URL
+        window.open(data.url, '_blank')
       }
       
-      // Encode the prompt for URL
-      const encodedPrompt = encodeURIComponent(data.prompt)
-      
-      // Open v0.dev with the prompt pre-loaded in chat
-      // v0.dev accepts a 'q' parameter for initial prompt
-      window.open(`https://v0.dev/chat?q=${encodedPrompt}`, '_blank')
-      
-      setCopiedId(null)
+      setShowProjectModal(false)
+      setProjectName("")
+      setSelectedPrototypeId(null)
       
     } catch {
-      // Fallback - open v0.dev without prompt
-      alert('Could not load template. Opening v0.dev...')
-      window.open('https://v0.dev', '_blank')
+      alert('Failed to create project. Please try again.')
+    } finally {
+      setIsCreating(false)
       setCopiedId(null)
     }
   }
@@ -335,7 +351,7 @@ export default function PrototypeLibrary() {
                     <h4 className="text-white text-sm font-medium truncate">{prototype.name}</h4>
                     <div className="flex gap-2 mt-2">
                       <button
-                        onClick={() => handleCopy(prototype.id)}
+                        onClick={() => handleUseTemplate(prototype.id)}
                         className="flex-1 text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                       >
                         Use Template
@@ -422,7 +438,7 @@ export default function PrototypeLibrary() {
                       
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => handleCopy(prototype.id)}
+                          onClick={() => handleUseTemplate(prototype.id)}
                           disabled={prototype.status !== 'active'}
                           className={`flex-1 h-10 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors ${
                             prototype.status === 'active'
@@ -498,7 +514,7 @@ export default function PrototypeLibrary() {
                     <h4 className="text-white text-sm font-medium truncate">{prototype.name}</h4>
                     <div className="flex gap-2 mt-2">
                       <button
-                        onClick={() => handleCopy(prototype.id)}
+                        onClick={() => handleUseTemplate(prototype.id)}
                         className="flex-1 text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                       >
                         Use Template
@@ -526,7 +542,73 @@ export default function PrototypeLibrary() {
         </div>
       </footer>
 
-      
+      {/* Project Name Modal */}
+      {showProjectModal && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#111] border border-[#333] rounded-2xl w-full max-w-md overflow-hidden">
+            {/* Modal Header */}
+            <div className="p-6 border-b border-[#222]">
+              <h2 className="text-white font-semibold text-xl">Start New Project</h2>
+              <p className="text-[#888] text-sm mt-1">
+                Create your own copy of this prototype to customize
+              </p>
+            </div>
+            
+            {/* Modal Content */}
+            <div className="p-6">
+              <label className="block text-sm text-[#888] mb-2">Project Name</label>
+              <input
+                type="text"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                placeholder="my-shipping-prototype"
+                className="w-full h-12 px-4 bg-[#0a0a0a] border border-[#333] rounded-lg text-white placeholder:text-[#555] focus:outline-none focus:border-blue-500 transition-colors"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && projectName.trim()) {
+                    handleCreateProject()
+                  }
+                }}
+              />
+              <p className="text-[#555] text-xs mt-2">
+                A new branch will be created: prototype/{projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-') || 'your-project'}
+              </p>
+            </div>
+            
+            {/* Modal Actions */}
+            <div className="p-6 pt-0 flex items-center gap-3">
+              <button
+                onClick={handleCreateProject}
+                disabled={!projectName.trim() || isCreating}
+                className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isCreating ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Creating...
+                  </>
+                ) : (
+                  <>
+                    <ExternalLink className="w-4 h-4" />
+                    Create & Open in v0
+                  </>
+                )}
+              </button>
+              <button
+                onClick={() => {
+                  setShowProjectModal(false)
+                  setProjectName("")
+                  setSelectedPrototypeId(null)
+                }}
+                disabled={isCreating}
+                className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
