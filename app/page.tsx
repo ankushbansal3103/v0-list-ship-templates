@@ -437,17 +437,8 @@ export default function PrototypeLibrary() {
                               : 'bg-[#222] text-[#666] cursor-not-allowed'
                           }`}
                         >
-                          {copiedId === prototype.id ? (
-                            <>
-                              <Check className="w-4 h-4" />
-                              Opening v0...
-                            </>
-                          ) : (
-                            <>
-                              <ExternalLink className="w-4 h-4" />
-                              Start Building
-                            </>
-                          )}
+                          <ExternalLink className="w-4 h-4" />
+                          Start Building
                         </button>
                         <Link
                           href={prototype.status === 'active' ? prototype.route : '#'}
