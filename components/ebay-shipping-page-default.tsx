@@ -148,39 +148,45 @@ function BackArrow({ className }: { className?: string }) {
   )
 }
 
-// USPS Eagle Logo
+// USPS Logo - Official Trademark Style
 function USPSLogo({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="48" height="48" fill="white"/>
-      <path d="M24 4C13 4 4 13 4 24C4 35 13 44 24 44C35 44 44 35 44 24C44 13 35 4 24 4Z" fill="#004B87"/>
-      <path d="M12 20C12 20 16 16 24 16C32 16 36 20 36 20L36 28C36 28 32 32 24 32C16 32 12 28 12 28L12 20Z" fill="white"/>
-      <path d="M18 22L24 18L30 22L30 26L24 30L18 26L18 22Z" fill="#004B87"/>
-      <text x="24" y="42" textAnchor="middle" fill="white" fontSize="6" fontWeight="bold">USPS</text>
-    </svg>
-  )
-}
-
-// FedEx Logo
-function FedExLogo({ className }: { className?: string }) {
-  return (
-    <div className={`flex items-center justify-center ${className}`}>
-      <span className="text-[14px] font-bold tracking-tight">
-        <span className="text-[#4D148C]">Fed</span>
-        <span className="text-[#FF6600]">Ex</span>
-      </span>
+    <div className={`${className} flex items-center justify-center`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img 
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/USPS_Eagle_Symbol.svg/320px-USPS_Eagle_Symbol.svg.png"
+        alt="USPS"
+        className="w-[44px] h-[44px] object-contain"
+      />
     </div>
   )
 }
 
-// UPS Logo  
+// FedEx Logo - Official Style
+function FedExLogo({ className }: { className?: string }) {
+  return (
+    <div className={`${className} flex items-center justify-center`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img 
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png"
+        alt="FedEx"
+        className="w-[44px] h-auto object-contain"
+      />
+    </div>
+  )
+}
+
+// UPS Logo - Official Style  
 function UPSLogo({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M24 4C24 4 8 4 8 20V36C8 36 8 44 24 44C40 44 40 36 40 36V20C40 4 24 4 24 4Z" fill="#351C15"/>
-      <path d="M24 8C24 8 12 8 12 20V32C12 32 12 40 24 40C36 40 36 32 36 32V20C36 8 24 8 24 8Z" fill="#FFB500"/>
-      <text x="24" y="28" textAnchor="middle" fill="#351C15" fontSize="10" fontWeight="bold">UPS</text>
-    </svg>
+    <div className={`${className} flex items-center justify-center`}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img 
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/UPS_Logo_Shield_2017.svg/220px-UPS_Logo_Shield_2017.svg.png"
+        alt="UPS"
+        className="w-[36px] h-auto object-contain"
+      />
+    </div>
   )
 }
 
@@ -347,8 +353,8 @@ export function EbayShippingPageDefault() {
                         <div className="flex flex-col flex-1 min-w-0">
                           {/* Recommended Badge */}
                           {service.recommended && (
-                            <span className="inline-flex items-center px-2 py-0.5 rounded-[10px] bg-[#E7F1FF] w-fit mb-1">
-                              <span className="text-[11px] text-[#3665F3] font-medium uppercase tracking-wide" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
+                            <span className="inline-flex items-center px-2 py-[3px] rounded-[4px] bg-[#E7F1FF] w-fit mb-1.5">
+                              <span className="text-[11px] text-[#3665F3] font-semibold uppercase tracking-[0.5px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
                             </span>
                           )}
                           <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
