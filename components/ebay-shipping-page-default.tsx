@@ -540,7 +540,7 @@ export function EbayShippingPageDefault() {
             <div className="py-5">
               <h2 className="text-[14px] font-bold text-[#191919] mb-0.5" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>International shipping</h2>
               <span className="text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
-                <button className="underline text-[#191919]">Fees</button> apply for international sales.
+                <button className="underline text-[#3665F3]">Fees</button> apply for international sales.
               </span>
 
               {/* Destination Dropdown */}
