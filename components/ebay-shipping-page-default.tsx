@@ -154,9 +154,15 @@ function USPSLogo({ className }: { className?: string }) {
     <div className={`${className} flex items-center justify-center`}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img 
-        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/USPS_Eagle_Symbol.svg/320px-USPS_Eagle_Symbol.svg.png"
+        src="https://www.usps.com/global-elements/header/images/utility-header/logo-sb.svg"
         alt="USPS"
-        className="w-[44px] h-[44px] object-contain"
+        className="w-[40px] h-[40px] object-contain"
+        onError={(e) => {
+          // Fallback to text-based logo if image fails
+          const target = e.target as HTMLImageElement;
+          target.style.display = 'none';
+          target.parentElement!.innerHTML = '<span style="font-size: 12px; font-weight: 800; color: #333366; letter-spacing: 0.5px;">USPS</span>';
+        }}
       />
     </div>
   )
@@ -331,7 +337,7 @@ export function EbayShippingPageDefault() {
               <span className="text-[13px] font-bold text-[#191919] block mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Default service</span>
               
               {/* Service Cards */}
-              <div className="flex flex-col gap-2 mb-3">
+              <div className="flex flex-col gap-3 mb-4">
                 {domesticServices.map((service) => {
                   const isSelected = selectedDomesticService === service.id
                   return (
@@ -374,16 +380,17 @@ export function EbayShippingPageDefault() {
               </div>
 
               {/* View All Services Button */}
-              <button className="w-full h-[48px] border border-[#767676] rounded-full flex items-center justify-center mb-4">
+              <button className="w-full h-[48px] border border-[#767676] rounded-full flex items-center justify-center mb-5">
                 <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>View all services</span>
               </button>
 
-              {/* Buyer Pays / Seller Pays Toggle */}
-              <div className="flex justify-center mb-3">
-                <div className="inline-flex bg-[#F7F7F7] rounded-full p-0.5">
+              {/* Buyer/Seller Pays Toggle - Grey background container */}
+              <div className="bg-[#F7F7F7] rounded-[12px] p-4 mb-4">
+                {/* Toggle Buttons */}
+                <div className="flex bg-[#E5E5E5] rounded-full p-[3px] mb-4">
                   <button
                     onClick={() => setPaymentType("buyer")}
-                    className={`px-4 py-2 rounded-full text-[14px] font-medium transition-colors ${
+                    className={`flex-1 h-[36px] rounded-full text-[14px] font-medium transition-colors ${
                       paymentType === "buyer"
                         ? "bg-[#191919] text-white"
                         : "bg-transparent text-[#191919]"
@@ -394,7 +401,7 @@ export function EbayShippingPageDefault() {
                   </button>
                   <button
                     onClick={() => setPaymentType("seller")}
-                    className={`px-4 py-2 rounded-full text-[14px] font-medium transition-colors ${
+                    className={`flex-1 h-[36px] rounded-full text-[14px] font-medium transition-colors ${
                       paymentType === "seller"
                         ? "bg-[#191919] text-white"
                         : "bg-transparent text-[#191919]"
@@ -404,16 +411,16 @@ export function EbayShippingPageDefault() {
                     Seller pays
                   </button>
                 </div>
-              </div>
 
-              {/* Payment Summary */}
-              <div className="flex flex-col items-center mb-4">
-                <span className="text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>The buyer will pay:</span>
-                <span className="text-[20px] font-bold text-[#191919] mt-0.5" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>$X.XX-$XX.XX</span>
-                <span className="text-[13px] text-[#707070] mt-0.5" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Cost is based on buyer&apos;s location.</span>
-                <button className="text-[13px] text-[#191919] underline mt-1" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
-                  Edit shipping cost
-                </button>
+                {/* Cost Display */}
+                <div className="text-center">
+                  <span className="text-[13px] text-[#707070] block" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>The buyer will pay:</span>
+                  <span className="text-[18px] font-bold text-[#191919] block mt-1" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>$X.XX-$XX.XX</span>
+                  <span className="text-[13px] text-[#707070] block mt-1" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Cost is based on buyer&apos;s location.</span>
+                  <button className="text-[13px] text-[#191919] underline mt-1" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
+                    Edit shipping cost
+                  </button>
+                </div>
               </div>
 
               {/* Additional Service */}
@@ -598,18 +605,22 @@ export function EbayShippingPageDefault() {
                 </div>
               </div>
 
-              {/* Header */}
-              <div className="h-[44px] px-4 flex items-center justify-between bg-white flex-shrink-0">
-                <button onClick={() => setShowPackageSheet(false)} className="w-10 h-10 flex items-center justify-center">
+              {/* Navigation Header - Back button only */}
+              <div className="h-[44px] px-4 flex items-center bg-white flex-shrink-0">
+                <button 
+                  onClick={() => setShowPackageSheet(false)} 
+                  className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                >
                   <BackArrow className="w-6 h-6 text-[#191919]" />
                 </button>
-                <span className="text-[16px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Package details</span>
-                <div className="w-10 h-10" />
               </div>
 
-              {/* Content */}
-              <div className="flex-1 overflow-y-auto px-4 pt-4">
-                <h3 className="text-[14px] font-bold text-[#191919] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Select size type</h3>
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto px-4 pb-24">
+                {/* Title */}
+                <h1 className="text-[22px] font-bold text-[#191919] leading-[28px] mt-2 mb-6" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
+                  Package details
+                </h1>
                 
                 {/* Custom Size Option */}
                 <button onClick={() => setPackageSizeType("custom")} className="flex gap-3 items-start w-full text-left">
@@ -642,21 +653,48 @@ export function EbayShippingPageDefault() {
                         </div>
                       </div>
                     </div>
+                    {/* Length */}
                     <div className="flex flex-col gap-1.5">
-                      <label className="text-[13px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Dimensions (L x W x H)</label>
-                      <div className="flex gap-2">
-                        <div className="flex-1 h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
-                          <input type="text" value={dimensionA} onChange={(e) => setDimensionA(e.target.value)} className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none text-center" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }} />
-                        </div>
-                        <span className="flex items-center text-[#707070]">x</span>
-                        <div className="flex-1 h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
-                          <input type="text" value={dimensionB} onChange={(e) => setDimensionB(e.target.value)} className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none text-center" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }} />
-                        </div>
-                        <span className="flex items-center text-[#707070]">x</span>
-                        <div className="flex-1 h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
-                          <input type="text" value={dimensionC} onChange={(e) => setDimensionC(e.target.value)} className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none text-center" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }} />
-                        </div>
-                        <span className="flex items-center text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>in.</span>
+                      <label className="text-[13px] text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Length</label>
+                      <div className="h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
+                        <input 
+                          type="text" 
+                          value={dimensionA}
+                          onChange={(e) => setDimensionA(e.target.value)}
+                          className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none"
+                          style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}
+                        />
+                        <span className="text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>in.</span>
+                      </div>
+                    </div>
+
+                    {/* Width */}
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[13px] text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Width</label>
+                      <div className="h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
+                        <input 
+                          type="text" 
+                          value={dimensionB}
+                          onChange={(e) => setDimensionB(e.target.value)}
+                          className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none"
+                          style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}
+                        />
+                        <span className="text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>in.</span>
+                      </div>
+                    </div>
+
+                    {/* Height */}
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[13px] text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Height</label>
+                      <div className="h-[44px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex items-center px-3">
+                        <input 
+                          type="text" 
+                          value={dimensionC}
+                          onChange={(e) => setDimensionC(e.target.value)}
+                          className="flex-1 bg-transparent text-[14px] text-[#191919] outline-none"
+                          style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}
+                        />
+                        <span className="text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>in.</span>
                       </div>
                     </div>
                   </div>
@@ -722,57 +760,85 @@ export function EbayShippingPageDefault() {
                 </div>
               </div>
 
-              {/* Header */}
+              {/* Navigation Header - Back and X buttons */}
               <div className="h-[44px] px-4 flex items-center justify-between bg-white flex-shrink-0">
-                <button onClick={() => setShowDeliveryDetailsSheet(false)} className="w-10 h-10 flex items-center justify-center">
+                <button 
+                  onClick={() => setShowDeliveryDetailsSheet(false)} 
+                  className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                >
                   <BackArrow className="w-6 h-6 text-[#191919]" />
                 </button>
-                <span className="text-[16px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Delivery details</span>
-                <div className="w-10 h-10" />
+                <button 
+                  onClick={() => setShowDeliveryDetailsSheet(false)} 
+                  className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                >
+                  <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                </button>
               </div>
 
-              {/* Content */}
-              <div className="flex-1 overflow-y-auto px-4 pt-4">
-                {/* Item Location */}
-                <div className="mb-5">
-                  <h3 className="text-[14px] font-bold text-[#191919] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Item location</h3>
-                  <div className="h-[56px] bg-[#F7F7F7] border border-[#767676] rounded-[8px] flex flex-col justify-center px-3">
-                    <span className="text-[12px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>ZIP code</span>
-                    <input type="text" value={itemLocation} onChange={(e) => setItemLocation(e.target.value)} className="bg-transparent text-[14px] text-[#191919] outline-none" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }} />
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto px-4 pb-28">
+                {/* Page Title */}
+                <h1 className="text-[24px] font-bold text-[#191919] leading-[32px] mt-2 mb-6" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
+                  Delivery details
+                </h1>
+
+                {/* Item Location Section */}
+                <div className="mb-4">
+                  <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Item location</h2>
+                  
+                  <div className="w-full p-3 bg-[#F7F7F7] rounded-[8px] flex items-start justify-between">
+                    <div className="flex flex-col">
+                      <span className="text-[14px] text-[#191919] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Located at {itemLocation} (visible on listing)</span>
+                    </div>
+                    <button className="text-[14px] text-[#191919] underline ml-3 flex-shrink-0" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
+                      Edit
+                    </button>
                   </div>
-                  <span className="text-[12px] text-[#707070] mt-1 block" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Visible on listing</span>
                 </div>
 
-                <div className="h-[1px] bg-[#E5E5E5] -mx-4 mb-5" style={{ width: 'calc(100% + 32px)' }} />
+                {/* Divider */}
+                <div className="h-[1px] bg-[#E5E5E5] my-4" />
 
-                {/* Handling Time */}
-                <div className="mb-5">
-                  <h3 className="text-[14px] font-bold text-[#191919] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Handling time</h3>
-                  <button onClick={() => setShowHandlingTimeSheet(true)} className="w-full h-[48px] px-4 bg-white border border-[#767676] rounded-[8px] flex items-center justify-between">
+                {/* Handling Time Section */}
+                <div className="mb-4">
+                  <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Handling time</h2>
+                  <button 
+                    onClick={() => setShowHandlingTimeSheet(true)}
+                    className="w-full h-[48px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between"
+                  >
                     <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{handlingTime}</span>
-                    <ChevronDown className="w-5 h-5 text-[#191919]" />
+                    <ChevronDown className="w-4 h-4 text-[#191919]" />
                   </button>
                 </div>
 
-                <div className="h-[1px] bg-[#E5E5E5] -mx-4 mb-5" style={{ width: 'calc(100% + 32px)' }} />
+                {/* Divider */}
+                <div className="h-[1px] bg-[#E5E5E5] my-4" />
 
-                {/* Returns */}
-                <div className="pb-4">
-                  <h3 className="text-[14px] font-bold text-[#191919] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Returns</h3>
-                  <div className="p-4 bg-[#F7F7F7] rounded-[8px]">
-                    <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{returns}</span>
+                {/* Returns Section */}
+                <div>
+                  <div className="mb-4">
+                    <h2 className="text-[16px] font-bold text-[#191919] leading-[24px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Returns</h2>
+                    <p className="text-[14px] text-[#707070] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{returns}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="h-[1px] bg-[#E5E5E5] w-full" />
-              <div className="px-4 pb-3 pt-4 bg-white">
-                <button onClick={() => setShowDeliveryDetailsSheet(false)} className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]">
-                  <span className="text-[16px] font-bold text-white" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Save</span>
-                </button>
-              </div>
-              <div className="h-[34px] flex items-center justify-center bg-white">
-                <div className="w-[134px] h-[5px] bg-[#191919] rounded-full" />
+              {/* Fixed Bottom Button */}
+              <div className="absolute bottom-0 left-0 right-0 bg-white">
+                <div className="h-[1px] bg-[#E5E5E5]" />
+                <div className="px-4 pb-3 pt-3">
+                  <button 
+                    onClick={() => setShowDeliveryDetailsSheet(false)}
+                    className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]"
+                  >
+                    <span className="text-[16px] font-bold text-white" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Save</span>
+                  </button>
+                </div>
+                {/* Home Indicator */}
+                <div className="h-[34px] flex items-center justify-center">
+                  <div className="w-[134px] h-[5px] bg-[#191919] rounded-full" />
+                </div>
               </div>
             </div>
           </div>
