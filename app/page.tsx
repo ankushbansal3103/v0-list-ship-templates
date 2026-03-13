@@ -179,22 +179,27 @@ export default function PrototypeLibrary() {
   const filteredSites = sites
     .filter(site => !selectedSite || site.id === selectedSite)
     .map(site => {
-      const searchLower = searchQuery.toLowerCase()
-      const siteMatchesSearch = !searchQuery || 
-        site.name.toLowerCase().includes(searchLower) ||
-        site.code.toLowerCase().includes(searchLower) ||
-        site.id.toLowerCase().includes(searchLower)
+      // Split search query into individual words for multi-word matching
+      const searchWords = searchQuery.toLowerCase().trim().split(/\s+/).filter(Boolean)
+      
+      // Check if all search words match against site fields
+      const siteSearchText = `${site.name} ${site.code} ${site.id}`.toLowerCase()
+      const siteMatchesSearch = searchWords.length === 0 || 
+        searchWords.every(word => siteSearchText.includes(word))
       
       return {
         ...site,
         prototypes: site.prototypes.filter(p => {
           const matchesPlatform = !selectedPlatform || p.platform === selectedPlatform
-          const prototypeMatchesSearch = !searchQuery || 
-            p.name.toLowerCase().includes(searchLower) ||
-            p.description.toLowerCase().includes(searchLower) ||
-            p.id.toLowerCase().includes(searchLower)
-          // Show prototype if site matches OR prototype matches
-          return matchesPlatform && (siteMatchesSearch || prototypeMatchesSearch)
+          
+          // Combine all searchable prototype fields
+          const prototypeSearchText = `${p.name} ${p.description} ${p.id} ${site.name} ${site.code}`.toLowerCase()
+          
+          // All search words must be found somewhere in the combined text
+          const prototypeMatchesSearch = searchWords.length === 0 || 
+            searchWords.every(word => prototypeSearchText.includes(word))
+          
+          return matchesPlatform && prototypeMatchesSearch
         })
       }
     }).filter(site => site.prototypes.length > 0)
