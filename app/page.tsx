@@ -409,11 +409,11 @@ export default function PrototypeLibrary() {
   <EbayShippingPageFRDefaultAndroid />
   </div>
   ) : prototype.status === 'active' && prototype.platform === 'dweb' ? (
-  <div className="flex items-center justify-center w-full h-full p-3">
+  <div className="flex items-center justify-center w-full h-full p-3" style={{ fontFamily: "'Market Sans', -apple-system, BlinkMacSystemFont, sans-serif" }}>
     {/* Desktop Monitor Frame */}
     <div className="flex flex-col items-center">
       {/* Monitor */}
-      <div className="w-[260px] bg-[#1a1a1a] rounded-t-lg p-1.5">
+      <div className="w-[265px] bg-[#1a1a1a] rounded-t-lg p-1.5">
         <div className="bg-white rounded-sm overflow-hidden">
           {/* Browser Tab Bar */}
           <div className="bg-[#DEE1E6] px-2 py-1 flex items-center gap-1">
@@ -431,38 +431,48 @@ export default function PrototypeLibrary() {
           </div>
           {/* Page Content */}
           <div className="p-2 bg-[#FAFAFA]">
-            <div className="text-[6px] font-bold text-[#191919] mb-1.5">DELIVERY</div>
+            <div className="text-[6px] font-bold text-[#191919] mb-1.5 tracking-wide">DELIVERY</div>
             <div className="flex gap-1 mb-2">
-              <div className="flex-1 bg-white border border-[#191919] rounded p-1">
-                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
-                <div className="text-[5px] font-medium text-[#191919]">Shipping or pickup</div>
+              {/* Shipping or pickup - Selected */}
+              <div className="flex-1 bg-[#F7F7F7] border-2 border-[#191919] rounded p-1.5">
+                <svg className="w-3 h-3 text-[#191919] mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M8 17h8M8 17a2 2 0 11-4 0 2 2 0 014 0zm8 0a2 2 0 104 0 2 2 0 00-4 0zm-8 0H5a2 2 0 01-2-2V6h12v9m-7 2h7m0 0h3l3-3V9h-6" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <div className="text-[5px] font-bold text-[#191919] leading-tight">Shipping or pickup</div>
               </div>
-              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
-                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
-                <div className="text-[5px] text-[#707070]">Shipping only</div>
+              {/* Shipping only */}
+              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1.5">
+                <svg className="w-3 h-3 text-[#707070] mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <div className="text-[5px] text-[#707070] leading-tight">Shipping only</div>
               </div>
-              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
-                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
-                <div className="text-[5px] text-[#707070]">Pick up only</div>
+              {/* Pick up only */}
+              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1.5">
+                <svg className="w-3 h-3 text-[#707070] mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <div className="text-[5px] text-[#707070] leading-tight">Pick up only</div>
               </div>
             </div>
             <div className="text-[5px] font-bold text-[#191919] mb-1">Package details</div>
-            <div className="bg-white border border-[#C4C4C4] rounded p-1 flex justify-between items-center mb-2">
+            <div className="bg-white border border-[#C4C4C4] rounded p-1.5 flex justify-between items-center mb-2">
               <div>
-                <div className="text-[5px] font-medium text-[#191919]">Parcel</div>
-                <div className="text-[4px] text-[#707070]">Up to 500 g</div>
+                <div className="text-[5px] font-bold text-[#191919]">Parcel</div>
+                <div className="text-[4px] text-[#707070]">Up to 500 g, Max 120 cm</div>
               </div>
-              <svg className="w-2 h-2 text-[#707070]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              <svg className="w-2 h-2 text-[#191919]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </div>
             <div className="text-[5px] font-bold text-[#191919] mb-1">Domestic shipping</div>
             <div className="flex gap-1">
               <div className="flex-1 bg-[#F7F7F7] border-2 border-[#191919] rounded p-1">
-                <div className="text-[5px] font-medium text-[#191919]">Mondial Relay</div>
-                <div className="text-[4px] text-[#707070]">X-X days</div>
+                <div className="text-[5px] font-bold text-[#191919]">Mondial Relay</div>
+                <div className="text-[4px] text-[#707070]">3-5 business days</div>
               </div>
               <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
                 <div className="text-[5px] text-[#707070]">Colissimo</div>
-                <div className="text-[4px] text-[#707070]">X-X days</div>
+                <div className="text-[4px] text-[#707070]">2-3 business days</div>
               </div>
             </div>
           </div>
@@ -674,11 +684,11 @@ export default function PrototypeLibrary() {
   <EbayShippingPageFRDefaultAndroid />
   </div>
   ) : prototype.status === 'active' && prototype.platform === 'dweb' ? (
-  <div className="flex items-center justify-center w-full h-full p-3">
+  <div className="flex items-center justify-center w-full h-full p-3" style={{ fontFamily: "'Market Sans', -apple-system, BlinkMacSystemFont, sans-serif" }}>
     {/* Desktop Monitor Frame */}
     <div className="flex flex-col items-center">
       {/* Monitor */}
-      <div className="w-[260px] bg-[#1a1a1a] rounded-t-lg p-1.5">
+      <div className="w-[265px] bg-[#1a1a1a] rounded-t-lg p-1.5">
         <div className="bg-white rounded-sm overflow-hidden">
           {/* Browser Tab Bar */}
           <div className="bg-[#DEE1E6] px-2 py-1 flex items-center gap-1">
@@ -696,38 +706,48 @@ export default function PrototypeLibrary() {
           </div>
           {/* Page Content */}
           <div className="p-2 bg-[#FAFAFA]">
-            <div className="text-[6px] font-bold text-[#191919] mb-1.5">DELIVERY</div>
+            <div className="text-[6px] font-bold text-[#191919] mb-1.5 tracking-wide">DELIVERY</div>
             <div className="flex gap-1 mb-2">
-              <div className="flex-1 bg-white border border-[#191919] rounded p-1">
-                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
-                <div className="text-[5px] font-medium text-[#191919]">Shipping or pickup</div>
+              {/* Shipping or pickup - Selected */}
+              <div className="flex-1 bg-[#F7F7F7] border-2 border-[#191919] rounded p-1.5">
+                <svg className="w-3 h-3 text-[#191919] mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M8 17h8M8 17a2 2 0 11-4 0 2 2 0 014 0zm8 0a2 2 0 104 0 2 2 0 00-4 0zm-8 0H5a2 2 0 01-2-2V6h12v9m-7 2h7m0 0h3l3-3V9h-6" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <div className="text-[5px] font-bold text-[#191919] leading-tight">Shipping or pickup</div>
               </div>
-              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
-                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
-                <div className="text-[5px] text-[#707070]">Shipping only</div>
+              {/* Shipping only */}
+              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1.5">
+                <svg className="w-3 h-3 text-[#707070] mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <div className="text-[5px] text-[#707070] leading-tight">Shipping only</div>
               </div>
-              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
-                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
-                <div className="text-[5px] text-[#707070]">Pick up only</div>
+              {/* Pick up only */}
+              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1.5">
+                <svg className="w-3 h-3 text-[#707070] mb-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+                <div className="text-[5px] text-[#707070] leading-tight">Pick up only</div>
               </div>
             </div>
             <div className="text-[5px] font-bold text-[#191919] mb-1">Package details</div>
-            <div className="bg-white border border-[#C4C4C4] rounded p-1 flex justify-between items-center mb-2">
+            <div className="bg-white border border-[#C4C4C4] rounded p-1.5 flex justify-between items-center mb-2">
               <div>
-                <div className="text-[5px] font-medium text-[#191919]">Parcel</div>
-                <div className="text-[4px] text-[#707070]">Up to 500 g</div>
+                <div className="text-[5px] font-bold text-[#191919]">Parcel</div>
+                <div className="text-[4px] text-[#707070]">Up to 500 g, Max 120 cm</div>
               </div>
-              <svg className="w-2 h-2 text-[#707070]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              <svg className="w-2 h-2 text-[#191919]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
             </div>
             <div className="text-[5px] font-bold text-[#191919] mb-1">Domestic shipping</div>
             <div className="flex gap-1">
               <div className="flex-1 bg-[#F7F7F7] border-2 border-[#191919] rounded p-1">
-                <div className="text-[5px] font-medium text-[#191919]">Mondial Relay</div>
-                <div className="text-[4px] text-[#707070]">X-X days</div>
+                <div className="text-[5px] font-bold text-[#191919]">Mondial Relay</div>
+                <div className="text-[4px] text-[#707070]">3-5 business days</div>
               </div>
               <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
                 <div className="text-[5px] text-[#707070]">Colissimo</div>
-                <div className="text-[4px] text-[#707070]">X-X days</div>
+                <div className="text-[4px] text-[#707070]">2-3 business days</div>
               </div>
             </div>
           </div>
