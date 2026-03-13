@@ -104,6 +104,9 @@ export default function PrototypeLibrary() {
   const [selectedSite, setSelectedSite] = useState<string | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
   const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
+  const [showBranchModal, setShowBranchModal] = useState(false)
+  const [branchName, setBranchName] = useState("")
+  const [selectedPrototype, setSelectedPrototype] = useState<{ id: string; route: string; name: string } | null>(null)
 
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
@@ -136,12 +139,25 @@ export default function PrototypeLibrary() {
   }).filter(Boolean)
 
   const handleUseTemplate = (prototypeId: string) => {
-    // Navigate to the actual prototype page
-    // User can iterate using v0's chat - changes are isolated to their branch
     const prototype = sites.flatMap(s => s.prototypes).find(p => p.id === prototypeId)
     if (prototype) {
-      router.push(prototype.route)
+      setSelectedPrototype({ id: prototype.id, route: prototype.route, name: prototype.name })
+      setBranchName("")
+      setShowBranchModal(true)
     }
+  }
+
+  const handleStartBuilding = () => {
+    if (!branchName.trim() || !selectedPrototype) return
+    
+    // Store branch name for reference (in production, this would create a real branch)
+    const sanitizedBranch = branchName.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-')
+    localStorage.setItem('v0-working-branch', sanitizedBranch)
+    localStorage.setItem('v0-prototype-id', selectedPrototype.id)
+    
+    // Navigate to the prototype
+    setShowBranchModal(false)
+    router.push(selectedPrototype.route)
   }
 
   return (
@@ -501,7 +517,60 @@ export default function PrototypeLibrary() {
         </div>
       </footer>
 
-      
+      {/* Branch Name Modal */}
+      {showBranchModal && selectedPrototype && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-[#111] border border-[#333] rounded-2xl w-full max-w-md overflow-hidden">
+            <div className="p-6 border-b border-[#222]">
+              <h2 className="text-white font-semibold text-xl">Start Building</h2>
+              <p className="text-[#888] text-sm mt-1">
+                Create a branch to work on <span className="text-white">{selectedPrototype.name}</span>
+              </p>
+            </div>
+            
+            <div className="p-6">
+              <label className="block text-sm text-[#888] mb-2">Branch Name</label>
+              <input
+                type="text"
+                value={branchName}
+                onChange={(e) => setBranchName(e.target.value)}
+                placeholder="my-feature-branch"
+                className="w-full h-12 px-4 bg-[#0a0a0a] border border-[#333] rounded-lg text-white placeholder:text-[#555] focus:outline-none focus:border-blue-500 transition-colors"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && branchName.trim()) {
+                    handleStartBuilding()
+                  }
+                }}
+              />
+              <p className="text-[#555] text-xs mt-2">
+                Your changes will be isolated to this branch
+              </p>
+            </div>
+            
+            <div className="p-6 pt-0 flex items-center gap-3">
+              <button
+                onClick={handleStartBuilding}
+                disabled={!branchName.trim()}
+                className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <ChevronRight className="w-4 h-4" />
+                Start Building
+              </button>
+              <button
+                onClick={() => {
+                  setShowBranchModal(false)
+                  setSelectedPrototype(null)
+                  setBranchName("")
+                }}
+                className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
