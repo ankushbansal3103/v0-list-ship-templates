@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Search, Copy, ExternalLink, ChevronRight, Check, X } from "lucide-react"
+import { Search, ExternalLink, ChevronRight, Check, X } from "lucide-react"
 import { EbayShippingPage } from "@/components/ebay-shipping-page"
 
 // Filter options
@@ -103,8 +103,6 @@ export default function PrototypeLibrary() {
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
   const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
   const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [showModal, setShowModal] = useState(false)
-  const [modalPrompt, setModalPrompt] = useState("")
 
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
@@ -139,35 +137,29 @@ export default function PrototypeLibrary() {
   const handleCopy = async (prototypeId: string) => {
     setCopiedId(prototypeId)
     
-    // Fetch the actual template code from our API
     try {
+      // Fetch the template code from API
       const response = await fetch(`/api/template/${prototypeId}`)
       const data = await response.json()
       
-      // Use the actual code, not just instructions
-      const code = data.code
+      if (data.error) {
+        throw new Error(data.error)
+      }
       
-      // Show modal with the actual code
-      setModalPrompt(code)
-      setShowModal(true)
+      // Encode the prompt for URL
+      const encodedPrompt = encodeURIComponent(data.prompt)
+      
+      // Open v0.dev with the prompt pre-loaded in chat
+      // v0.dev accepts a 'q' parameter for initial prompt
+      window.open(`https://v0.dev/chat?q=${encodedPrompt}`, '_blank')
+      
       setCopiedId(null)
       
     } catch {
-      // Fallback - tell user to contact support
-      setModalPrompt(`Error loading template "${prototypeId}". Please try again or contact support.`)
-      setShowModal(true)
-      setCopiedId(null)
-    }
-  }
-  
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(modalPrompt)
-      // Open v0.dev after successful copy
+      // Fallback - open v0.dev without prompt
+      alert('Could not load template. Opening v0.dev...')
       window.open('https://v0.dev', '_blank')
-    } catch {
-      // Fallback for clipboard failure
-      console.log("[v0] Clipboard failed, prompt available in textarea")
+      setCopiedId(null)
     }
   }
 
@@ -441,12 +433,12 @@ export default function PrototypeLibrary() {
                           {copiedId === prototype.id ? (
                             <>
                               <Check className="w-4 h-4" />
-                              Copied! Opening v0...
+                              Opening v0...
                             </>
                           ) : (
                             <>
-                              <Copy className="w-4 h-4" />
-                              Use Template
+                              <ExternalLink className="w-4 h-4" />
+                              Start Building
                             </>
                           )}
                         </button>
@@ -534,52 +526,7 @@ export default function PrototypeLibrary() {
         </div>
       </footer>
 
-      {/* Copy Template Modal */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#111] border border-[#333] rounded-2xl max-w-4xl w-full max-h-[85vh] flex flex-col">
-            {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-[#222]">
-              <div>
-                <h2 className="text-white font-semibold text-lg">Copy Prototype Code</h2>
-                <p className="text-[#888] text-sm">This is the exact code for the prototype. Paste into v0 to create your copy.</p>
-              </div>
-              <button 
-                onClick={() => setShowModal(false)}
-                className="w-8 h-8 flex items-center justify-center text-[#666] hover:text-white transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            
-            {/* Modal Content */}
-            <div className="flex-1 p-4 overflow-auto">
-              <textarea
-                readOnly
-                value={modalPrompt}
-                className="w-full h-[400px] bg-[#0a0a0a] border border-[#333] rounded-lg p-4 text-[#ccc] text-xs font-mono resize-none focus:outline-none focus:border-blue-500"
-              />
-            </div>
-            
-            {/* Modal Actions */}
-            <div className="p-4 border-t border-[#222] flex items-center gap-3">
-              <button
-                onClick={copyToClipboard}
-                className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-              >
-                <Copy className="w-4 h-4" />
-                Copy Code & Open v0.dev
-              </button>
-              <button
-                onClick={() => setShowModal(false)}
-                className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      
     </div>
   )
 }
