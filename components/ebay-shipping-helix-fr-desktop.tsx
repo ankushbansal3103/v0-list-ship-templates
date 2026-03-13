@@ -25,6 +25,7 @@ type ModalType =
   | "internationalShippingCost"
   | "deliveryDetails"
   | "destinationDropdown"
+  | "packageDetails"
 
 // ============================================================================
 // DATA
@@ -101,6 +102,41 @@ const returnPeriodOptions = [
 const returnShippingOptions = [
   { id: "buyer", label: "Buyer" },
   { id: "seller", label: "Seller" },
+]
+
+// Package details presets
+const packagePresets = [
+  {
+    id: "letter",
+    name: "Letter",
+    description: "Up to 60 x 30 x 3 cm",
+    icon: "letter",
+    sizes: [
+      { id: "letter-20g", weight: "Up to 20 g", description: "Fits items like stamps" },
+      { id: "letter-100g", weight: "Up to 100 g", description: "Fits items like trading cards or coins" },
+      { id: "letter-250g", weight: "Up to 250 g", description: "Fits items like CDs or jeux vidéos" },
+      { id: "letter-2kg", weight: "Up to 2 kg", description: "Fits items like comic books or vyniles" },
+    ]
+  },
+  {
+    id: "parcel",
+    name: "Parcel",
+    description: "Max 120 cm any side",
+    icon: "parcel",
+    sizes: [
+      { id: "parcel-500g", weight: "Up to 500 g", description: "Fits items like t-shirts or watches" },
+      { id: "parcel-1kg", weight: "Up to 1 kg", description: "Fits items like smartphones" },
+      { id: "parcel-2kg", weight: "Up to 2 kg", description: "Fits items like handbags" },
+      { id: "parcel-5kg", weight: "Up to 5 kg", description: "Fits items like laptops or game consoles" },
+      { id: "parcel-10kg", weight: "Up to 10 kg", description: "Fits items like small furniture" },
+      { id: "parcel-30kg", weight: "Up to 30 kg", description: "Fits items like sport equipment" },
+    ]
+  }
+]
+
+const oversizedOptions = [
+  { id: "oversized", weight: "Oversized", description: "Above 30 kg or 120 cm any side" },
+  { id: "unknown", weight: "I don't know size", description: "Set your own shipping rate" },
 ]
 
 // ============================================================================
@@ -206,6 +242,32 @@ function DeliveryMethodIcon({ type, className }: { type: string; className?: str
     default:
       return null
   }
+}
+
+function LetterIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="5" width="20" height="14" rx="1" stroke="#191919" strokeWidth="1.5" fill="none"/>
+      <path d="M2 7l10 6 10-6" stroke="#191919" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+}
+
+function ParcelIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 8l9-4 9 4v8l-9 4-9-4V8z" stroke="#191919" strokeWidth="1.5" fill="none"/>
+      <path d="M3 8l9 4 9-4M12 12v8" stroke="#191919" strokeWidth="1.5"/>
+    </svg>
+  )
+}
+
+function ChevronUpIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 10l4-4 4 4" stroke="#707070" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
 }
 
 // ============================================================================
@@ -398,6 +460,15 @@ export function EbayShippingHelixFRDesktop() {
   const [defaultShippingCost, setDefaultShippingCost] = useState("X,XX")
   const [additionalShippingCost, setAdditionalShippingCost] = useState("X,XX")
   const [internationalShippingCost, setInternationalShippingCost] = useState("X,XX")
+  
+  // Package details state
+  const [selectedPackageType, setSelectedPackageType] = useState("parcel")
+  const [selectedPackageSize, setSelectedPackageSize] = useState("parcel-500g")
+  const [expandedPresets, setExpandedPresets] = useState<string[]>(["parcel"])
+  
+  // Temp state for package modal
+  const [tempPackageType, setTempPackageType] = useState("")
+  const [tempPackageSize, setTempPackageSize] = useState("")
 
   // Modal handlers
   const openModal = (modal: ModalType, initialService?: string) => {
@@ -405,11 +476,18 @@ export function EbayShippingHelixFRDesktop() {
     if (initialService) {
       setTempSelectedService(initialService)
     }
+    if (modal === "packageDetails") {
+      setTempPackageType(selectedPackageType)
+      setTempPackageSize(selectedPackageSize)
+      setExpandedPresets([selectedPackageType])
+    }
   }
 
   const closeModal = () => {
     setActiveModal(null)
     setTempSelectedService("")
+    setTempPackageType("")
+    setTempPackageSize("")
   }
 
   const handleSaveService = () => {
@@ -422,6 +500,41 @@ export function EbayShippingHelixFRDesktop() {
     }
     closeModal()
   }
+
+  const handleSavePackage = () => {
+    if (tempPackageSize) {
+      setSelectedPackageType(tempPackageType)
+      setSelectedPackageSize(tempPackageSize)
+    }
+    closeModal()
+  }
+
+  const togglePresetExpanded = (presetId: string) => {
+    setExpandedPresets(prev => 
+      prev.includes(presetId) 
+        ? prev.filter(id => id !== presetId)
+        : [...prev, presetId]
+    )
+  }
+
+  // Get selected package info for display
+  const getSelectedPackageInfo = () => {
+    // Check presets
+    for (const preset of packagePresets) {
+      const size = preset.sizes.find(s => s.id === selectedPackageSize)
+      if (size) {
+        return { preset: preset.name, size: size.weight, dimensions: preset.description }
+      }
+    }
+    // Check oversized
+    const oversized = oversizedOptions.find(o => o.id === selectedPackageSize)
+    if (oversized) {
+      return { preset: oversized.weight, size: "", dimensions: oversized.description }
+    }
+    return { preset: "Parcel", size: "Up to 500 g", dimensions: "AA x BB x CC cm" }
+  }
+
+  const packageInfo = getSelectedPackageInfo()
 
   return (
     <div className="min-h-screen bg-white" style={{ fontFamily: "'Market Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
@@ -542,10 +655,13 @@ export function EbayShippingHelixFRDesktop() {
           {/* ============================================================ */}
           <div className="mb-14">
             <h3 className="text-base font-bold text-[#191919] mb-4">Package details</h3>
-            <button className="w-full p-4 border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors">
+            <button 
+              onClick={() => openModal("packageDetails")}
+              className="w-full p-4 border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors"
+            >
               <div>
-                <div className="text-sm font-medium text-[#191919]">Parcel</div>
-                <div className="text-sm text-[#707070]">Up to 500 g, AA x BB x CC cm</div>
+                <div className="text-sm font-medium text-[#191919]">{packageInfo.preset}</div>
+                <div className="text-sm text-[#707070]">{packageInfo.size}{packageInfo.size ? ', ' : ''}{packageInfo.dimensions}</div>
               </div>
               <ChevronRight className="w-5 h-5 text-[#191919]" />
             </button>
@@ -1114,6 +1230,126 @@ export function EbayShippingHelixFRDesktop() {
                 />
               </div>
             )}
+          </div>
+        </div>
+      </Modal>
+
+      {/* Package Details Modal */}
+      <Modal
+        isOpen={activeModal === "packageDetails"}
+        onClose={closeModal}
+        title="Package details"
+        footer={
+          <button
+            onClick={handleSavePackage}
+            className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
+          >
+            Save
+          </button>
+        }
+      >
+        <div className="pt-2">
+          {/* Letter and Parcel Presets */}
+          <div className="space-y-0">
+            {packagePresets.map((preset) => {
+              const isExpanded = expandedPresets.includes(preset.id)
+              return (
+                <div key={preset.id} className="border-b border-[#E5E5E5] last:border-b-0">
+                  {/* Preset Header */}
+                  <button
+                    onClick={() => togglePresetExpanded(preset.id)}
+                    className="w-full flex items-center gap-4 py-3 hover:bg-[#FAFAFA] transition-colors"
+                  >
+                    {/* Icon */}
+                    <div className="w-6 h-6 flex-shrink-0">
+                      {preset.icon === "letter" ? (
+                        <LetterIcon className="w-6 h-6" />
+                      ) : (
+                        <ParcelIcon className="w-6 h-6" />
+                      )}
+                    </div>
+                    {/* Text */}
+                    <div className="flex-1 text-left">
+                      <div className="text-base font-bold text-[#191919]">{preset.name}</div>
+                      <div className="text-sm text-[#707070]">{preset.description}</div>
+                    </div>
+                    {/* Chevron */}
+                    <ChevronUpIcon className={`w-4 h-4 transition-transform ${isExpanded ? '' : 'rotate-180'}`} />
+                  </button>
+
+                  {/* Expanded Sizes */}
+                  {isExpanded && (
+                    <div className="pl-10 pb-3 space-y-0">
+                      {preset.sizes.map((size) => (
+                        <button
+                          key={size.id}
+                          onClick={() => {
+                            setTempPackageType(preset.id)
+                            setTempPackageSize(size.id)
+                          }}
+                          className="w-full flex items-start gap-4 py-3 text-left hover:bg-[#FAFAFA] transition-colors"
+                        >
+                          {/* Radio */}
+                          <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
+                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                              tempPackageSize === size.id 
+                                ? 'border-[#191919] bg-[#191919]' 
+                                : 'border-[#8F8F8F]'
+                            }`}>
+                              {tempPackageSize === size.id && (
+                                <div className="w-2.5 h-2.5 rounded-full bg-white" />
+                              )}
+                            </div>
+                          </div>
+                          {/* Content */}
+                          <div className="flex-1">
+                            <div className="text-sm text-[#191919]">{size.weight}</div>
+                            <div className="text-sm text-[#707070]">{size.description}</div>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Don't see your size section */}
+          <div className="pt-6 border-t border-[#E5E5E5] mt-2">
+            <h4 className="text-base font-bold text-[#191919] mb-1">Don&apos;t see your size?</h4>
+            <p className="text-sm text-[#707070] mb-4">Select oversized for heavier or larger items.</p>
+            
+            <div className="space-y-0">
+              {oversizedOptions.map((option) => (
+                <button
+                  key={option.id}
+                  onClick={() => {
+                    setTempPackageType("oversized")
+                    setTempPackageSize(option.id)
+                  }}
+                  className="w-full flex items-start gap-4 py-3 text-left hover:bg-[#FAFAFA] transition-colors"
+                >
+                  {/* Radio */}
+                  <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
+                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                      tempPackageSize === option.id 
+                        ? 'border-[#191919] bg-[#191919]' 
+                        : 'border-[#8F8F8F]'
+                    }`}>
+                      {tempPackageSize === option.id && (
+                        <div className="w-2.5 h-2.5 rounded-full bg-white" />
+                      )}
+                    </div>
+                  </div>
+                  {/* Content */}
+                  <div className="flex-1">
+                    <div className="text-sm text-[#191919]">{option.weight}</div>
+                    <div className="text-sm text-[#707070]">{option.description}</div>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </Modal>
