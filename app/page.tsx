@@ -145,6 +145,7 @@ export default function PrototypeLibrary() {
   const [selectedSite, setSelectedSite] = useState<string | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
   const [recentlyUsedIds, setRecentlyUsedIds] = useState<{siteId: string, prototypeId: string}[]>([])
+  const [isClient, setIsClient] = useState(false)
 
   // Get all active prototypes for random selection
   const allActivePrototypes = sites.flatMap(site => 
@@ -153,17 +154,28 @@ export default function PrototypeLibrary() {
       .map(p => ({ siteId: site.id, prototypeId: p.id }))
   )
 
-  // Initialize recently used from localStorage or random selection
+  // Default prototypes to show before client hydration (deterministic, no randomness)
+  const defaultPrototypes = [
+    { siteId: "us", prototypeId: "us-shelby-ag" },
+    { siteId: "us", prototypeId: "us-shelby-default" },
+    { siteId: "uk", prototypeId: "uk-shelby-default" }
+  ]
+
+  // Initialize recently used from localStorage or use defaults
   useEffect(() => {
+    setIsClient(true)
     const stored = localStorage.getItem('recentlyUsedPrototypes')
     if (stored) {
-      setRecentlyUsedIds(JSON.parse(stored))
+      try {
+        setRecentlyUsedIds(JSON.parse(stored))
+      } catch {
+        setRecentlyUsedIds(defaultPrototypes)
+        localStorage.setItem('recentlyUsedPrototypes', JSON.stringify(defaultPrototypes))
+      }
     } else {
-      // Select 3 random active prototypes for first-time visitors
-      const shuffled = [...allActivePrototypes].sort(() => Math.random() - 0.5)
-      const randomThree = shuffled.slice(0, 3)
-      setRecentlyUsedIds(randomThree)
-      localStorage.setItem('recentlyUsedPrototypes', JSON.stringify(randomThree))
+      // Use deterministic default prototypes for first-time visitors
+      setRecentlyUsedIds(defaultPrototypes)
+      localStorage.setItem('recentlyUsedPrototypes', JSON.stringify(defaultPrototypes))
     }
   }, [])
 
@@ -332,7 +344,7 @@ export default function PrototypeLibrary() {
       </section>
 
       {/* Recently Used - Always show 3 prototypes */}
-      {!hasActiveFilters && recentPrototypes.length > 0 && (
+      {!hasActiveFilters && isClient && recentPrototypes.length > 0 && (
         <section className="px-6 pb-8">
           <div className="max-w-7xl mx-auto">
             <div className="flex items-center gap-3 mb-5">
