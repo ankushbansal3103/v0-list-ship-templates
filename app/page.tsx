@@ -12,6 +12,7 @@ import { EbayShippingPageITDefault } from "@/components/ebay-shipping-page-it-de
 import { EbayShippingPageCADefault } from "@/components/ebay-shipping-page-ca-default"
 import { EbayShippingPageAUDefault } from "@/components/ebay-shipping-page-au-default"
 import { EbayShippingPageRoWDefault } from "@/components/ebay-shipping-page-row-default"
+import { EbayShippingPageDefaultAndroid } from "@/components/ebay-shipping-page-default-android"
 
 // Filter options
 const platforms = [
@@ -36,6 +37,7 @@ const sites = [
     prototypes: [
       { id: "us-shelby-ag", name: "US-Shelby-AG", description: "Shipping configuration with Authenticity Guarantee, eBay International Shipping", status: "active", route: "/prototype/us-shelby-ag", platform: "ios", segment: "c2c" },
       { id: "us-shelby-default", name: "US-Shelby-Default", description: "Default services view with USPS, FedEx, UPS carrier selection", status: "active", route: "/prototype/us-shelby-default", platform: "ios", segment: "c2c" },
+      { id: "us-shelby-default-android", name: "US-Shelby-Default-Android", description: "Default services view for Android platform", status: "active", route: "/prototype/us-shelby-default-android", platform: "android", segment: "c2c" },
       { id: "us-flat-rate", name: "US-Flat-Rate", description: "Simplified flat rate shipping flow", status: "draft", route: "/prototype/us-flat-rate", platform: "ios", segment: "b2c" },
     ]
   },
@@ -372,11 +374,15 @@ export default function PrototypeLibrary() {
                           <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
                             <EbayShippingPage />
                           </div>
-                        ) : prototype.status === 'active' && prototype.id === 'us-shelby-default' ? (
-                          <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
-                            <EbayShippingPageDefault />
-                          </div>
-                        ) : prototype.status === 'active' && prototype.id === 'uk-shelby-default' ? (
+) : prototype.status === 'active' && prototype.id === 'us-shelby-default' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageDefault />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'us-shelby-default-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageDefaultAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'uk-shelby-default' ? (
                           <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
                             <EbayShippingPageUKDefault />
                           </div>
