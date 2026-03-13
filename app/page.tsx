@@ -402,8 +402,8 @@ export default function PrototypeLibrary() {
   <EbayShippingPageFRDefaultAndroid />
   </div>
   ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
-  <div className="pointer-events-none w-full h-full overflow-hidden" style={{ padding: '10px' }}>
-    <div style={{ transform: 'scale(0.47)', transformOrigin: 'top left' }}>
+  <div className="pointer-events-none w-full h-full overflow-hidden p-2.5">
+    <div className="origin-top-left scale-[0.47]">
       <EbayShippingHelixFRDesktop previewMode />
     </div>
   </div>
@@ -608,8 +608,8 @@ export default function PrototypeLibrary() {
   <EbayShippingPageFRDefaultAndroid />
   </div>
   ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
-  <div className="pointer-events-none w-full h-full overflow-hidden" style={{ padding: '10px' }}>
-    <div style={{ transform: 'scale(0.47)', transformOrigin: 'top left' }}>
+  <div className="pointer-events-none w-full h-full overflow-hidden p-2.5">
+    <div className="origin-top-left scale-[0.47]">
       <EbayShippingHelixFRDesktop previewMode />
     </div>
   </div>
