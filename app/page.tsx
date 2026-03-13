@@ -235,14 +235,16 @@ export default function PrototypeLibrary() {
       {/* Header */}
       <header className="border-b border-[#1f1f1f] bg-[#0a0a0a] sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <Image 
-              src="/images/evo-studio-logo.png" 
-              alt="eVO Studio" 
-              width={36} 
-              height={36} 
-              className="rounded-lg"
-            />
+          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <div className="w-9 h-9 rounded-lg overflow-hidden bg-white flex items-center justify-center">
+              <Image 
+                src="/images/evo-studio-logo.png" 
+                alt="eVO Studio" 
+                width={56} 
+                height={56} 
+                className="object-cover scale-150"
+              />
+            </div>
             <span className="text-white font-semibold text-lg">eVO Studio</span>
           </Link>
           <div className="flex items-center gap-4">
