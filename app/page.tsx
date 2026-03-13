@@ -146,8 +146,8 @@ export default function PrototypeLibrary() {
     if (!projectName.trim() || !selectedPrototypeId) return
     
     // Use Vercel's one-click deploy with the project name
-    // Repository must be PUBLIC for this to work
-    const repoUrl = 'https://github.com/ankushbansal3103/v0-list-ship-templates/tree/v0/ankbansal-4101-0b50f706'
+    // Repository is PUBLIC - clones from main branch
+    const repoUrl = 'https://github.com/ankushbansal3103/v0-list-ship-templates'
     const projectSlug = projectName.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-')
     
     // Vercel deploy URL - creates user's own copy from the current branch
