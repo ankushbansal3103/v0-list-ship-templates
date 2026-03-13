@@ -336,7 +336,6 @@ return (
               </svg>
             </div>
           </div>
-          </div>
 
           {/* Navigation Header */}
           <div className="h-[44px] px-4 flex items-center justify-between bg-white flex-shrink-0">
