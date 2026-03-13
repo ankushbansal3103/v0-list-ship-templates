@@ -589,7 +589,7 @@ export default function PrototypeLibrary() {
                       }`}
                     >
                       <ExternalLink className="w-4 h-4" />
-                      Preview
+                      Let's Build
                     </Link>
                   </div>
                 </div>
@@ -904,7 +904,7 @@ export default function PrototypeLibrary() {
                         href={prototype.route}
                         className="block w-full text-center text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                       >
-                        Preview
+                        Let's Build
                       </Link>
                     </div>
                   </div>
