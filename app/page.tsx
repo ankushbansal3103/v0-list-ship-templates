@@ -338,7 +338,7 @@ export default function PrototypeLibrary() {
         </section>
       )}
 
-      {/* Prototypes Grid */}
+      {/* All Prototypes - Market Rows with Carousels */}
       <section className="px-6 pb-8">
         <div className="max-w-7xl mx-auto">
           <div className="flex items-center gap-3 mb-6">
@@ -346,105 +346,117 @@ export default function PrototypeLibrary() {
             <span className="text-[#666] text-sm">({totalPrototypes} results)</span>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredSites.flatMap((site) => 
-              site.prototypes.map((prototype) => (
-                  <div 
-                    key={prototype.id}
-                    className="bg-[#0a0a0a] border border-[#222] rounded-xl overflow-hidden hover:border-[#333] transition-colors"
-                  >
-{/* Live Prototype Preview */}
-                                    <div className="h-64 bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
-                                      {prototype.status === 'active' && prototype.id === 'us-shelby-ag' ? (
-                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
-                                          <EbayShippingPage />
-                                        </div>
-                                      ) : prototype.status === 'active' && prototype.id === 'us-shelby-default' ? (
-                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
-                                          <EbayShippingPageDefault />
-                                        </div>
-                                      ) : prototype.status === 'active' && prototype.id === 'uk-shelby-default' ? (
-                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
-                                          <EbayShippingPageUKDefault />
-                                        </div>
-                                      ) : prototype.status === 'active' && prototype.id === 'de-shelby-default' ? (
-                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
-                                          <EbayShippingPageDEDefault />
-                                        </div>
-                                      ) : prototype.status === 'active' && prototype.id === 'fr-shelby-default' ? (
-                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
-                                          <EbayShippingPageFRDefault />
-                                        </div>
-                                      ) : prototype.status === 'active' && prototype.id === 'it-shelby-default' ? (
-                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
-                                          <EbayShippingPageITDefault />
-                                        </div>
-                                      ) : prototype.status === 'active' && prototype.id === 'ca-shelby-default' ? (
-                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
-                                          <EbayShippingPageCADefault />
-                                        </div>
-                                      ) : prototype.status === 'active' && prototype.id === 'au-shelby-default' ? (
-                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
-                                          <EbayShippingPageAUDefault />
-                                        </div>
-                                      ) : prototype.status === 'active' && prototype.id === 'row-shelby-default' ? (
-                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
-                                          <EbayShippingPageRoWDefault />
-                                        </div>
-                                      ) : (
-                                        <div className="flex flex-col items-center gap-2">
-                                          <div className="w-16 h-32 bg-[#222] rounded-[8px] border border-[#333] flex items-center justify-center">
-                                            <div className="w-12 h-28 bg-[#1a1a1a] rounded-[6px]" />
-                                          </div>
-                                          <span className="text-[#444] text-xs">Coming Soon</span>
-                                        </div>
-                                      )}
-                                    </div>
-                    
-                    {/* Content */}
-                    <div className="p-4">
-                      <div className="flex items-start justify-between mb-2">
-                        <h4 className="text-white font-medium">{prototype.name}</h4>
-                        <span className={`text-xs px-2 py-0.5 rounded ${
-                          prototype.status === 'active' 
-                            ? 'bg-green-500/20 text-green-400' 
-                            : 'bg-[#333] text-[#888]'
-                        }`}>
-                          {prototype.status}
-                        </span>
-                      </div>
-                      
-                      {/* Market, Platform & Segment Tags */}
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
-                          {site.code}
-                        </span>
-                        <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
-                          {platforms.find(p => p.id === prototype.platform)?.name}
-                        </span>
-                        <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
-                          {prototype.segment.toUpperCase()}
-                        </span>
-                      </div>
-                      
-                      <p className="text-[#666] text-sm mb-4">{prototype.description}</p>
-                      
-                      <Link
-                        href={prototype.status === 'active' ? prototype.route : '#'}
-                        onClick={(e) => prototype.status !== 'active' && e.preventDefault()}
-                        className={`w-full h-10 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors ${
-                          prototype.status === 'active'
-                            ? 'bg-blue-600 text-white hover:bg-blue-700'
-                            : 'bg-[#222] text-[#666] cursor-not-allowed'
-                        }`}
-                      >
-                        <ExternalLink className="w-4 h-4" />
-                        Preview
-                      </Link>
-                    </div>
+          {/* Market Rows */}
+          <div className="flex flex-col gap-8">
+            {filteredSites.map((site) => (
+              <div key={site.id} className="bg-[#111] border border-[#222] rounded-2xl p-6">
+                {/* Market Header */}
+                <div className="flex items-center gap-3 mb-5">
+                  <span className="text-2xl">{site.flag}</span>
+                  <div>
+                    <h3 className="text-white font-semibold text-lg">{site.name}</h3>
+                    <span className="text-[#666] text-sm">{site.prototypes.length} prototype{site.prototypes.length !== 1 ? 's' : ''}</span>
                   </div>
-                ))
-              )}
+                </div>
+                
+                {/* Prototype Carousel */}
+                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#333] scrollbar-track-transparent">
+                  {site.prototypes.map((prototype) => (
+                    <div 
+                      key={prototype.id}
+                      className="flex-shrink-0 w-80 bg-[#0a0a0a] border border-[#222] rounded-xl overflow-hidden hover:border-[#444] transition-colors"
+                    >
+                      {/* Live Prototype Preview */}
+                      <div className="h-56 bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
+                        {prototype.status === 'active' && prototype.id === 'us-shelby-ag' ? (
+                          <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                            <EbayShippingPage />
+                          </div>
+                        ) : prototype.status === 'active' && prototype.id === 'us-shelby-default' ? (
+                          <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                            <EbayShippingPageDefault />
+                          </div>
+                        ) : prototype.status === 'active' && prototype.id === 'uk-shelby-default' ? (
+                          <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                            <EbayShippingPageUKDefault />
+                          </div>
+                        ) : prototype.status === 'active' && prototype.id === 'de-shelby-default' ? (
+                          <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                            <EbayShippingPageDEDefault />
+                          </div>
+                        ) : prototype.status === 'active' && prototype.id === 'fr-shelby-default' ? (
+                          <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                            <EbayShippingPageFRDefault />
+                          </div>
+                        ) : prototype.status === 'active' && prototype.id === 'it-shelby-default' ? (
+                          <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                            <EbayShippingPageITDefault />
+                          </div>
+                        ) : prototype.status === 'active' && prototype.id === 'ca-shelby-default' ? (
+                          <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                            <EbayShippingPageCADefault />
+                          </div>
+                        ) : prototype.status === 'active' && prototype.id === 'au-shelby-default' ? (
+                          <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                            <EbayShippingPageAUDefault />
+                          </div>
+                        ) : prototype.status === 'active' && prototype.id === 'row-shelby-default' ? (
+                          <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                            <EbayShippingPageRoWDefault />
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center gap-2">
+                            <div className="w-14 h-28 bg-[#222] rounded-[8px] border border-[#333] flex items-center justify-center">
+                              <div className="w-10 h-24 bg-[#1a1a1a] rounded-[6px]" />
+                            </div>
+                            <span className="text-[#444] text-xs">Coming Soon</span>
+                          </div>
+                        )}
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="p-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <h4 className="text-white font-medium text-sm">{prototype.name}</h4>
+                          <span className={`text-xs px-2 py-0.5 rounded ${
+                            prototype.status === 'active' 
+                              ? 'bg-green-500/20 text-green-400' 
+                              : 'bg-[#333] text-[#888]'
+                          }`}>
+                            {prototype.status}
+                          </span>
+                        </div>
+                        
+                        {/* Platform & Segment Tags */}
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
+                            {platforms.find(p => p.id === prototype.platform)?.name}
+                          </span>
+                          <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
+                            {prototype.segment.toUpperCase()}
+                          </span>
+                        </div>
+                        
+                        <p className="text-[#666] text-xs mb-3 line-clamp-2">{prototype.description}</p>
+                        
+                        <Link
+                          href={prototype.status === 'active' ? prototype.route : '#'}
+                          onClick={(e) => prototype.status !== 'active' && e.preventDefault()}
+                          className={`w-full h-9 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors ${
+                            prototype.status === 'active'
+                              ? 'bg-blue-600 text-white hover:bg-blue-700'
+                              : 'bg-[#222] text-[#666] cursor-not-allowed'
+                          }`}
+                        >
+                          <ExternalLink className="w-4 h-4" />
+                          Preview
+                        </Link>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
