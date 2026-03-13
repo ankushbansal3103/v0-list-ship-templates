@@ -439,7 +439,11 @@ function Dropdown({
 // MAIN COMPONENT
 // ============================================================================
 
-export function EbayShippingHelixFRDesktop() {
+interface EbayShippingHelixFRDesktopProps {
+  previewMode?: boolean
+}
+
+export function EbayShippingHelixFRDesktop({ previewMode = false }: EbayShippingHelixFRDesktopProps) {
   // State
   const [deliveryMethod, setDeliveryMethod] = useState("both")
   const [selectedDomesticService, setSelectedDomesticService] = useState("mondial-relay")
@@ -539,8 +543,9 @@ export function EbayShippingHelixFRDesktop() {
   const packageInfo = getSelectedPackageInfo()
 
   return (
-    <div className="min-h-screen bg-white" style={{ fontFamily: "'Market Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
-      {/* Browser Chrome */}
+    <div className={`${previewMode ? '' : 'min-h-screen'} bg-white`} style={{ fontFamily: "'Market Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
+      {/* Browser Chrome - Hidden in preview mode */}
+      {!previewMode && (
       <div className="bg-[#E1E4EB] rounded-t-lg">
         {/* Tab Bar */}
         <div className="h-10 flex items-end px-2">
@@ -618,11 +623,12 @@ export function EbayShippingHelixFRDesktop() {
           </button>
         </div>
       </div>
+      )}
 
       {/* Page Content */}
-      <div className="max-w-[976px] mx-auto py-12">
-        {/* Divider */}
-        <div className="border-t border-[#E5E5E5] mb-12" />
+      <div className={`max-w-[976px] mx-auto ${previewMode ? 'py-6 px-4' : 'py-12'}`}>
+        {/* Divider - Hidden in preview mode */}
+        {!previewMode && <div className="border-t border-[#E5E5E5] mb-12" />}
 
         {/* Section Header */}
         <h2 className="text-base font-bold text-[#191919] mb-8 uppercase tracking-wide">DELIVERY</h2>

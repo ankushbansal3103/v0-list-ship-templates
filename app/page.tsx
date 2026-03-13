@@ -403,8 +403,8 @@ export default function PrototypeLibrary() {
   </div>
   ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
   <div className="pointer-events-none w-full h-full overflow-hidden flex items-start justify-center">
-    <div style={{ transform: 'scale(0.38)', transformOrigin: 'top center', marginTop: '-10px' }}>
-      <EbayShippingHelixFRDesktop />
+    <div style={{ transform: 'scale(0.28)', transformOrigin: 'top center' }}>
+      <EbayShippingHelixFRDesktop previewMode />
     </div>
   </div>
   ) : prototype.status === 'active' && prototype.id === 'it-shelby-default' ? (
@@ -609,8 +609,8 @@ export default function PrototypeLibrary() {
   </div>
   ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
   <div className="pointer-events-none w-full h-full overflow-hidden flex items-start justify-center">
-    <div style={{ transform: 'scale(0.38)', transformOrigin: 'top center', marginTop: '-10px' }}>
-      <EbayShippingHelixFRDesktop />
+    <div style={{ transform: 'scale(0.28)', transformOrigin: 'top center' }}>
+      <EbayShippingHelixFRDesktop previewMode />
     </div>
   </div>
   ) : prototype.status === 'active' && prototype.id === 'it-shelby-default-android' ? (
