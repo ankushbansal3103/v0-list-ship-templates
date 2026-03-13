@@ -416,12 +416,12 @@ export function EbayShippingPageDefault() {
                         </div>
                         {/* Content */}
                         <div className="flex flex-col flex-1 min-w-0">
-                          {/* Recommended Badge */}
-                          {service.recommended && (
-                            <span className="inline-flex items-center px-2 py-[3px] rounded-[4px] bg-[#E7F1FF] w-fit mb-1.5">
-                              <span className="text-[11px] text-[#3665F3] font-semibold uppercase tracking-[0.5px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
-                            </span>
-                          )}
+{/* Recommended Badge */}
+                        {service.recommended && (
+                          <span className="inline-flex items-center h-[18px] px-[6px] rounded-full bg-[#3665F3] w-fit mb-1">
+                            <span className="text-[10px] text-white font-bold uppercase tracking-[0.3px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
+                          </span>
+                        )}
                           <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
                             {service.name}
                           </span>
@@ -1079,30 +1079,32 @@ export function EbayShippingPageDefault() {
           <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             <div className="relative w-full h-full rounded-[40px] overflow-hidden">
-              <div className="absolute inset-0 bg-white/60 backdrop-blur-md" onClick={() => setShowHandlingTimeSheet(false)} />
-              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] shadow-[0_-5px_30px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
+              <div className="absolute inset-0 bg-white/[0.6] backdrop-blur-md" onClick={() => setShowHandlingTimeSheet(false)} />
+              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] overflow-hidden shadow-[0_-5px_30px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
                 <div className="flex justify-center pt-[6px] pb-[6px]">
                   <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
                 </div>
-                <div className="flex items-center justify-between px-4 pt-2 pb-3">
-                  <h3 className="text-[18px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Handling time</h3>
+                <div className="flex items-start justify-between px-4 pt-2 pb-3">
+                  <h3 className="text-[20px] font-bold text-[#191919] leading-[28px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Handling time</h3>
                   <button onClick={() => setShowHandlingTimeSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center">
                     <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
                   </button>
                 </div>
-                <div className="px-4 pt-1 pb-8 flex flex-col gap-2">
-                  {handlingTimeOptions.map((option) => {
-                    const isSelected = handlingTime === option
-                    return (
-                      <button
-                        key={option}
-                        onClick={() => { setHandlingTime(option); setShowHandlingTimeSheet(false) }}
-                        className={`w-full px-4 py-3 rounded-[8px] text-left ${isSelected ? "bg-[#F7F7F7] border-2 border-[#191919]" : "bg-white border border-[#8F8F8F]"}`}
-                      >
-                        <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{option}</span>
-                      </button>
-                    )
-                  })}
+                <div className="px-4 pb-8">
+                  {handlingTimeOptions.map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => { setHandlingTime(option); setShowHandlingTimeSheet(false) }}
+                      className="w-full h-[48px] flex items-center justify-between"
+                    >
+                      <span className="text-[14px] text-[#191919] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{option}</span>
+                      {handlingTime === option && (
+                        <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none">
+                          <path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        </svg>
+                      )}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
@@ -1163,11 +1165,11 @@ export function EbayShippingPageDefault() {
                             {service.logoType === "ups" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/UPS_Logo_Shield_2017.svg/220px-UPS_Logo_Shield_2017.svg.png" alt="UPS" className="w-[32px] h-auto object-contain" />}
                           </div>
                           <div className="flex flex-col flex-1">
-                            {service.recommended && (
-                              <span className="inline-flex items-center px-2 py-[2px] rounded-[4px] bg-[#E7F1FF] w-fit mb-1">
-                                <span className="text-[10px] text-[#3665F3] font-semibold uppercase tracking-[0.5px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
-                              </span>
-                            )}
+{service.recommended && (
+                            <span className="inline-flex items-center h-[16px] px-[6px] rounded-full bg-[#3665F3] w-fit mb-1">
+                              <span className="text-[9px] text-white font-bold uppercase tracking-[0.3px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
+                            </span>
+                          )}
                             <span className="text-[13px] font-bold text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{service.name}</span>
                             <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>X-X business days</span>
                             <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to $XXX.XX protection</span>
