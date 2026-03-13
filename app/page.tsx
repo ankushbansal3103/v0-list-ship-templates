@@ -136,8 +136,12 @@ export default function PrototypeLibrary() {
   }).filter(Boolean)
 
   const handleUseTemplate = (prototypeId: string) => {
-    // Navigate directly to the workspace for this prototype
-    router.push(`/workspace/${prototypeId}`)
+    // Navigate to the actual prototype page
+    // User can iterate using v0's chat - changes are isolated to their branch
+    const prototype = sites.flatMap(s => s.prototypes).find(p => p.id === prototypeId)
+    if (prototype) {
+      router.push(prototype.route)
+    }
   }
 
   return (
