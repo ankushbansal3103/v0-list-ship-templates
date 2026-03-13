@@ -1,8 +1,8 @@
 "use client"
 
 /**
- * US-Shelby-AG Prototype
- * eBay Shipping Configuration Flow
+ * CA-Shelby-AG-Android Prototype
+ * eBay Shipping Configuration Flow (Android)
  * 
  * Screens: L1 Shipping, L2 Package Details, L2 Services, L2 Delivery Details
  * Plus multiple bottom sheet modals for selections
@@ -169,7 +169,7 @@ function ServiceLogo({ type, className }: { type: string; className?: string }) 
   }
 }
 
-export function EbayShippingPage() {
+export function EbayShippingPageCAAGAndroid() {
   const [deliveryMethod, setDeliveryMethod] = useState("shipping")
   const [showDeliverySheet, setShowDeliverySheet] = useState(false)
   const [destination, setDestination] = useState("eu")
@@ -340,12 +340,12 @@ export function EbayShippingPage() {
     <div className="relative flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
       {/* iPhone 17 Frame - 402x874 logical resolution */}
       {/* Hide L1 when full-screen sheets are shown to prevent double frame/island */}
-      <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet || showServicesSheet || showShippingCostSheet || showDeliveryDetailsSheet ? 'invisible' : ''}`}>
+      <div className={`relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl ${showPackageSheet || showServicesSheet || showShippingCostSheet || showDeliveryDetailsSheet ? 'invisible' : ''}`}>
         {/* Dynamic Island */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
         
         {/* Screen */}
-        <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+        <div className="relative w-full h-full bg-white rounded-[28px] overflow-hidden flex flex-col">
           {/* iOS Status Bar */}
           <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
             <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
@@ -636,12 +636,12 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
             {/* Dynamic Island */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
             
             {/* Screen with scrim */}
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+            <div className="relative w-full h-full rounded-[28px] overflow-hidden">
               {/* Scrim overlay - 32% opacity as per Figma */}
               <div 
                 className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
@@ -713,12 +713,12 @@ export function EbayShippingPage() {
           style={{ pointerEvents: 'none' }}
         >
           {/* iPhone Frame - identical to L1 */}
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
             {/* Dynamic Island - same as L1 */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
             
             {/* Screen - same as L1 */}
-            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+            <div className="relative w-full h-full bg-white rounded-[28px] overflow-hidden flex flex-col">
               {/* iOS Status Bar */}
               <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
                 <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
@@ -935,12 +935,12 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
             {/* Dynamic Island */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
             
             {/* Screen with scrim */}
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+            <div className="relative w-full h-full rounded-[28px] overflow-hidden">
               <div 
                 className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowDestinationSheet(false)}
@@ -1009,12 +1009,12 @@ export function EbayShippingPage() {
           style={{ pointerEvents: 'none' }}
         >
           {/* iPhone Frame - identical to L1 */}
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
             {/* Dynamic Island - same as L1 */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
             
             {/* Screen - same as L1 */}
-            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+            <div className="relative w-full h-full bg-white rounded-[28px] overflow-hidden flex flex-col">
               {/* iOS Status Bar */}
               <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
                 <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
@@ -1147,12 +1147,12 @@ export function EbayShippingPage() {
           style={{ pointerEvents: 'none' }}
         >
           {/* iPhone Frame - identical to L1 */}
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
             {/* Dynamic Island - same as L1 */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
             
             {/* Screen - same as L1 */}
-            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+            <div className="relative w-full h-full bg-white rounded-[28px] overflow-hidden flex flex-col">
               {/* iOS Status Bar */}
               <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
                 <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
@@ -1345,12 +1345,12 @@ export function EbayShippingPage() {
           style={{ pointerEvents: 'none' }}
         >
           {/* iPhone Frame - identical to L1 */}
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
             {/* Dynamic Island - same as L1 */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
             
             {/* Screen - same as L1 */}
-            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+            <div className="relative w-full h-full bg-white rounded-[28px] overflow-hidden flex flex-col">
               {/* iOS Status Bar */}
               <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
                 <span className="text-[15px] font-semibold text-[#191919]">9:41</span>
@@ -1616,9 +1616,9 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
+            <div className="relative w-full h-full rounded-[28px] overflow-hidden">
               <div 
                 className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowHandlingTimeSheet(false)}
@@ -1670,9 +1670,9 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
+            <div className="relative w-full h-full rounded-[28px] overflow-hidden">
               <div 
                 className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowDomesticAllowedWithinSheet(false)}
@@ -1727,9 +1727,9 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
+            <div className="relative w-full h-full rounded-[28px] overflow-hidden">
               <div 
                 className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowDomesticReturnsPaidBySheet(false)}
@@ -1784,9 +1784,9 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
+            <div className="relative w-full h-full rounded-[28px] overflow-hidden">
               <div 
                 className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowDomesticRefundMethodSheet(false)}
@@ -1841,9 +1841,9 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
+            <div className="relative w-full h-full rounded-[28px] overflow-hidden">
               <div 
                 className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowInternationalAllowedWithinSheet(false)}
@@ -1898,9 +1898,9 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
+            <div className="relative w-full h-full rounded-[28px] overflow-hidden">
               <div 
                 className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowInternationalReturnsPaidBySheet(false)}
@@ -1955,9 +1955,9 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
+            <div className="relative w-full h-full rounded-[28px] overflow-hidden">
               <div 
                 className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowInternationalRefundMethodSheet(false)}
@@ -2012,9 +2012,9 @@ export function EbayShippingPage() {
           className="absolute inset-0 flex items-center justify-center"
           style={{ pointerEvents: 'none' }}
         >
-          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+          <div className="relative w-[402px] h-[874px] bg-[#1a1a1a] rounded-[32px] p-2 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[12px] h-[12px] bg-[#0a0a0a] rounded-full z-50" />
+            <div className="relative w-full h-full rounded-[28px] overflow-hidden">
               <div 
                 className="absolute inset-0 bg-white/[0.6] backdrop-blur-md"
                 onClick={() => setShowCountrySheet(false)}

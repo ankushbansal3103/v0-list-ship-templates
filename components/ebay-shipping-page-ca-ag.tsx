@@ -1,8 +1,8 @@
 "use client"
 
 /**
- * US-Shelby-AG Prototype
- * eBay Shipping Configuration Flow
+ * CA-Shelby-AG Prototype
+ * eBay Shipping Configuration Flow (iOS)
  * 
  * Screens: L1 Shipping, L2 Package Details, L2 Services, L2 Delivery Details
  * Plus multiple bottom sheet modals for selections
@@ -169,7 +169,7 @@ function ServiceLogo({ type, className }: { type: string; className?: string }) 
   }
 }
 
-export function EbayShippingPage() {
+export function EbayShippingPageCAAG() {
   const [deliveryMethod, setDeliveryMethod] = useState("shipping")
   const [showDeliverySheet, setShowDeliverySheet] = useState(false)
   const [destination, setDestination] = useState("eu")
