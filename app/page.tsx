@@ -173,9 +173,9 @@ export default function PrototypeLibrary() {
       }
       
       if (data.success && data.branchName) {
-        // Branch created - open a NEW v0 chat connected to this branch
-        // This is the only way to work on a different branch in v0
-        const v0Url = `https://v0.dev/chat/new?rid=ankushbansal3103/v0-list-ship-templates&branch=${encodeURIComponent(data.branchName)}`
+        // Branch created - open a NEW v0 chat connected to this branch with initial prompt
+        const initialPrompt = `Show me the ${selectedPrototype.name} prototype at ${selectedPrototype.route}. I want to iterate on this design.`
+        const v0Url = `https://v0.dev/chat/new?rid=ankushbansal3103/v0-list-ship-templates&branch=${encodeURIComponent(data.branchName)}&q=${encodeURIComponent(initialPrompt)}`
         window.open(v0Url, '_blank')
         
         setShowBranchModal(false)
