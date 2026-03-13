@@ -26,6 +26,7 @@ import { EbayShippingPageAUAG } from "@/components/ebay-shipping-page-au-ag"
 import { EbayShippingPageUKAGAndroid } from "@/components/ebay-shipping-page-uk-ag-android"
 import { EbayShippingPageCAAGAndroid } from "@/components/ebay-shipping-page-ca-ag-android"
 import { EbayShippingPageAUAGAndroid } from "@/components/ebay-shipping-page-au-ag-android"
+import { EbayShippingHelixFRDesktop } from "@/components/ebay-shipping-helix-fr-desktop"
 
 // Filter options
 const platforms = [
@@ -84,12 +85,13 @@ const sites = [
     flag: "🇫🇷",
     prototypes: [
       { id: "fr-shelby-default", name: "FR-Shelby-Default", description: "Default services view for French market", status: "active", route: "/prototype/fr-shelby-default", platform: "ios", segment: "c2c" },
-      { id: "fr-shelby-default-android", name: "FR-Shelby-Default-Android", description: "Default services view for French market (Android)", status: "active", route: "/prototype/fr-shelby-default-android", platform: "android", segment: "c2c" },
-      { id: "fr-standard", name: "FR-Standard-V1", description: "French market with La Poste/Colissimo", status: "draft", route: "/prototype/fr-standard", platform: "android", segment: "c2c" },
-    ]
+{ id: "fr-shelby-default-android", name: "FR-Shelby-Default-Android", description: "Default services view for French market (Android)", status: "active", route: "/prototype/fr-shelby-default-android", platform: "android", segment: "c2c" },
+  { id: "fr-helix-desktop", name: "FR-Helix-Desktop", description: "Helix Simple desktop shipping configuration for French market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
+  { id: "fr-standard", name: "FR-Standard-V1", description: "French market with La Poste/Colissimo", status: "draft", route: "/prototype/fr-standard", platform: "android", segment: "c2c" },
+  ]
   },
   {
-    id: "it",
+  id: "it",
     name: "Italy",
     code: "IT",
     flag: "🇮🇹",
@@ -386,11 +388,15 @@ export default function PrototypeLibrary() {
                       <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
                         <EbayShippingPageFRDefault />
                       </div>
-                    ) : prototype.status === 'active' && prototype.id === 'fr-shelby-default-android' ? (
-                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
-                        <EbayShippingPageFRDefaultAndroid />
-                      </div>
-                    ) : prototype.status === 'active' && prototype.id === 'it-shelby-default' ? (
+) : prototype.status === 'active' && prototype.id === 'fr-shelby-default-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageFRDefaultAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.12)', transformOrigin: 'center center' }}>
+  <EbayShippingHelixFRDesktop />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'it-shelby-default' ? (
                       <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
                         <EbayShippingPageITDefault />
                       </div>
@@ -589,6 +595,10 @@ export default function PrototypeLibrary() {
   ) : prototype.status === 'active' && prototype.id === 'fr-shelby-default-android' ? (
   <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
   <EbayShippingPageFRDefaultAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.12)', transformOrigin: 'center center' }}>
+  <EbayShippingHelixFRDesktop />
   </div>
   ) : prototype.status === 'active' && prototype.id === 'it-shelby-default-android' ? (
   <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
