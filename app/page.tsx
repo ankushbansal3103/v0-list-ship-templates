@@ -36,7 +36,7 @@ const sites = [
     code: "UK",
     flag: "🇬🇧",
     prototypes: [
-      { id: "uk-standard", name: "UK-Standard-V1", description: "Standard UK shipping with Royal Mail integration", status: "active", route: "/prototype/uk-standard", platform: "android", segment: "c2c" },
+      { id: "uk-standard", name: "UK-Standard-V1", description: "Standard UK shipping with Royal Mail integration", status: "draft", route: "/prototype/uk-standard", platform: "android", segment: "c2c" },
       { id: "uk-express", name: "UK-Express-V1", description: "Express delivery options for UK sellers", status: "draft", route: "/prototype/uk-express", platform: "mweb", segment: "b2c" },
     ]
   },
@@ -46,7 +46,7 @@ const sites = [
     code: "DE",
     flag: "🇩🇪",
     prototypes: [
-      { id: "de-standard", name: "DE-Standard-V1", description: "German market shipping with DHL/Hermes", status: "active", route: "/prototype/de-standard", platform: "ios", segment: "c2c" },
+      { id: "de-standard", name: "DE-Standard-V1", description: "German market shipping with DHL/Hermes", status: "draft", route: "/prototype/de-standard", platform: "ios", segment: "c2c" },
       { id: "de-returns", name: "DE-Returns-V1", description: "Enhanced returns flow for German regulations", status: "draft", route: "/prototype/de-returns", platform: "dweb", segment: "b2c" },
     ]
   },
