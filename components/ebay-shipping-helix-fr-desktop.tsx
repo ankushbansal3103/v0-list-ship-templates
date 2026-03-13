@@ -626,7 +626,7 @@ export function EbayShippingHelixFRDesktop({ previewMode = false }: EbayShipping
       )}
 
       {/* Page Content */}
-      <div className={`${previewMode ? 'w-[680px] py-4 px-5' : 'max-w-[976px] mx-auto py-12'}`}>
+      <div className={`${previewMode ? 'w-[580px] py-3 px-4' : 'max-w-[976px] mx-auto py-12'}`}>
         {/* Divider - Hidden in preview mode */}
         {!previewMode && <div className="border-t border-[#E5E5E5] mb-12" />}
 
