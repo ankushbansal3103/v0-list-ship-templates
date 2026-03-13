@@ -102,11 +102,9 @@ export default function PrototypeLibrary() {
   const [selectedSite, setSelectedSite] = useState<string | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
   const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
-  const [copiedId, setCopiedId] = useState<string | null>(null)
   const [showProjectModal, setShowProjectModal] = useState(false)
   const [selectedPrototypeId, setSelectedPrototypeId] = useState<string | null>(null)
   const [projectName, setProjectName] = useState("")
-  const [isCreating, setIsCreating] = useState(false)
 
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
@@ -144,64 +142,23 @@ export default function PrototypeLibrary() {
     setShowProjectModal(true)
   }
 
-  const handleCreateProject = async () => {
+  const handleCreateProject = () => {
     if (!projectName.trim() || !selectedPrototypeId) return
     
-    setIsCreating(true)
-    setCopiedId(selectedPrototypeId)
+    // Use Vercel's one-click deploy with the project name
+    // This creates a fresh copy of the repo for the user
+    const repoUrl = 'https://github.com/ankushbansal3103/v0-list-ship-templates'
+    const projectSlug = projectName.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-')
     
-    try {
-      const response = await fetch('/api/create-branch', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          projectName: projectName.trim(),
-          prototypeId: selectedPrototypeId
-        })
-      })
-      
-      const branchData = await response.json()
-      
-      if (branchData.error) {
-        alert(`Error: ${branchData.error}`)
-        return
-      }
-      
-      if (!branchData.success) {
-        alert('Failed to create branch')
-        return
-      }
-
-      // Branch created - now fetch the prototype code
-      const templateResponse = await fetch(`/api/template/${selectedPrototypeId}`)
-      const templateData = await templateResponse.json()
-      
-      if (templateData.error) {
-        alert(`Error loading template: ${templateData.error}`)
-        return
-      }
-
-      // Copy the actual code to clipboard
-      const codeToUse = templateData.code || templateData.prompt
-      await navigator.clipboard.writeText(codeToUse)
-      
-      // Open v0 fresh chat
-      window.open('https://v0.dev/chat', '_blank')
-      
-      // Show success message
-      alert('Code copied to clipboard! Paste it in the v0 chat to start building.')
-      
-      // Close modal and reset state
-      setShowProjectModal(false)
-      setProjectName("")
-      setSelectedPrototypeId(null)
-      
-    } catch (err) {
-      alert(`Failed to create project: ${err instanceof Error ? err.message : 'Unknown error'}`)
-    } finally {
-      setIsCreating(false)
-      setCopiedId(null)
-    }
+    // Vercel deploy URL - creates user's own copy
+    const deployUrl = `https://vercel.com/new/clone?repository-url=${encodeURIComponent(repoUrl)}&project-name=${encodeURIComponent(projectSlug)}&repository-name=${encodeURIComponent(projectSlug)}`
+    
+    window.open(deployUrl, '_blank')
+    
+    // Close modal
+    setShowProjectModal(false)
+    setProjectName("")
+    setSelectedPrototypeId(null)
   }
 
   const closeModal = () => {
@@ -605,7 +562,7 @@ export default function PrototypeLibrary() {
                 }}
               />
               <p className="text-[#555] text-xs mt-2">
-                A new branch will be created: prototype/{projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-') || 'your-project'}
+                Your project will be deployed to: {projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-') || 'your-project'}.vercel.app
               </p>
             </div>
             
@@ -613,20 +570,11 @@ export default function PrototypeLibrary() {
             <div className="p-6 pt-0 flex items-center gap-3">
               <button
                 onClick={handleCreateProject}
-                disabled={!projectName.trim() || isCreating}
+                disabled={!projectName.trim()}
                 className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isCreating ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Creating & Loading...
-                  </>
-                ) : (
-                  <>
-                    <ExternalLink className="w-4 h-4" />
-                    Start Building
-                  </>
-                )}
+                <ExternalLink className="w-4 h-4" />
+                Deploy & Start Building
               </button>
               <button
                 onClick={closeModal}
