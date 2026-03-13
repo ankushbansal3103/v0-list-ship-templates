@@ -101,10 +101,17 @@ export default function Page() {
 \`\`\``
     }
     
+    // Build the raw code as a single string with file markers
+    let codeOutput = `Here is the complete code for ${template.name}. Create these files exactly:\n\n`
+    for (const [filePath, content] of Object.entries(codeContents)) {
+      codeOutput += `// File: ${filePath}\n${content}\n\n`
+    }
+
     return NextResponse.json({
       id,
       name: template.name,
       prompt: v0Prompt,
+      code: codeOutput,
       files: codeContents
     })
   } catch (error) {

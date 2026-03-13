@@ -181,15 +181,14 @@ export default function PrototypeLibrary() {
         return
       }
 
-      // Open v0 with the code prompt - this will render the prototype
-      const v0Url = `https://v0.dev/chat?q=${encodeURIComponent(templateData.prompt)}`
+      // Open v0 with the actual code - this will render the prototype
+      const v0Url = `https://v0.dev/chat?q=${encodeURIComponent(templateData.code)}`
       window.open(v0Url, '_blank')
       
       // Close modal and reset state
       setShowProjectModal(false)
       setProjectName("")
       setSelectedPrototypeId(null)
-      setCreatedBranch(null)
       
     } catch (err) {
       alert(`Failed to create project: ${err instanceof Error ? err.message : 'Unknown error'}`)
