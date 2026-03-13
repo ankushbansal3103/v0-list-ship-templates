@@ -411,7 +411,7 @@ export function EbayShippingPageRoWDefault() {
                         {/* Logo */}
                         <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
                           {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cWH5lVeaPsOCVI98OwMcLvRv4OOtHc.png" alt="USPS" className="w-full h-full object-contain p-1" />}
-                          {service.logoType === "fedex" && <img src="https://www.fedex.com/content/dam/fedex-com/logos/logo.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                          {service.logoType === "fedex" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-byPfnlbkfOvWXs44Z0CYw3xwKenhW0.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
                           {service.logoType === "ups" && <img src="https://www.ups.com/assets/resources/images/UPS_logo.svg" alt="UPS" className="w-[36px] h-[36px] object-contain" />}
                         </div>
                         {/* Content */}
@@ -502,7 +502,7 @@ export function EbayShippingPageRoWDefault() {
                     <div className="flex gap-3 items-start">
                       <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
                         {getSelectedAdditionalService()?.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cWH5lVeaPsOCVI98OwMcLvRv4OOtHc.png" alt="USPS" className="w-full h-full object-contain p-1" />}
-                        {getSelectedAdditionalService()?.logoType === "fedex" && <img src="https://www.fedex.com/content/dam/fedex-com/logos/logo.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                        {getSelectedAdditionalService()?.logoType === "fedex" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-byPfnlbkfOvWXs44Z0CYw3xwKenhW0.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
                         {getSelectedAdditionalService()?.logoType === "ups" && <img src="https://www.ups.com/assets/resources/images/UPS_logo.svg" alt="UPS" className="w-[36px] h-[36px] object-contain" />}
                       </div>
                       <div className="flex flex-col flex-1 min-w-0">
@@ -566,7 +566,7 @@ export function EbayShippingPageRoWDefault() {
                   <div className="flex gap-3 items-start">
                     <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
                       {getSelectedInternationalService()?.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cWH5lVeaPsOCVI98OwMcLvRv4OOtHc.png" alt="USPS" className="w-full h-full object-contain p-1" />}
-                      {getSelectedInternationalService()?.logoType === "fedex" && <img src="https://www.fedex.com/content/dam/fedex-com/logos/logo.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                      {getSelectedInternationalService()?.logoType === "fedex" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-byPfnlbkfOvWXs44Z0CYw3xwKenhW0.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
                       {getSelectedInternationalService()?.logoType === "ups" && <img src="https://www.ups.com/assets/resources/images/UPS_logo.svg" alt="UPS" className="w-[36px] h-[36px] object-contain" />}
                     </div>
                     <div className="flex flex-col flex-1 min-w-0">
@@ -1161,7 +1161,7 @@ export function EbayShippingPageRoWDefault() {
                           </div>
                           <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
                             {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cWH5lVeaPsOCVI98OwMcLvRv4OOtHc.png" alt="USPS" className="w-full h-full object-contain p-1" />}
-                            {service.logoType === "fedex" && <img src="https://www.fedex.com/content/dam/fedex-com/logos/logo.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                            {service.logoType === "fedex" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-byPfnlbkfOvWXs44Z0CYw3xwKenhW0.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
                             {service.logoType === "ups" && <img src="https://www.ups.com/assets/resources/images/UPS_logo.svg" alt="UPS" className="w-[36px] h-[36px] object-contain" />}
                           </div>
                           <div className="flex flex-col flex-1">
@@ -1195,7 +1195,7 @@ export function EbayShippingPageRoWDefault() {
                           </div>
                           <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
                             {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cWH5lVeaPsOCVI98OwMcLvRv4OOtHc.png" alt="USPS" className="w-full h-full object-contain p-1" />}
-                            {service.logoType === "fedex" && <img src="https://www.fedex.com/content/dam/fedex-com/logos/logo.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                            {service.logoType === "fedex" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-byPfnlbkfOvWXs44Z0CYw3xwKenhW0.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
                           </div>
                           <div className="flex flex-col flex-1">
                             <span className="text-[13px] font-bold text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{service.name}</span>
@@ -1282,7 +1282,7 @@ export function EbayShippingPageRoWDefault() {
                           </div>
                           <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
                             {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cWH5lVeaPsOCVI98OwMcLvRv4OOtHc.png" alt="USPS" className="w-full h-full object-contain p-1" />}
-                            {service.logoType === "fedex" && <img src="https://www.fedex.com/content/dam/fedex-com/logos/logo.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                            {service.logoType === "fedex" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-byPfnlbkfOvWXs44Z0CYw3xwKenhW0.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
                             {service.logoType === "ups" && <img src="https://www.ups.com/assets/resources/images/UPS_logo.svg" alt="UPS" className="w-[36px] h-[36px] object-contain" />}
                           </div>
                           <div className="flex flex-col flex-1">
@@ -1309,7 +1309,7 @@ export function EbayShippingPageRoWDefault() {
                         </div>
                         <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
                           {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cWH5lVeaPsOCVI98OwMcLvRv4OOtHc.png" alt="USPS" className="w-full h-full object-contain p-1" />}
-                          {service.logoType === "fedex" && <img src="https://www.fedex.com/content/dam/fedex-com/logos/logo.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                          {service.logoType === "fedex" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-byPfnlbkfOvWXs44Z0CYw3xwKenhW0.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
                         </div>
                         <div className="flex flex-col flex-1">
                           <span className="text-[13px] font-bold text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{service.name}</span>
@@ -1397,7 +1397,7 @@ export function EbayShippingPageRoWDefault() {
                           </div>
                           <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
                             {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cWH5lVeaPsOCVI98OwMcLvRv4OOtHc.png" alt="USPS" className="w-full h-full object-contain p-1" />}
-                            {service.logoType === "fedex" && <img src="https://www.fedex.com/content/dam/fedex-com/logos/logo.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                            {service.logoType === "fedex" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-byPfnlbkfOvWXs44Z0CYw3xwKenhW0.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
                             {service.logoType === "ups" && <img src="https://www.ups.com/assets/resources/images/UPS_logo.svg" alt="UPS" className="w-[36px] h-[36px] object-contain" />}
                           </div>
                           <div className="flex flex-col flex-1">
@@ -1424,7 +1424,7 @@ export function EbayShippingPageRoWDefault() {
                         </div>
                         <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
                           {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-cWH5lVeaPsOCVI98OwMcLvRv4OOtHc.png" alt="USPS" className="w-full h-full object-contain p-1" />}
-                          {service.logoType === "fedex" && <img src="https://www.fedex.com/content/dam/fedex-com/logos/logo.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                          {service.logoType === "fedex" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-byPfnlbkfOvWXs44Z0CYw3xwKenhW0.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
                         </div>
                         <div className="flex flex-col flex-1">
                           <span className="text-[13px] font-bold text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{service.name}</span>
