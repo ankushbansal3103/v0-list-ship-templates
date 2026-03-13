@@ -3,7 +3,8 @@ import { NextRequest, NextResponse } from "next/server"
 // GitHub repo details from project connection
 const GITHUB_OWNER = "ankushbansal3103"
 const GITHUB_REPO = "v0-list-ship-templates"
-const BASE_BRANCH = "main"
+// Use the current working branch, not main
+const BASE_BRANCH = "v0/ankbansal-4101-0b50f706"
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,24 +18,25 @@ export async function POST(request: NextRequest) {
     }
     
     // Sanitize branch name
-    const branchName = `prototype/${projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-')}-${Date.now()}`
+    const sanitizedName = projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
+    const branchName = `prototype/${sanitizedName}-${Date.now()}`
     
     const githubToken = process.env.GITHUB_TOKEN
     
     if (!githubToken) {
-      // If no token, return the v0 import URL as fallback
-      const v0ImportUrl = `https://v0.dev/chat/import?repo=${GITHUB_OWNER}/${GITHUB_REPO}&branch=${BASE_BRANCH}`
+      // If no token, open v0 with the repo directly connected
       return NextResponse.json({
         success: true,
         fallback: true,
-        url: v0ImportUrl,
-        message: "Opening v0 with repository import"
+        url: `https://v0.dev/new?repo=${GITHUB_OWNER}/${GITHUB_REPO}`,
+        message: "Opening v0 with repository"
       })
     }
     
-    // Get the SHA of the base branch
+    // Get the SHA of the base branch (URL encode the branch name for slashes)
+    const encodedBranch = encodeURIComponent(BASE_BRANCH)
     const refResponse = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/ref/heads/${BASE_BRANCH}`,
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/ref/heads/${encodedBranch}`,
       {
         headers: {
           Authorization: `Bearer ${githubToken}`,
@@ -44,7 +46,73 @@ export async function POST(request: NextRequest) {
     )
     
     if (!refResponse.ok) {
-      throw new Error("Failed to get base branch reference")
+      const errorText = await refResponse.text()
+      console.error("[v0] GitHub ref error:", refResponse.status, errorText)
+      
+      // Try getting default branch info instead
+      const repoResponse = await fetch(
+        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}`,
+        {
+          headers: {
+            Authorization: `Bearer ${githubToken}`,
+            Accept: "application/vnd.github.v3+json",
+          },
+        }
+      )
+      
+      if (!repoResponse.ok) {
+        throw new Error("Failed to access repository")
+      }
+      
+      const repoData = await repoResponse.json()
+      const defaultBranch = repoData.default_branch
+      
+      // Get SHA from default branch
+      const defaultRefResponse = await fetch(
+        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/ref/heads/${defaultBranch}`,
+        {
+          headers: {
+            Authorization: `Bearer ${githubToken}`,
+            Accept: "application/vnd.github.v3+json",
+          },
+        }
+      )
+      
+      if (!defaultRefResponse.ok) {
+        throw new Error("Failed to get branch reference")
+      }
+      
+      const defaultRefData = await defaultRefResponse.json()
+      const baseSha = defaultRefData.object.sha
+      
+      // Create branch from default
+      const createBranchResponse = await fetch(
+        `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/refs`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${githubToken}`,
+            Accept: "application/vnd.github.v3+json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ref: `refs/heads/${branchName}`,
+            sha: baseSha,
+          }),
+        }
+      )
+      
+      if (!createBranchResponse.ok) {
+        const error = await createBranchResponse.json()
+        throw new Error(error.message || "Failed to create branch")
+      }
+      
+      return NextResponse.json({
+        success: true,
+        branchName,
+        url: `https://v0.dev/new?repo=${GITHUB_OWNER}/${GITHUB_REPO}&branch=${encodeURIComponent(branchName)}`,
+        message: `Branch "${branchName}" created successfully`
+      })
     }
     
     const refData = await refResponse.json()
@@ -69,11 +137,12 @@ export async function POST(request: NextRequest) {
     
     if (!createBranchResponse.ok) {
       const error = await createBranchResponse.json()
+      console.error("[v0] Create branch error:", error)
       throw new Error(error.message || "Failed to create branch")
     }
     
-    // Return v0 URL with the new branch
-    const v0Url = `https://v0.dev/chat?repo=${GITHUB_OWNER}/${GITHUB_REPO}&branch=${branchName}`
+    // Return v0 URL with the new branch - use /new endpoint for clean project start
+    const v0Url = `https://v0.dev/new?repo=${GITHUB_OWNER}/${GITHUB_REPO}&branch=${encodeURIComponent(branchName)}`
     
     return NextResponse.json({
       success: true,
@@ -83,15 +152,13 @@ export async function POST(request: NextRequest) {
     })
     
   } catch (error) {
-    console.error("Error creating branch:", error)
+    console.error("[v0] Error creating branch:", error)
     
-    // Fallback to basic v0 import
-    const v0ImportUrl = `https://v0.dev/chat?q=${encodeURIComponent(`Clone and modify the eBay shipping prototype`)}`
-    
+    // Better fallback - open v0 with the repo connected
     return NextResponse.json({
       success: false,
       fallback: true,
-      url: v0ImportUrl,
+      url: `https://v0.dev/new?repo=${GITHUB_OWNER}/${GITHUB_REPO}`,
       error: error instanceof Error ? error.message : "Failed to create branch"
     })
   }
