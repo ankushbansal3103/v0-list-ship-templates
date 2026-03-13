@@ -659,13 +659,13 @@ export function EbayShippingHelixFRDesktop() {
             <h3 className="text-base font-bold text-[#191919] mb-4">Package details</h3>
             <button 
               onClick={() => openModal("packageDetails")}
-              className="w-full p-4 border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors"
+              className="w-full p-4 border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors text-left"
             >
-              <div>
-                <div className="text-sm font-medium text-[#191919]">{packageInfo.preset}</div>
+              <div className="text-left">
+                <div className="text-base font-medium text-[#191919]">{packageInfo.preset}</div>
                 <div className="text-sm text-[#707070]">{packageInfo.size}{packageInfo.size ? ', ' : ''}{packageInfo.dimensions}</div>
               </div>
-              <ChevronRight className="w-5 h-5 text-[#191919]" />
+              <ChevronRight className="w-5 h-5 text-[#191919] flex-shrink-0" />
             </button>
           </div>
 

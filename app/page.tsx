@@ -236,9 +236,9 @@ export default function PrototypeLibrary() {
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">eb</span>
+              <span className="text-white font-bold text-sm">eV</span>
             </div>
-            <span className="text-white font-semibold text-lg">Prototype Library</span>
+            <span className="text-white font-semibold text-lg">eVO Studio</span>
           </Link>
           <div className="flex items-center gap-4">
             <Link 
@@ -257,15 +257,12 @@ export default function PrototypeLibrary() {
       {/* Hero Section */}
       <section className="py-16 px-6">
         <div className="max-w-7xl mx-auto text-center">
-          {/* HIDDEN: Original content - say "enable it back" to restore
           <h1 className="text-5xl font-bold text-white mb-4">
             Find your Prototype
           </h1>
           <p className="text-[#888] text-lg max-w-2xl mx-auto mb-10">
             Browse shipping prototypes by market. Select a template, create a copy, and build your PRD-ready prototype.
           </p>
-          */}
-          <p className="text-white">test test</p>
           
           {/* Search */}
           <div className="max-w-xl mx-auto relative mb-8">

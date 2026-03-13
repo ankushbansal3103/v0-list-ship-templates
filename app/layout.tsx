@@ -10,7 +10,7 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'eBay Prototype Library | Shipping Templates',
+  title: 'eVO Studio | eBay Shipping Prototypes',
   description: 'Browse and copy shipping prototypes by market - US, UK, DE, FR, IT, CA, AU, and more. Build PRD-ready prototypes without writing PRDs.',
   generator: 'v0.app',
   icons: {
