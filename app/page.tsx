@@ -178,16 +178,26 @@ export default function PrototypeLibrary() {
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
     .filter(site => !selectedSite || site.id === selectedSite)
-    .map(site => ({
-      ...site,
-      prototypes: site.prototypes.filter(p => {
-        const matchesPlatform = !selectedPlatform || p.platform === selectedPlatform
-        const matchesSearch = !searchQuery || 
-          p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-          p.description.toLowerCase().includes(searchQuery.toLowerCase())
-        return matchesPlatform && matchesSearch
-      })
-    })).filter(site => site.prototypes.length > 0)
+    .map(site => {
+      const searchLower = searchQuery.toLowerCase()
+      const siteMatchesSearch = !searchQuery || 
+        site.name.toLowerCase().includes(searchLower) ||
+        site.code.toLowerCase().includes(searchLower) ||
+        site.id.toLowerCase().includes(searchLower)
+      
+      return {
+        ...site,
+        prototypes: site.prototypes.filter(p => {
+          const matchesPlatform = !selectedPlatform || p.platform === selectedPlatform
+          const prototypeMatchesSearch = !searchQuery || 
+            p.name.toLowerCase().includes(searchLower) ||
+            p.description.toLowerCase().includes(searchLower) ||
+            p.id.toLowerCase().includes(searchLower)
+          // Show prototype if site matches OR prototype matches
+          return matchesPlatform && (siteMatchesSearch || prototypeMatchesSearch)
+        })
+      }
+    }).filter(site => site.prototypes.length > 0)
 
   const totalPrototypes = filteredSites.reduce((acc, site) => acc + site.prototypes.length, 0)
   const activeFiltersCount = [selectedSite, selectedPlatform].filter(Boolean).length
