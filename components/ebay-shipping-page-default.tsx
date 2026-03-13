@@ -234,10 +234,31 @@ export function EbayShippingPageDefault() {
   
   // Delivery details state
   const [showDeliveryDetailsSheet, setShowDeliveryDetailsSheet] = useState(false)
-  const [itemLocation, setItemLocation] = useState("95117")
-  const [handlingTime, setHandlingTime] = useState("X business days")
-  const [returns, setReturns] = useState("No returns allowed")
+  const [handlingTime, setHandlingTime] = useState("2 business days")
+  const [domesticReturns, setDomesticReturns] = useState(true)
+  const [domesticAllowedWithin, setDomesticAllowedWithin] = useState("14 days")
+  const [domesticReturnsPaidBy, setDomesticReturnsPaidBy] = useState("Buyer")
+  const [domesticRefundMethod, setDomesticRefundMethod] = useState("Money back")
+  const [internationalReturns, setInternationalReturns] = useState(true)
+  const [internationalAllowedWithin, setInternationalAllowedWithin] = useState("14 days")
+  const [internationalReturnsPaidBy, setInternationalReturnsPaidBy] = useState("Buyer")
+  const [internationalRefundMethod, setInternationalRefundMethod] = useState("Money back")
+  
+  // Item location fields
+  const [itemCountry, setItemCountry] = useState("United States")
+  const [itemCity, setItemCity] = useState("San Jose")
+  const [itemZipCode, setItemZipCode] = useState("95117")
+  
+  // Bottom sheet dropdowns for Delivery Details
+  const [showItemLocationEdit, setShowItemLocationEdit] = useState(false)
   const [showHandlingTimeSheet, setShowHandlingTimeSheet] = useState(false)
+  const [showDomesticAllowedWithinSheet, setShowDomesticAllowedWithinSheet] = useState(false)
+  const [showDomesticReturnsPaidBySheet, setShowDomesticReturnsPaidBySheet] = useState(false)
+  const [showDomesticRefundMethodSheet, setShowDomesticRefundMethodSheet] = useState(false)
+  const [showInternationalAllowedWithinSheet, setShowInternationalAllowedWithinSheet] = useState(false)
+  const [showInternationalReturnsPaidBySheet, setShowInternationalReturnsPaidBySheet] = useState(false)
+  const [showInternationalRefundMethodSheet, setShowInternationalRefundMethodSheet] = useState(false)
+  const [showCountrySheet, setShowCountrySheet] = useState(false)
   
   // NEW L2 Pages state
   const [showDomesticServicesSheet, setShowDomesticServicesSheet] = useState(false)
@@ -492,20 +513,24 @@ export function EbayShippingPageDefault() {
               
               <button 
                 onClick={() => setShowDeliveryDetailsSheet(true)}
-                className="w-full p-4 bg-white border border-[#767676] rounded-[8px] flex"
+                className="w-full p-4 bg-white border border-[#767676] rounded-[16px] flex"
               >
-                <div className="flex flex-col gap-3 text-left flex-1">
+                <div className="flex flex-col gap-4 text-left flex-1">
                   <div className="flex flex-col">
                     <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Item location</span>
-                    <span className="text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Located at {itemLocation} (visible on listing)</span>
+                    <span className="text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{`${itemCity}, ${itemCountry}, ${itemZipCode}`}</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Handling time</span>
                     <span className="text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{handlingTime}</span>
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Returns</span>
-                    <span className="text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{returns}</span>
+                    <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Domestic returns</span>
+                    <span className="text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{domesticReturns ? `${domesticAllowedWithin}, ${domesticReturnsPaidBy}, ${domesticRefundMethod}` : "Not accepted"}</span>
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>International returns</span>
+                    <span className="text-[13px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{internationalReturns ? `${internationalAllowedWithin}, ${internationalReturnsPaidBy}, ${internationalRefundMethod}` : "Not accepted"}</span>
                   </div>
                 </div>
                 <div className="flex items-center pl-3">
@@ -771,7 +796,7 @@ export function EbayShippingPageDefault() {
           <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
             <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
-              {/* Status Bar */}
+              {/* iOS Status Bar */}
               <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
                 <span className="text-[15px] font-semibold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>9:41</span>
                 <div className="flex items-center gap-[5px]">
@@ -783,16 +808,10 @@ export function EbayShippingPageDefault() {
 
               {/* Navigation Header - Back and X buttons */}
               <div className="h-[44px] px-4 flex items-center justify-between bg-white flex-shrink-0">
-                <button 
-                  onClick={() => setShowDeliveryDetailsSheet(false)} 
-                  className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
-                >
+                <button onClick={() => setShowDeliveryDetailsSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center">
                   <BackArrow className="w-6 h-6 text-[#191919]" />
                 </button>
-                <button 
-                  onClick={() => setShowDeliveryDetailsSheet(false)} 
-                  className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
-                >
+                <button onClick={() => setShowDeliveryDetailsSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center">
                   <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
                 </button>
               </div>
@@ -800,22 +819,44 @@ export function EbayShippingPageDefault() {
               {/* Scrollable Content */}
               <div className="flex-1 overflow-y-auto px-4 pb-28">
                 {/* Page Title */}
-                <h1 className="text-[24px] font-bold text-[#191919] leading-[32px] mt-2 mb-6" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
-                  Delivery details
-                </h1>
+                <h1 className="text-[24px] font-bold text-[#191919] leading-[32px] mt-2 mb-6" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Delivery details</h1>
 
                 {/* Item Location Section */}
                 <div className="mb-4">
                   <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Item location</h2>
                   
-                  <div className="w-full p-3 bg-[#F7F7F7] rounded-[8px] flex items-start justify-between">
-                    <div className="flex flex-col">
-                      <span className="text-[14px] text-[#191919] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Located at {itemLocation} (visible on listing)</span>
+                  {!showItemLocationEdit ? (
+                    <div className="w-full p-3 bg-[#F7F7F7] rounded-[8px] flex items-start justify-between">
+                      <div className="flex flex-col">
+                        <span className="text-[14px] text-[#191919] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{`${itemCity}, ${itemCountry}, ${itemZipCode}`}</span>
+                        <span className="text-[14px] text-[#707070] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>The item location appears on the listing.</span>
+                      </div>
+                      <button onClick={() => setShowItemLocationEdit(true)} className="text-[14px] text-[#191919] underline ml-3 flex-shrink-0" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Edit</button>
                     </div>
-                    <button className="text-[14px] text-[#191919] underline ml-3 flex-shrink-0" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
-                      Edit
-                    </button>
-                  </div>
+                  ) : (
+                    <div className="w-full p-4 bg-[#F7F7F7] rounded-[12px] flex flex-col gap-3">
+                      {/* Country or region dropdown */}
+                      <button onClick={() => setShowCountrySheet(true)} className="w-full h-[56px] px-4 bg-white border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                        <div className="flex flex-col items-start">
+                          <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Country or region</span>
+                          <span className="text-[14px] text-[#191919] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{itemCountry}</span>
+                        </div>
+                        <ChevronDown className="w-4 h-4 text-[#191919]" />
+                      </button>
+                      
+                      {/* City input */}
+                      <div className="w-full h-[56px] px-4 bg-white border border-[#8F8F8F] rounded-[8px] flex flex-col justify-center">
+                        <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>City</span>
+                        <input type="text" value={itemCity} onChange={(e) => setItemCity(e.target.value)} className="text-[14px] text-[#191919] leading-[20px] bg-transparent outline-none w-full" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }} placeholder="City" />
+                      </div>
+                      
+                      {/* ZIP code input */}
+                      <div className="w-full h-[56px] px-4 bg-white border border-[#8F8F8F] rounded-[8px] flex flex-col justify-center">
+                        <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>ZIP code</span>
+                        <input type="text" value={itemZipCode} onChange={(e) => setItemZipCode(e.target.value)} className="text-[14px] text-[#191919] leading-[20px] bg-transparent outline-none w-full" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }} placeholder="12345" />
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 {/* Divider */}
@@ -824,10 +865,7 @@ export function EbayShippingPageDefault() {
                 {/* Handling Time Section */}
                 <div className="mb-4">
                   <h2 className="text-[16px] font-bold text-[#191919] leading-[24px] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Handling time</h2>
-                  <button 
-                    onClick={() => setShowHandlingTimeSheet(true)}
-                    className="w-full h-[48px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between"
-                  >
+                  <button onClick={() => setShowHandlingTimeSheet(true)} className="w-full h-[48px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
                     <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{handlingTime}</span>
                     <ChevronDown className="w-4 h-4 text-[#191919]" />
                   </button>
@@ -840,7 +878,89 @@ export function EbayShippingPageDefault() {
                 <div>
                   <div className="mb-4">
                     <h2 className="text-[16px] font-bold text-[#191919] leading-[24px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Returns</h2>
-                    <p className="text-[14px] text-[#707070] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{returns}</p>
+                    <p className="text-[14px] text-[#707070] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Sellers must accept returns if the item doesn&apos;t match the listing description.</p>
+                  </div>
+
+                  {/* Domestic Returns */}
+                  <div className="mb-5">
+                    <div className="flex items-center justify-between py-2 mb-3">
+                      <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Domestic</span>
+                      <button onClick={() => setDomesticReturns(!domesticReturns)} className={`w-[51px] h-[31px] rounded-full transition-colors ${domesticReturns ? 'bg-[#3665F3]' : 'bg-[#E5E5E5]'}`}>
+                        <div className={`w-[27px] h-[27px] bg-white rounded-full shadow-sm transition-transform ${domesticReturns ? 'translate-x-[22px]' : 'translate-x-[2px]'}`} />
+                      </button>
+                    </div>
+
+                    {domesticReturns && (
+                      <div className="flex flex-col gap-3">
+                        {/* Allowed within */}
+                        <button onClick={() => setShowDomesticAllowedWithinSheet(true)} className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Allowed within</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{domesticAllowedWithin}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+
+                        {/* Returns shipping paid by */}
+                        <button onClick={() => setShowDomesticReturnsPaidBySheet(true)} className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Returns shipping paid by</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{domesticReturnsPaidBy}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+
+                        {/* Refund method */}
+                        <button onClick={() => setShowDomesticRefundMethodSheet(true)} className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Refund method</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{domesticRefundMethod}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* International Returns */}
+                  <div>
+                    <div className="flex items-center justify-between py-2 mb-3">
+                      <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>International</span>
+                      <button onClick={() => setInternationalReturns(!internationalReturns)} className={`w-[51px] h-[31px] rounded-full transition-colors ${internationalReturns ? 'bg-[#3665F3]' : 'bg-[#E5E5E5]'}`}>
+                        <div className={`w-[27px] h-[27px] bg-white rounded-full shadow-sm transition-transform ${internationalReturns ? 'translate-x-[22px]' : 'translate-x-[2px]'}`} />
+                      </button>
+                    </div>
+
+                    {internationalReturns && (
+                      <div className="flex flex-col gap-3">
+                        {/* Allowed within */}
+                        <button onClick={() => setShowInternationalAllowedWithinSheet(true)} className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Allowed within</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{internationalAllowedWithin}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+
+                        {/* Returns shipping paid by */}
+                        <button onClick={() => setShowInternationalReturnsPaidBySheet(true)} className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Returns shipping paid by</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{internationalReturnsPaidBy}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+
+                        {/* Refund method */}
+                        <button onClick={() => setShowInternationalRefundMethodSheet(true)} className="w-full h-[56px] px-4 bg-[#F7F7F7] border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                          <div className="flex flex-col items-start">
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Refund method</span>
+                            <span className="text-[14px] text-[#191919] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{internationalRefundMethod}</span>
+                          </div>
+                          <ChevronDown className="w-4 h-4 text-[#191919]" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -849,11 +969,8 @@ export function EbayShippingPageDefault() {
               <div className="absolute bottom-0 left-0 right-0 bg-white">
                 <div className="h-[1px] bg-[#E5E5E5]" />
                 <div className="px-4 pb-3 pt-3">
-                  <button 
-                    onClick={() => setShowDeliveryDetailsSheet(false)}
-                    className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]"
-                  >
-                    <span className="text-[16px] font-bold text-white" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Save</span>
+                  <button onClick={() => setShowDeliveryDetailsSheet(false)} className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]">
+                    <span className="text-[16px] font-bold text-white" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Done</span>
                   </button>
                 </div>
                 {/* Home Indicator */}
@@ -1276,6 +1393,190 @@ export function EbayShippingPageDefault() {
                       <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Free shipping</span>
                     </button>
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================== */}
+      {/* COUNTRY SELECTION SHEET                       */}
+      {/* ============================================== */}
+      {showCountrySheet && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-md" onClick={() => setShowCountrySheet(false)} />
+              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] shadow-[0_-5px_30px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
+                <div className="flex justify-center pt-[6px] pb-[6px]"><div className="w-8 h-1 bg-[#8F8F8F] rounded-full" /></div>
+                <div className="flex items-center justify-between px-4 pt-2 pb-3">
+                  <h3 className="text-[18px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Country or region</h3>
+                  <button onClick={() => setShowCountrySheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"><X className="w-5 h-5 text-[#191919]" strokeWidth={2} /></button>
+                </div>
+                <div className="px-4 pt-1 pb-8 flex flex-col gap-2">
+                  {["United States", "Canada", "Germany", "United Kingdom", "France"].map((country) => (
+                    <button key={country} onClick={() => { setItemCountry(country); setShowCountrySheet(false) }} className={`w-full px-4 py-3 rounded-[8px] text-left ${itemCountry === country ? "bg-[#F7F7F7] border-2 border-[#191919]" : "bg-white border border-[#8F8F8F]"}`}>
+                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{country}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* DOMESTIC ALLOWED WITHIN SHEET */}
+      {showDomesticAllowedWithinSheet && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-md" onClick={() => setShowDomesticAllowedWithinSheet(false)} />
+              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] shadow-[0_-5px_30px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
+                <div className="flex justify-center pt-[6px] pb-[6px]"><div className="w-8 h-1 bg-[#8F8F8F] rounded-full" /></div>
+                <div className="flex items-center justify-between px-4 pt-2 pb-3">
+                  <h3 className="text-[18px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Allowed within</h3>
+                  <button onClick={() => setShowDomesticAllowedWithinSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"><X className="w-5 h-5 text-[#191919]" strokeWidth={2} /></button>
+                </div>
+                <div className="px-4 pt-1 pb-8 flex flex-col gap-2">
+                  {["14 days", "30 days", "60 days"].map((option) => (
+                    <button key={option} onClick={() => { setDomesticAllowedWithin(option); setShowDomesticAllowedWithinSheet(false) }} className={`w-full px-4 py-3 rounded-[8px] text-left ${domesticAllowedWithin === option ? "bg-[#F7F7F7] border-2 border-[#191919]" : "bg-white border border-[#8F8F8F]"}`}>
+                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{option}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* DOMESTIC RETURNS PAID BY SHEET */}
+      {showDomesticReturnsPaidBySheet && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-md" onClick={() => setShowDomesticReturnsPaidBySheet(false)} />
+              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] shadow-[0_-5px_30px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
+                <div className="flex justify-center pt-[6px] pb-[6px]"><div className="w-8 h-1 bg-[#8F8F8F] rounded-full" /></div>
+                <div className="flex items-center justify-between px-4 pt-2 pb-3">
+                  <h3 className="text-[18px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Returns shipping paid by</h3>
+                  <button onClick={() => setShowDomesticReturnsPaidBySheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"><X className="w-5 h-5 text-[#191919]" strokeWidth={2} /></button>
+                </div>
+                <div className="px-4 pt-1 pb-8 flex flex-col gap-2">
+                  {["Buyer", "Seller"].map((option) => (
+                    <button key={option} onClick={() => { setDomesticReturnsPaidBy(option); setShowDomesticReturnsPaidBySheet(false) }} className={`w-full px-4 py-3 rounded-[8px] text-left ${domesticReturnsPaidBy === option ? "bg-[#F7F7F7] border-2 border-[#191919]" : "bg-white border border-[#8F8F8F]"}`}>
+                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{option}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* DOMESTIC REFUND METHOD SHEET */}
+      {showDomesticRefundMethodSheet && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-md" onClick={() => setShowDomesticRefundMethodSheet(false)} />
+              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] shadow-[0_-5px_30px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
+                <div className="flex justify-center pt-[6px] pb-[6px]"><div className="w-8 h-1 bg-[#8F8F8F] rounded-full" /></div>
+                <div className="flex items-center justify-between px-4 pt-2 pb-3">
+                  <h3 className="text-[18px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Refund method</h3>
+                  <button onClick={() => setShowDomesticRefundMethodSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"><X className="w-5 h-5 text-[#191919]" strokeWidth={2} /></button>
+                </div>
+                <div className="px-4 pt-1 pb-8 flex flex-col gap-2">
+                  {["Money back", "Exchange or replacement", "Store credit"].map((option) => (
+                    <button key={option} onClick={() => { setDomesticRefundMethod(option); setShowDomesticRefundMethodSheet(false) }} className={`w-full px-4 py-3 rounded-[8px] text-left ${domesticRefundMethod === option ? "bg-[#F7F7F7] border-2 border-[#191919]" : "bg-white border border-[#8F8F8F]"}`}>
+                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{option}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* INTERNATIONAL ALLOWED WITHIN SHEET */}
+      {showInternationalAllowedWithinSheet && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-md" onClick={() => setShowInternationalAllowedWithinSheet(false)} />
+              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] shadow-[0_-5px_30px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
+                <div className="flex justify-center pt-[6px] pb-[6px]"><div className="w-8 h-1 bg-[#8F8F8F] rounded-full" /></div>
+                <div className="flex items-center justify-between px-4 pt-2 pb-3">
+                  <h3 className="text-[18px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Allowed within</h3>
+                  <button onClick={() => setShowInternationalAllowedWithinSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"><X className="w-5 h-5 text-[#191919]" strokeWidth={2} /></button>
+                </div>
+                <div className="px-4 pt-1 pb-8 flex flex-col gap-2">
+                  {["14 days", "30 days", "60 days"].map((option) => (
+                    <button key={option} onClick={() => { setInternationalAllowedWithin(option); setShowInternationalAllowedWithinSheet(false) }} className={`w-full px-4 py-3 rounded-[8px] text-left ${internationalAllowedWithin === option ? "bg-[#F7F7F7] border-2 border-[#191919]" : "bg-white border border-[#8F8F8F]"}`}>
+                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{option}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* INTERNATIONAL RETURNS PAID BY SHEET */}
+      {showInternationalReturnsPaidBySheet && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-md" onClick={() => setShowInternationalReturnsPaidBySheet(false)} />
+              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] shadow-[0_-5px_30px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
+                <div className="flex justify-center pt-[6px] pb-[6px]"><div className="w-8 h-1 bg-[#8F8F8F] rounded-full" /></div>
+                <div className="flex items-center justify-between px-4 pt-2 pb-3">
+                  <h3 className="text-[18px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Returns shipping paid by</h3>
+                  <button onClick={() => setShowInternationalReturnsPaidBySheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"><X className="w-5 h-5 text-[#191919]" strokeWidth={2} /></button>
+                </div>
+                <div className="px-4 pt-1 pb-8 flex flex-col gap-2">
+                  {["Buyer", "Seller"].map((option) => (
+                    <button key={option} onClick={() => { setInternationalReturnsPaidBy(option); setShowInternationalReturnsPaidBySheet(false) }} className={`w-full px-4 py-3 rounded-[8px] text-left ${internationalReturnsPaidBy === option ? "bg-[#F7F7F7] border-2 border-[#191919]" : "bg-white border border-[#8F8F8F]"}`}>
+                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{option}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* INTERNATIONAL REFUND METHOD SHEET */}
+      {showInternationalRefundMethodSheet && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-md" onClick={() => setShowInternationalRefundMethodSheet(false)} />
+              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] shadow-[0_-5px_30px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
+                <div className="flex justify-center pt-[6px] pb-[6px]"><div className="w-8 h-1 bg-[#8F8F8F] rounded-full" /></div>
+                <div className="flex items-center justify-between px-4 pt-2 pb-3">
+                  <h3 className="text-[18px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Refund method</h3>
+                  <button onClick={() => setShowInternationalRefundMethodSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"><X className="w-5 h-5 text-[#191919]" strokeWidth={2} /></button>
+                </div>
+                <div className="px-4 pt-1 pb-8 flex flex-col gap-2">
+                  {["Money back", "Exchange or replacement", "Store credit"].map((option) => (
+                    <button key={option} onClick={() => { setInternationalRefundMethod(option); setShowInternationalRefundMethodSheet(false) }} className={`w-full px-4 py-3 rounded-[8px] text-left ${internationalRefundMethod === option ? "bg-[#F7F7F7] border-2 border-[#191919]" : "bg-white border border-[#8F8F8F]"}`}>
+                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{option}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
