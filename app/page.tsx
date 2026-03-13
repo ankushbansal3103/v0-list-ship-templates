@@ -2,8 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Search, ExternalLink, ChevronRight, Check } from "lucide-react"
+import { Search, ExternalLink } from "lucide-react"
 import { EbayShippingPage } from "@/components/ebay-shipping-page"
 
 // Filter options
@@ -104,12 +103,6 @@ export default function PrototypeLibrary() {
   const [selectedSite, setSelectedSite] = useState<string | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
   const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
-  const [showBranchModal, setShowBranchModal] = useState(false)
-  const [branchName, setBranchName] = useState("")
-  const [selectedPrototype, setSelectedPrototype] = useState<{ id: string; route: string; name: string } | null>(null)
-  const [isCreatingBranch, setIsCreatingBranch] = useState(false)
-  const [branchError, setBranchError] = useState<string | null>(null)
-  const [createdBranchName, setCreatedBranchName] = useState<string | null>(null)
 
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
@@ -140,50 +133,6 @@ export default function PrototypeLibrary() {
     const prototype = site?.prototypes.find(p => p.id === r.prototypeId)
     return prototype ? { ...prototype, siteCode: site?.code, siteFlag: site?.flag } : null
   }).filter(Boolean)
-
-  const handleUseTemplate = (prototypeId: string) => {
-    const prototype = sites.flatMap(s => s.prototypes).find(p => p.id === prototypeId)
-    if (prototype) {
-      setSelectedPrototype({ id: prototype.id, route: prototype.route, name: prototype.name })
-      setBranchName("")
-      setShowBranchModal(true)
-    }
-  }
-
-  const handleStartBuilding = async () => {
-    if (!branchName.trim() || !selectedPrototype) return
-    
-    setIsCreatingBranch(true)
-    setBranchError(null)
-    
-    try {
-      const response = await fetch('/api/create-branch', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          projectName: branchName.trim(),
-          prototypeId: selectedPrototype.id
-        })
-      })
-      
-      const data = await response.json()
-      
-      if (data.error) {
-        setBranchError(data.error)
-        return
-      }
-      
-      if (data.success && data.branchName) {
-        // Branch created - show success with branch name
-        setCreatedBranchName(data.branchName)
-        setBranchName("")
-      }
-    } catch (err) {
-      setBranchError(err instanceof Error ? err.message : 'Failed to create branch')
-    } finally {
-      setIsCreatingBranch(false)
-    }
-  }
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -358,16 +307,10 @@ export default function PrototypeLibrary() {
                       </span>
                     </div>
                     <h4 className="text-white text-sm font-medium truncate">{prototype.name}</h4>
-                    <div className="flex gap-2 mt-2">
-                      <button
-                        onClick={() => handleUseTemplate(prototype.id)}
-                        className="flex-1 text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                      >
-                        Use Template
-                      </button>
+                    <div className="mt-2">
                       <Link
                         href={prototype.route}
-                        className="px-3 py-1.5 text-xs bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
+                        className="block w-full text-center text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                       >
                         Preview
                       </Link>
@@ -445,32 +388,18 @@ export default function PrototypeLibrary() {
                       
                       <p className="text-[#666] text-sm mb-4">{prototype.description}</p>
                       
-                      <div className="flex items-center gap-2">
-                        <button
-                          onClick={() => handleUseTemplate(prototype.id)}
-                          disabled={prototype.status !== 'active'}
-                          className={`flex-1 h-10 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors ${
-                            prototype.status === 'active'
-                              ? 'bg-blue-600 text-white hover:bg-blue-700'
-                              : 'bg-[#222] text-[#666] cursor-not-allowed'
-                          }`}
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          Start Building
-                        </button>
-                        <Link
-                          href={prototype.status === 'active' ? prototype.route : '#'}
-                          onClick={(e) => prototype.status !== 'active' && e.preventDefault()}
-                          className={`h-10 px-4 flex items-center gap-2 border rounded-lg text-sm transition-colors ${
-                            prototype.status === 'active'
-                              ? 'bg-[#1a1a1a] border-[#333] text-white hover:bg-[#222]'
-                              : 'bg-[#111] border-[#222] text-[#555] cursor-not-allowed'
-                          }`}
-                        >
-                          <ExternalLink className="w-4 h-4" />
-                          Preview
-                        </Link>
-                      </div>
+                      <Link
+                        href={prototype.status === 'active' ? prototype.route : '#'}
+                        onClick={(e) => prototype.status !== 'active' && e.preventDefault()}
+                        className={`w-full h-10 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors ${
+                          prototype.status === 'active'
+                            ? 'bg-blue-600 text-white hover:bg-blue-700'
+                            : 'bg-[#222] text-[#666] cursor-not-allowed'
+                        }`}
+                      >
+                        <ExternalLink className="w-4 h-4" />
+                        Preview
+                      </Link>
                     </div>
                   </div>
                 ))
@@ -512,16 +441,10 @@ export default function PrototypeLibrary() {
                       </span>
                     </div>
                     <h4 className="text-white text-sm font-medium truncate">{prototype.name}</h4>
-                    <div className="flex gap-2 mt-2">
-                      <button
-                        onClick={() => handleUseTemplate(prototype.id)}
-                        className="flex-1 text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                      >
-                        Use Template
-                      </button>
+                    <div className="mt-2">
                       <Link
                         href={prototype.route}
-                        className="px-3 py-1.5 text-xs bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
+                        className="block w-full text-center text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                       >
                         Preview
                       </Link>
@@ -542,128 +465,7 @@ export default function PrototypeLibrary() {
         </div>
       </footer>
 
-      {/* Branch Name Modal */}
-      {showBranchModal && selectedPrototype && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#111] border border-[#333] rounded-2xl w-full max-w-md overflow-hidden">
-            {createdBranchName ? (
-              <>
-                {/* Success State */}
-                <div className="p-6 border-b border-[#222]">
-                  <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center mb-4">
-                    <Check className="w-6 h-6 text-green-400" />
-                  </div>
-                  <h2 className="text-white font-semibold text-xl">Branch Created</h2>
-                  <p className="text-[#888] text-sm mt-1">
-                    Your branch is ready for {selectedPrototype.name}
-                  </p>
-                </div>
-                
-                <div className="p-6">
-                  <div className="bg-[#0a0a0a] border border-[#333] rounded-lg p-4 mb-4">
-                    <p className="text-[#888] text-xs mb-1">Branch name</p>
-                    <p className="text-white font-mono text-sm break-all">{createdBranchName}</p>
-                  </div>
-                  
-                  <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4">
-                    <p className="text-blue-400 text-sm font-medium mb-2">Next Steps:</p>
-                    <ol className="text-[#888] text-sm space-y-2 list-decimal list-inside">
-                      <li>Go to <a href="https://v0.dev" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">v0.dev</a> and start a new chat</li>
-                      <li>Click Settings (top right) and connect to GitHub</li>
-                      <li>Select repo: <span className="text-white">v0-list-ship-templates</span></li>
-                      <li>Select branch: <span className="text-white font-mono">{createdBranchName}</span></li>
-                      <li>Ask v0 to show the prototype at <span className="text-white">{selectedPrototype.route}</span></li>
-                    </ol>
-                  </div>
-                </div>
-                
-                <div className="p-6 pt-0">
-                  <button
-                    onClick={() => {
-                      setShowBranchModal(false)
-                      setSelectedPrototype(null)
-                      setCreatedBranchName(null)
-                    }}
-                    className="w-full h-11 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                  >
-                    Done
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* Form State */}
-                <div className="p-6 border-b border-[#222]">
-                  <h2 className="text-white font-semibold text-xl">Start Building</h2>
-                  <p className="text-[#888] text-sm mt-1">
-                    Create a branch to work on <span className="text-white">{selectedPrototype.name}</span>
-                  </p>
-                </div>
-                
-                <div className="p-6">
-                  <label className="block text-sm text-[#888] mb-2">Branch Name</label>
-                  <input
-                    type="text"
-                    value={branchName}
-                    onChange={(e) => {
-                      setBranchName(e.target.value)
-                      setBranchError(null)
-                    }}
-                    placeholder="my-feature-branch"
-                    className="w-full h-12 px-4 bg-[#0a0a0a] border border-[#333] rounded-lg text-white placeholder:text-[#555] focus:outline-none focus:border-blue-500 transition-colors"
-                    autoFocus
-                    disabled={isCreatingBranch}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && branchName.trim() && !isCreatingBranch) {
-                        handleStartBuilding()
-                      }
-                    }}
-                  />
-                  {branchError ? (
-                    <p className="text-red-400 text-xs mt-2">{branchError}</p>
-                  ) : (
-                    <p className="text-[#555] text-xs mt-2">
-                      A new GitHub branch will be created for your changes
-                    </p>
-                  )}
-                </div>
-                
-                <div className="p-6 pt-0 flex items-center gap-3">
-                  <button
-                    onClick={handleStartBuilding}
-                    disabled={!branchName.trim() || isCreatingBranch}
-                    className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isCreatingBranch ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Creating Branch...
-                      </>
-                    ) : (
-                      <>
-                        <ChevronRight className="w-4 h-4" />
-                        Create Branch
-                      </>
-                    )}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowBranchModal(false)
-                      setSelectedPrototype(null)
-                      setBranchName("")
-                      setBranchError(null)
-                    }}
-                    disabled={isCreatingBranch}
-                    className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors disabled:opacity-50"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      
     </div>
   )
 }
