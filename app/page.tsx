@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Search, ExternalLink, X } from "lucide-react"
+import { Search, ExternalLink, X, ChevronRight } from "lucide-react"
 import { EbayShippingPage } from "@/components/ebay-shipping-page"
 import { EbayShippingPageDefault } from "@/components/ebay-shipping-page-default"
 import { EbayShippingPageUKDefault } from "@/components/ebay-shipping-page-uk-default"
@@ -35,10 +35,7 @@ const platforms = [
   { id: "dweb", name: "dWeb", icon: "🖥️" },
 ]
 
-const segments = [
-  { id: "c2c", name: "C2C", icon: "👤" },
-  { id: "b2c", name: "B2C", icon: "🏪" },
-]
+
 
 // Site data with prototypes
 const sites = [
@@ -145,7 +142,6 @@ export default function PrototypeLibrary() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedSite, setSelectedSite] = useState<string | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
-  const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
 
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
@@ -154,16 +150,15 @@ export default function PrototypeLibrary() {
       ...site,
       prototypes: site.prototypes.filter(p => {
         const matchesPlatform = !selectedPlatform || p.platform === selectedPlatform
-        const matchesSegment = !selectedSegment || p.segment === selectedSegment
         const matchesSearch = !searchQuery || 
           p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           p.description.toLowerCase().includes(searchQuery.toLowerCase())
-        return matchesPlatform && matchesSegment && matchesSearch
+        return matchesPlatform && matchesSearch
       })
     })).filter(site => site.prototypes.length > 0)
 
   const totalPrototypes = filteredSites.reduce((acc, site) => acc + site.prototypes.length, 0)
-  const activeFiltersCount = [selectedSite, selectedPlatform, selectedSegment].filter(Boolean).length
+  const activeFiltersCount = [selectedSite, selectedPlatform].filter(Boolean).length
   const hasActiveFilters = activeFiltersCount > 0 || searchQuery.length > 0
 
   // Recently used prototypes (in production, this would come from localStorage or a database)
@@ -270,27 +265,6 @@ export default function PrototypeLibrary() {
                 ))}
               </div>
             </div>
-
-            {/* Segment Filter */}
-            <div className="flex items-center gap-3">
-              <span className="text-[#666] text-xs uppercase tracking-wider">Segment</span>
-              <div className="flex gap-2">
-                {segments.map((segment) => (
-                  <button
-                    key={segment.id}
-                    onClick={() => setSelectedSegment(selectedSegment === segment.id ? null : segment.id)}
-                    className={`px-3 py-1.5 rounded-lg border text-sm transition-all flex items-center gap-1.5 ${
-                      selectedSegment === segment.id 
-                        ? "bg-blue-600 border-blue-500 text-white" 
-                        : "bg-[#1a1a1a] border-[#333] text-[#888] hover:border-[#444] hover:text-white"
-                    }`}
-                  >
-                    <span>{segment.icon}</span>
-                    <span>{segment.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
           </div>
 
           {/* Active Filters Summary */}
@@ -301,7 +275,6 @@ export default function PrototypeLibrary() {
                 onClick={() => {
                   setSelectedSite(null)
                   setSelectedPlatform(null)
-                  setSelectedSegment(null)
                 }}
                 className="text-blue-400 text-sm hover:text-blue-300 flex items-center gap-1"
               >
@@ -377,22 +350,31 @@ export default function PrototypeLibrary() {
           {/* Market Rows */}
           <div className="flex flex-col gap-8">
             {filteredSites.map((site) => (
-              <div key={site.id} className="bg-[#111] border border-[#222] rounded-2xl p-6">
+              <div key={site.id} className="bg-[#111] border border-[#222] rounded-2xl p-6 relative group">
                 {/* Market Header */}
-                <div className="flex items-center gap-3 mb-5">
-                  <span className="text-2xl">{site.flag}</span>
-                  <div>
-                    <h3 className="text-white font-semibold text-lg">{site.name}</h3>
-                    <span className="text-[#666] text-sm">{site.prototypes.length} prototype{site.prototypes.length !== 1 ? 's' : ''}</span>
+                <div className="flex items-center justify-between mb-5">
+                  <div className="flex items-center gap-3">
+                    <span className="text-2xl">{site.flag}</span>
+                    <div>
+                      <h3 className="text-white font-semibold text-lg">{site.name}</h3>
+                      <span className="text-[#666] text-sm">{site.prototypes.length} prototype{site.prototypes.length !== 1 ? 's' : ''}</span>
+                    </div>
                   </div>
+                  {site.prototypes.length > 3 && (
+                    <div className="flex items-center gap-1 text-[#666] text-sm">
+                      <span>Scroll for more</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </div>
+                  )}
                 </div>
                 
                 {/* Prototype Carousel */}
-                <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-[#333] scrollbar-track-transparent">
+                <div className="relative">
+                  <div className="flex gap-4 overflow-x-auto pb-4 scroll-smooth snap-x snap-mandatory" style={{ scrollbarWidth: 'thin', scrollbarColor: '#333 transparent' }}>
                   {site.prototypes.map((prototype) => (
                     <div 
                       key={prototype.id}
-                      className="flex-shrink-0 w-80 bg-[#0a0a0a] border border-[#222] rounded-xl overflow-hidden hover:border-[#444] transition-colors"
+                      className="flex-shrink-0 w-80 bg-[#0a0a0a] border border-[#222] rounded-xl overflow-hidden hover:border-[#444] transition-colors snap-start"
                     >
                       {/* Live Prototype Preview */}
                       <div className="h-56 bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
@@ -511,13 +493,10 @@ export default function PrototypeLibrary() {
                           </span>
                         </div>
                         
-                        {/* Platform & Segment Tags */}
+                        {/* Platform Tag */}
                         <div className="flex items-center gap-2 mb-3">
                           <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
                             {platforms.find(p => p.id === prototype.platform)?.name}
-                          </span>
-                          <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
-                            {prototype.segment.toUpperCase()}
                           </span>
                         </div>
                         
@@ -538,6 +517,7 @@ export default function PrototypeLibrary() {
                       </div>
                     </div>
                   ))}
+                  </div>
                 </div>
               </div>
             ))}
