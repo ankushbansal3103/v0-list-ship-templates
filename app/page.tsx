@@ -47,7 +47,7 @@ const sites = [
     code: "US",
     flag: "🇺🇸",
     prototypes: [
-      { id: "us-shelby-ag", name: "US-Shelby-AG", description: "Shipping configuration with Authenticity Guarantee, eBay International Shipping", status: "active", route: "/prototype/us-shelby-ag", platform: "ios", segment: "c2c" },
+      { id: "us-shelby-ag", name: "US-Shelby-AG", description: "Shipping configuration with Authenticity Guarantee, eBay International Shipping", status: "active", route: "/prototype/us-shelby-ag", platform: "ios", segment: "c2c", recommended: true },
       { id: "us-shelby-default", name: "US-Shelby-Default", description: "Default services view with USPS, FedEx, UPS carrier selection", status: "active", route: "/prototype/us-shelby-default", platform: "ios", segment: "c2c" },
       { id: "us-shelby-default-android", name: "US-Shelby-Default-Android", description: "Default services view for Android platform", status: "active", route: "/prototype/us-shelby-default-android", platform: "android", segment: "c2c" },
       { id: "us-helix-simple", name: "US-Helix-Simple", description: "Helix Simple desktop shipping configuration for US market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
@@ -551,7 +551,14 @@ export default function PrototypeLibrary() {
                   {/* Content */}
                   <div className="p-4">
                     <div className="flex items-start justify-between mb-2">
-                      <h4 className="text-white font-medium text-sm">{prototype.name}</h4>
+                      <div className="flex items-center gap-2">
+                        <h4 className="text-white font-medium text-sm">{prototype.name}</h4>
+                        {prototype.recommended && (
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-medium">
+                            Recommended
+                          </span>
+                        )}
+                      </div>
                       <span className={`text-xs px-2 py-0.5 rounded ${
                         prototype.status === 'active' 
                           ? 'bg-green-500/20 text-green-400' 
@@ -818,7 +825,14 @@ export default function PrototypeLibrary() {
                       {/* Content */}
                       <div className="p-4">
                         <div className="flex items-start justify-between mb-2">
-                          <h4 className="text-white font-medium text-sm">{prototype.name}</h4>
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-white font-medium text-sm">{prototype.name}</h4>
+                            {prototype.recommended && (
+                              <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-medium">
+                                Recommended
+                              </span>
+                            )}
+                          </div>
                           <span className={`text-xs px-2 py-0.5 rounded ${
                             prototype.status === 'active' 
                               ? 'bg-green-500/20 text-green-400' 
@@ -897,6 +911,11 @@ export default function PrototypeLibrary() {
                       <span className="text-xs px-1.5 py-0.5 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
                         {prototype.siteFlag} {prototype.siteCode}
                       </span>
+                      {prototype.recommended && (
+                        <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-400 font-medium">
+                          Recommended
+                        </span>
+                      )}
                     </div>
                     <h4 className="text-white text-sm font-medium truncate">{prototype.name}</h4>
                     <div className="mt-2">
