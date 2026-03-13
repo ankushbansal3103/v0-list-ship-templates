@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Search, ExternalLink, ChevronRight, Check, X } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { Search, ExternalLink, ChevronRight, Check } from "lucide-react"
 import { EbayShippingPage } from "@/components/ebay-shipping-page"
 
 // Filter options
@@ -98,13 +99,11 @@ const sites = [
 ]
 
 export default function PrototypeLibrary() {
+  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedSite, setSelectedSite] = useState<string | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
   const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
-  const [showProjectModal, setShowProjectModal] = useState(false)
-  const [selectedPrototypeId, setSelectedPrototypeId] = useState<string | null>(null)
-  const [projectName, setProjectName] = useState("")
 
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
@@ -137,34 +136,8 @@ export default function PrototypeLibrary() {
   }).filter(Boolean)
 
   const handleUseTemplate = (prototypeId: string) => {
-    setSelectedPrototypeId(prototypeId)
-    setProjectName("")
-    setShowProjectModal(true)
-  }
-
-  const handleCreateProject = () => {
-    if (!projectName.trim() || !selectedPrototypeId) return
-    
-    // Use Vercel's one-click deploy with the project name
-    // Repository is PUBLIC - clones from main branch
-    const repoUrl = 'https://github.com/ankushbansal3103/v0-list-ship-templates'
-    const projectSlug = projectName.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-')
-    
-    // Vercel deploy URL - creates user's own copy from the current branch
-    const deployUrl = `https://vercel.com/new/clone?repository-url=${encodeURIComponent(repoUrl)}&project-name=${encodeURIComponent(projectSlug)}&repository-name=${encodeURIComponent(projectSlug)}`
-    
-    window.open(deployUrl, '_blank')
-    
-    // Close modal
-    setShowProjectModal(false)
-    setProjectName("")
-    setSelectedPrototypeId(null)
-  }
-
-  const closeModal = () => {
-    setShowProjectModal(false)
-    setProjectName("")
-    setSelectedPrototypeId(null)
+    // Navigate directly to the workspace for this prototype
+    router.push(`/workspace/${prototypeId}`)
   }
 
   return (
@@ -524,59 +497,7 @@ export default function PrototypeLibrary() {
         </div>
       </footer>
 
-      {/* Project Name Modal */}
-      {showProjectModal && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#111] border border-[#333] rounded-2xl w-full max-w-md overflow-hidden">
-            {/* Modal Header */}
-            <div className="p-6 border-b border-[#222]">
-              <h2 className="text-white font-semibold text-xl">Start New Project</h2>
-              <p className="text-[#888] text-sm mt-1">
-                Create your own copy of this prototype to customize
-              </p>
-            </div>
-            
-            {/* Modal Content */}
-            <div className="p-6">
-              <label className="block text-sm text-[#888] mb-2">Project Name</label>
-              <input
-                type="text"
-                value={projectName}
-                onChange={(e) => setProjectName(e.target.value)}
-                placeholder="my-shipping-prototype"
-                className="w-full h-12 px-4 bg-[#0a0a0a] border border-[#333] rounded-lg text-white placeholder:text-[#555] focus:outline-none focus:border-blue-500 transition-colors"
-                autoFocus
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' && projectName.trim()) {
-                    handleCreateProject()
-                  }
-                }}
-              />
-              <p className="text-[#555] text-xs mt-2">
-                Your project will be deployed to: {projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-') || 'your-project'}.vercel.app
-              </p>
-            </div>
-            
-            {/* Modal Actions */}
-            <div className="p-6 pt-0 flex items-center gap-3">
-              <button
-                onClick={handleCreateProject}
-                disabled={!projectName.trim()}
-                className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <ExternalLink className="w-4 h-4" />
-                Deploy & Start Building
-              </button>
-              <button
-                onClick={closeModal}
-                className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      
     </div>
   )
 }
