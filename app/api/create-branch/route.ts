@@ -101,6 +101,7 @@ export async function POST(request: NextRequest) {
     console.log("[v0] Got base SHA:", baseSha.substring(0, 7))
     
     // Create new branch
+    console.log("[v0] Creating branch:", branchName)
     const createBranchResponse = await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/git/refs`,
       {
@@ -123,12 +124,18 @@ export async function POST(request: NextRequest) {
       throw new Error(error.message || "Failed to create branch")
     }
     
-    // Return v0 URL with the new branch - use /new endpoint for clean project start
-    const v0Url = `https://v0.dev/new?repo=${GITHUB_OWNER}/${GITHUB_REPO}&branch=${encodeURIComponent(branchName)}`
+    console.log("[v0] Branch created successfully:", branchName)
+    
+    // Return GitHub URL to the new branch - user can then open in v0 from there
+    const branchUrl = `https://github.com/${GITHUB_OWNER}/${GITHUB_REPO}/tree/${branchName}`
+    const v0Url = `https://v0.dev/chat?rid=${GITHUB_OWNER}/${GITHUB_REPO}&branch=${encodeURIComponent(branchName)}`
+    
+    console.log("[v0] Returning URL:", v0Url)
     
     return NextResponse.json({
       success: true,
       branchName,
+      branchUrl,
       url: v0Url,
       message: `Branch "${branchName}" created successfully`
     })
