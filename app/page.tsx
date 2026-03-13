@@ -569,8 +569,7 @@ export default function PrototypeLibrary() {
               </button>
               <button
                 onClick={closeModal}
-                disabled={isCreating}
-                className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors disabled:opacity-50"
+                className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
               >
                 Cancel
               </button>
