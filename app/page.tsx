@@ -107,7 +107,6 @@ export default function PrototypeLibrary() {
   const [selectedPrototypeId, setSelectedPrototypeId] = useState<string | null>(null)
   const [projectName, setProjectName] = useState("")
   const [isCreating, setIsCreating] = useState(false)
-  const [createdBranch, setCreatedBranch] = useState<{name: string, url: string} | null>(null)
 
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
@@ -161,18 +160,36 @@ export default function PrototypeLibrary() {
         })
       })
       
-      const data = await response.json()
+      const branchData = await response.json()
       
-      if (data.error) {
-        alert(`Error: ${data.error}`)
-      } else if (data.success && data.branchName) {
-        // Branch created - show success with GitHub link
-        setCreatedBranch({
-          name: data.branchName,
-          url: data.branchUrl
-        })
-        setProjectName("")
+      if (branchData.error) {
+        alert(`Error: ${branchData.error}`)
+        return
       }
+      
+      if (!branchData.success) {
+        alert('Failed to create branch')
+        return
+      }
+
+      // Branch created - now fetch the prototype code
+      const templateResponse = await fetch(`/api/template/${selectedPrototypeId}`)
+      const templateData = await templateResponse.json()
+      
+      if (templateData.error) {
+        alert(`Error loading template: ${templateData.error}`)
+        return
+      }
+
+      // Open v0 with the code prompt - this will render the prototype
+      const v0Url = `https://v0.dev/chat?q=${encodeURIComponent(templateData.prompt)}`
+      window.open(v0Url, '_blank')
+      
+      // Close modal and reset state
+      setShowProjectModal(false)
+      setProjectName("")
+      setSelectedPrototypeId(null)
+      setCreatedBranch(null)
       
     } catch (err) {
       alert(`Failed to create project: ${err instanceof Error ? err.message : 'Unknown error'}`)
@@ -182,19 +199,10 @@ export default function PrototypeLibrary() {
     }
   }
 
-  const handleOpenInV0 = () => {
-    if (createdBranch) {
-      // Open v0 with GitHub import URL
-      const importUrl = `https://v0.dev/chat/new?repo=${encodeURIComponent(`ankushbansal3103/v0-list-ship-templates`)}&branch=${encodeURIComponent(createdBranch.name)}`
-      window.open(importUrl, '_blank')
-    }
-  }
-
   const closeModal = () => {
     setShowProjectModal(false)
     setProjectName("")
     setSelectedPrototypeId(null)
-    setCreatedBranch(null)
   }
 
   return (
@@ -567,112 +575,62 @@ export default function PrototypeLibrary() {
       {showProjectModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="bg-[#111] border border-[#333] rounded-2xl w-full max-w-md overflow-hidden">
-            {createdBranch ? (
-              <>
-                {/* Success State */}
-                <div className="p-6 border-b border-[#222]">
-                  <div className="w-12 h-12 rounded-full bg-green-500/20 flex items-center justify-center mb-4">
-                    <Check className="w-6 h-6 text-green-400" />
-                  </div>
-                  <h2 className="text-white font-semibold text-xl">Branch Created</h2>
-                  <p className="text-[#888] text-sm mt-1">
-                    Your prototype branch is ready
-                  </p>
-                </div>
-                
-                <div className="p-6">
-                  <div className="bg-[#0a0a0a] border border-[#333] rounded-lg p-4 mb-4">
-                    <p className="text-[#888] text-xs mb-1">Branch name</p>
-                    <p className="text-white font-mono text-sm break-all">{createdBranch.name}</p>
-                  </div>
-                  
-                  <div className="flex flex-col gap-3">
-                    <a
-                      href={createdBranch.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="h-11 flex items-center justify-center gap-2 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      View on GitHub
-                    </a>
-                    <button
-                      onClick={handleOpenInV0}
-                      className="h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                      Open in v0
-                    </button>
-                  </div>
-                </div>
-                
-                <div className="p-6 pt-0">
-                  <button
-                    onClick={closeModal}
-                    className="w-full h-11 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
-                  >
-                    Done
-                  </button>
-                </div>
-              </>
-            ) : (
-              <>
-                {/* Form State */}
-                <div className="p-6 border-b border-[#222]">
-                  <h2 className="text-white font-semibold text-xl">Start New Project</h2>
-                  <p className="text-[#888] text-sm mt-1">
-                    Create your own copy of this prototype to customize
-                  </p>
-                </div>
-                
-                <div className="p-6">
-                  <label className="block text-sm text-[#888] mb-2">Project Name</label>
-                  <input
-                    type="text"
-                    value={projectName}
-                    onChange={(e) => setProjectName(e.target.value)}
-                    placeholder="my-shipping-prototype"
-                    className="w-full h-12 px-4 bg-[#0a0a0a] border border-[#333] rounded-lg text-white placeholder:text-[#555] focus:outline-none focus:border-blue-500 transition-colors"
-                    autoFocus
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && projectName.trim()) {
-                        handleCreateProject()
-                      }
-                    }}
-                  />
-                  <p className="text-[#555] text-xs mt-2">
-                    A new branch will be created: prototype/{projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-') || 'your-project'}
-                  </p>
-                </div>
-                
-                <div className="p-6 pt-0 flex items-center gap-3">
-                  <button
-                    onClick={handleCreateProject}
-                    disabled={!projectName.trim() || isCreating}
-                    className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {isCreating ? (
-                      <>
-                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                        Creating...
-                      </>
-                    ) : (
-                      <>
-                        <ExternalLink className="w-4 h-4" />
-                        Create Branch
-                      </>
-                    )}
-                  </button>
-                  <button
-                    onClick={closeModal}
-                    disabled={isCreating}
-                    className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors disabled:opacity-50"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </>
-            )}
+            {/* Modal Header */}
+            <div className="p-6 border-b border-[#222]">
+              <h2 className="text-white font-semibold text-xl">Start New Project</h2>
+              <p className="text-[#888] text-sm mt-1">
+                Create your own copy of this prototype to customize
+              </p>
+            </div>
+            
+            {/* Modal Content */}
+            <div className="p-6">
+              <label className="block text-sm text-[#888] mb-2">Project Name</label>
+              <input
+                type="text"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                placeholder="my-shipping-prototype"
+                className="w-full h-12 px-4 bg-[#0a0a0a] border border-[#333] rounded-lg text-white placeholder:text-[#555] focus:outline-none focus:border-blue-500 transition-colors"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && projectName.trim()) {
+                    handleCreateProject()
+                  }
+                }}
+              />
+              <p className="text-[#555] text-xs mt-2">
+                A new branch will be created: prototype/{projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-') || 'your-project'}
+              </p>
+            </div>
+            
+            {/* Modal Actions */}
+            <div className="p-6 pt-0 flex items-center gap-3">
+              <button
+                onClick={handleCreateProject}
+                disabled={!projectName.trim() || isCreating}
+                className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isCreating ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Creating & Loading...
+                  </>
+                ) : (
+                  <>
+                    <ExternalLink className="w-4 h-4" />
+                    Start Building
+                  </>
+                )}
+              </button>
+              <button
+                onClick={closeModal}
+                disabled={isCreating}
+                className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+            </div>
           </div>
         </div>
       )}
