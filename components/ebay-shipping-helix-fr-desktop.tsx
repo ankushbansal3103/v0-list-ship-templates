@@ -626,15 +626,15 @@ export function EbayShippingHelixFRDesktop({ previewMode = false }: EbayShipping
       )}
 
       {/* Page Content */}
-      <div className={`max-w-[976px] mx-auto ${previewMode ? 'py-6 px-4' : 'py-12'}`}>
+      <div className={`${previewMode ? 'w-[900px] py-4 px-6' : 'max-w-[976px] mx-auto py-12'}`}>
         {/* Divider - Hidden in preview mode */}
         {!previewMode && <div className="border-t border-[#E5E5E5] mb-12" />}
 
         {/* Section Header */}
-        <h2 className="text-base font-bold text-[#191919] mb-8 uppercase tracking-wide">DELIVERY</h2>
+        <h2 className={`text-base font-bold text-[#191919] uppercase tracking-wide ${previewMode ? 'mb-4' : 'mb-8'}`}>DELIVERY</h2>
 
-        {/* Main Content - 734px width matching the spec */}
-        <div className="max-w-[734px]">
+        {/* Main Content - 734px width matching the spec (full width in preview) */}
+        <div className={previewMode ? 'w-full' : 'max-w-[734px]'}>
           {/* ============================================================ */}
           {/* DELIVERY METHOD TOGGLE CARDS */}
           {/* ============================================================ */}
