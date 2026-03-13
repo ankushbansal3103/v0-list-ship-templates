@@ -239,6 +239,14 @@ export function EbayShippingPageDefault() {
   const [returns, setReturns] = useState("No returns allowed")
   const [showHandlingTimeSheet, setShowHandlingTimeSheet] = useState(false)
   
+  // NEW L2 Pages state
+  const [showDomesticServicesSheet, setShowDomesticServicesSheet] = useState(false)
+  const [showAdditionalDomesticSheet, setShowAdditionalDomesticSheet] = useState(false)
+  const [showInternationalServicesSheet, setShowInternationalServicesSheet] = useState(false)
+  const [showEditShippingCostSheet, setShowEditShippingCostSheet] = useState(false)
+  const [selectedAdditionalDomestic, setSelectedAdditionalDomestic] = useState("usps")
+  const [selectedInternational, setSelectedInternational] = useState("usps")
+  
   const formatPackageDetails = () => {
     if (packageSizeType === "unknown") {
       return "Set your own shipping rate"
@@ -380,7 +388,10 @@ export function EbayShippingPageDefault() {
               </div>
 
               {/* View All Services Button */}
-              <button className="w-full h-[48px] border border-[#767676] rounded-full flex items-center justify-center mb-5">
+              <button 
+                onClick={() => setShowDomesticServicesSheet(true)}
+                className="w-full h-[48px] border border-[#767676] rounded-full flex items-center justify-center mb-5"
+              >
                 <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>View all services</span>
               </button>
 
@@ -417,7 +428,11 @@ export function EbayShippingPageDefault() {
                   <span className="text-[13px] text-[#707070] block" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>The buyer will pay:</span>
                   <span className="text-[18px] font-bold text-[#191919] block mt-1" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>$X.XX-$XX.XX</span>
                   <span className="text-[13px] text-[#707070] block mt-1" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Cost is based on buyer&apos;s location.</span>
-                  <button className="text-[13px] text-[#191919] underline mt-1" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
+                  <button 
+                    onClick={() => setShowEditShippingCostSheet(true)}
+                    className="text-[13px] text-[#191919] underline mt-1" 
+                    style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}
+                  >
                     Edit shipping cost
                   </button>
                 </div>
@@ -426,7 +441,10 @@ export function EbayShippingPageDefault() {
               {/* Additional Service */}
               <div>
                 <span className="text-[13px] font-bold text-[#191919] block mb-2" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Additional service</span>
-                <button className="w-full h-[48px] border border-[#767676] rounded-full flex items-center justify-center gap-2">
+                <button 
+                  onClick={() => setShowAdditionalDomesticSheet(true)}
+                  className="w-full h-[48px] border border-[#767676] rounded-full flex items-center justify-center gap-2"
+                >
                   <Plus className="w-4 h-4 text-[#191919]" />
                   <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Add additional service</span>
                 </button>
@@ -457,7 +475,10 @@ export function EbayShippingPageDefault() {
               </div>
 
               {/* Add International Service Button */}
-              <button className="w-full h-[48px] border border-[#767676] rounded-full flex items-center justify-center gap-2">
+              <button 
+                onClick={() => setShowInternationalServicesSheet(true)}
+                className="w-full h-[48px] border border-[#767676] rounded-full flex items-center justify-center gap-2"
+              >
                 <Plus className="w-4 h-4 text-[#191919]" />
                 <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Add international service</span>
               </button>
@@ -875,6 +896,386 @@ export function EbayShippingPageDefault() {
                       </button>
                     )
                   })}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================== */}
+      {/* DOMESTIC SERVICE L2 (View all services)       */}
+      {/* ============================================== */}
+      {showDomesticServicesSheet && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+              {/* iOS Status Bar */}
+              <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
+                <span className="text-[15px] font-semibold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>9:41</span>
+                <div className="flex items-center gap-[5px]">
+                  <svg className="w-[17px] h-[11px]" viewBox="0 0 17 11"><rect x="0" y="7" width="3" height="4" rx="1" fill="#191919"/><rect x="4.5" y="5" width="3" height="6" rx="1" fill="#191919"/><rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#191919"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#191919"/></svg>
+                  <svg className="w-[15px] h-[11px]" viewBox="0 0 15 11"><path d="M7.5 10.5C8.33 10.5 9 9.83 9 9C9 8.17 8.33 7.5 7.5 7.5C6.67 7.5 6 8.17 6 9C6 9.83 6.67 10.5 7.5 10.5Z" fill="#191919"/><path d="M4.5 7C5.5 6 6.5 5.5 7.5 5.5C8.5 5.5 9.5 6 10.5 7" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/><path d="M2.5 4.5C4 3 5.5 2.5 7.5 2.5C9.5 2.5 11 3 12.5 4.5" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/><path d="M0.5 2C2.5 0.5 5 0 7.5 0C10 0 12.5 0.5 14.5 2" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/></svg>
+                  <svg className="w-[25px] h-[12px]" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#191919" strokeOpacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#191919"/><path d="M23 4V8C23.8 8 24 7 24 6C24 5 23.8 4 23 4Z" fill="#191919" fillOpacity="0.4"/></svg>
+                </div>
+              </div>
+              
+              {/* Navigation Header */}
+              <div className="h-[44px] px-4 flex items-center bg-white flex-shrink-0">
+                <button onClick={() => setShowDomesticServicesSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center">
+                  <BackArrow className="w-6 h-6 text-[#191919]" />
+                </button>
+              </div>
+              
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto px-4 pb-24">
+                <div className="mb-6">
+                  <h1 className="text-[24px] font-bold text-[#191919] leading-[32px] mt-2" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Domestic service</h1>
+                  <p className="text-[14px] text-[#707070] leading-[20px] mt-1" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>This service is selected by default and will be highlighted for buyers in search.</p>
+                </div>
+                
+                {/* Service Type Group 1 */}
+                <div className="mb-5">
+                  <h2 className="text-[14px] font-bold text-[#191919] leading-[20px] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Service type</h2>
+                  <div className="flex flex-col gap-3">
+                    {domesticServices.map((service) => {
+                      const isSelected = selectedDomesticService === service.id
+                      return (
+                        <button key={service.id} onClick={() => setSelectedDomesticService(service.id)} className="flex items-center gap-3 w-full text-left">
+                          <div className="w-[22px] h-[22px] flex-shrink-0">
+                            {isSelected ? (
+                              <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="10" stroke="#191919" strokeWidth="2"/><circle cx="11" cy="11" r="5.5" fill="#191919"/></svg>
+                            ) : (
+                              <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="10" stroke="#767676" strokeWidth="2"/></svg>
+                            )}
+                          </div>
+                          <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-opJzsRtNKhuBXRYW7Ng8AUZWWgiMti.png" alt="USPS" className="w-full h-full object-contain p-1" />}
+                            {service.logoType === "fedex" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                            {service.logoType === "ups" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/UPS_Logo_Shield_2017.svg/220px-UPS_Logo_Shield_2017.svg.png" alt="UPS" className="w-[32px] h-auto object-contain" />}
+                          </div>
+                          <div className="flex flex-col flex-1">
+                            {service.recommended && (
+                              <span className="inline-flex items-center px-2 py-[2px] rounded-[4px] bg-[#E7F1FF] w-fit mb-1">
+                                <span className="text-[10px] text-[#3665F3] font-semibold uppercase tracking-[0.5px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
+                              </span>
+                            )}
+                            <span className="text-[13px] font-bold text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{service.name}</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>X-X business days</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to $XXX.XX protection</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to X lb., AA x BB x CC in.</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>$X.XX-$X.XX</span>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+                
+                {/* Service Type Group 2 */}
+                <div className="mb-5">
+                  <h2 className="text-[14px] font-bold text-[#191919] leading-[20px] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Service type</h2>
+                  <div className="flex flex-col gap-3">
+                    {domesticServices.slice(0, 2).map((service) => {
+                      const isSelected = false
+                      return (
+                        <button key={`group2-${service.id}`} className="flex items-center gap-3 w-full text-left">
+                          <div className="w-[22px] h-[22px] flex-shrink-0">
+                            <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="10" stroke="#767676" strokeWidth="2"/></svg>
+                          </div>
+                          <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-opJzsRtNKhuBXRYW7Ng8AUZWWgiMti.png" alt="USPS" className="w-full h-full object-contain p-1" />}
+                            {service.logoType === "fedex" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                          </div>
+                          <div className="flex flex-col flex-1">
+                            <span className="text-[13px] font-bold text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{service.name}</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>X-X business days</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to $XXX.XX protection</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to X lb., AA x BB x CC in.</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>$X.XX-$X.XX</span>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Fixed Bottom Button */}
+              <div className="absolute bottom-0 left-0 right-0 bg-white">
+                <div className="h-[1px] bg-[#E5E5E5]" />
+                <div className="px-4 pb-3 pt-3">
+                  <button onClick={() => setShowDomesticServicesSheet(false)} className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]">
+                    <span className="text-[16px] font-bold text-white" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Done</span>
+                  </button>
+                </div>
+                <div className="h-[34px] flex items-center justify-center">
+                  <div className="w-[134px] h-[5px] bg-[#191919] rounded-full" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================== */}
+      {/* ADDITIONAL DOMESTIC SERVICE L2               */}
+      {/* ============================================== */}
+      {showAdditionalDomesticSheet && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+              {/* iOS Status Bar */}
+              <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
+                <span className="text-[15px] font-semibold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>9:41</span>
+                <div className="flex items-center gap-[5px]">
+                  <svg className="w-[17px] h-[11px]" viewBox="0 0 17 11"><rect x="0" y="7" width="3" height="4" rx="1" fill="#191919"/><rect x="4.5" y="5" width="3" height="6" rx="1" fill="#191919"/><rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#191919"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#191919"/></svg>
+                  <svg className="w-[15px] h-[11px]" viewBox="0 0 15 11"><path d="M7.5 10.5C8.33 10.5 9 9.83 9 9C9 8.17 8.33 7.5 7.5 7.5C6.67 7.5 6 8.17 6 9C6 9.83 6.67 10.5 7.5 10.5Z" fill="#191919"/><path d="M4.5 7C5.5 6 6.5 5.5 7.5 5.5C8.5 5.5 9.5 6 10.5 7" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/><path d="M2.5 4.5C4 3 5.5 2.5 7.5 2.5C9.5 2.5 11 3 12.5 4.5" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/><path d="M0.5 2C2.5 0.5 5 0 7.5 0C10 0 12.5 0.5 14.5 2" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/></svg>
+                  <svg className="w-[25px] h-[12px]" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#191919" strokeOpacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#191919"/><path d="M23 4V8C23.8 8 24 7 24 6C24 5 23.8 4 23 4Z" fill="#191919" fillOpacity="0.4"/></svg>
+                </div>
+              </div>
+              
+              {/* Navigation Header */}
+              <div className="h-[44px] px-4 flex items-center bg-white flex-shrink-0">
+                <button onClick={() => setShowAdditionalDomesticSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center">
+                  <BackArrow className="w-6 h-6 text-[#191919]" />
+                </button>
+              </div>
+              
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto px-4 pb-24">
+                <div className="mb-6">
+                  <h1 className="text-[24px] font-bold text-[#191919] leading-[32px] mt-2" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Additional domestic service</h1>
+                  <p className="text-[14px] text-[#707070] leading-[20px] mt-1" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Offer an optional choice for your buyers. They can select it at checkout.</p>
+                  <div className="flex items-center gap-2 mt-2">
+                    <button className="text-[12px] text-[#D50B0B] underline" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Remove service</button>
+                    <span className="text-[#707070]">|</span>
+                    <button className="text-[12px] text-[#191919] underline" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Make default</button>
+                  </div>
+                </div>
+                
+                {/* Service Type Group 1 */}
+                <div className="mb-5">
+                  <h2 className="text-[14px] font-bold text-[#191919] leading-[20px] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Service type</h2>
+                  <div className="flex flex-col gap-3">
+                    {domesticServices.map((service) => {
+                      const isSelected = selectedAdditionalDomestic === service.id
+                      return (
+                        <button key={service.id} onClick={() => setSelectedAdditionalDomestic(service.id)} className="flex items-center gap-3 w-full text-left">
+                          <div className="w-[22px] h-[22px] flex-shrink-0">
+                            {isSelected ? (
+                              <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="10" stroke="#191919" strokeWidth="2"/><circle cx="11" cy="11" r="5.5" fill="#191919"/></svg>
+                            ) : (
+                              <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="10" stroke="#767676" strokeWidth="2"/></svg>
+                            )}
+                          </div>
+                          <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-opJzsRtNKhuBXRYW7Ng8AUZWWgiMti.png" alt="USPS" className="w-full h-full object-contain p-1" />}
+                            {service.logoType === "fedex" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                            {service.logoType === "ups" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/UPS_Logo_Shield_2017.svg/220px-UPS_Logo_Shield_2017.svg.png" alt="UPS" className="w-[32px] h-auto object-contain" />}
+                          </div>
+                          <div className="flex flex-col flex-1">
+                            <span className="text-[13px] font-bold text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{service.name}</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>X-X business days</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to $XXX.XX protection</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to X lb., AA x BB x CC in.</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>$X.XX-$X.XX</span>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+                
+                {/* Service Type Group 2 */}
+                <div className="mb-5">
+                  <h2 className="text-[14px] font-bold text-[#191919] leading-[20px] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Service type</h2>
+                  <div className="flex flex-col gap-3">
+                    {domesticServices.slice(0, 2).map((service) => (
+                      <button key={`group2-${service.id}`} className="flex items-center gap-3 w-full text-left">
+                        <div className="w-[22px] h-[22px] flex-shrink-0">
+                          <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="10" stroke="#767676" strokeWidth="2"/></svg>
+                        </div>
+                        <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-opJzsRtNKhuBXRYW7Ng8AUZWWgiMti.png" alt="USPS" className="w-full h-full object-contain p-1" />}
+                          {service.logoType === "fedex" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                        </div>
+                        <div className="flex flex-col flex-1">
+                          <span className="text-[13px] font-bold text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{service.name}</span>
+                          <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>X-X business days</span>
+                          <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to $XXX.XX protection</span>
+                          <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to X lb., AA x BB x CC in.</span>
+                          <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>$X.XX-$X.XX</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Fixed Bottom Button */}
+              <div className="absolute bottom-0 left-0 right-0 bg-white">
+                <div className="h-[1px] bg-[#E5E5E5]" />
+                <div className="px-4 pb-3 pt-3">
+                  <button onClick={() => setShowAdditionalDomesticSheet(false)} className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]">
+                    <span className="text-[16px] font-bold text-white" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Done</span>
+                  </button>
+                </div>
+                <div className="h-[34px] flex items-center justify-center">
+                  <div className="w-[134px] h-[5px] bg-[#191919] rounded-full" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================== */}
+      {/* INTERNATIONAL SERVICE L2                      */}
+      {/* ============================================== */}
+      {showInternationalServicesSheet && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+              {/* iOS Status Bar */}
+              <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
+                <span className="text-[15px] font-semibold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>9:41</span>
+                <div className="flex items-center gap-[5px]">
+                  <svg className="w-[17px] h-[11px]" viewBox="0 0 17 11"><rect x="0" y="7" width="3" height="4" rx="1" fill="#191919"/><rect x="4.5" y="5" width="3" height="6" rx="1" fill="#191919"/><rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#191919"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#191919"/></svg>
+                  <svg className="w-[15px] h-[11px]" viewBox="0 0 15 11"><path d="M7.5 10.5C8.33 10.5 9 9.83 9 9C9 8.17 8.33 7.5 7.5 7.5C6.67 7.5 6 8.17 6 9C6 9.83 6.67 10.5 7.5 10.5Z" fill="#191919"/><path d="M4.5 7C5.5 6 6.5 5.5 7.5 5.5C8.5 5.5 9.5 6 10.5 7" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/><path d="M2.5 4.5C4 3 5.5 2.5 7.5 2.5C9.5 2.5 11 3 12.5 4.5" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/><path d="M0.5 2C2.5 0.5 5 0 7.5 0C10 0 12.5 0.5 14.5 2" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/></svg>
+                  <svg className="w-[25px] h-[12px]" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#191919" strokeOpacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#191919"/><path d="M23 4V8C23.8 8 24 7 24 6C24 5 23.8 4 23 4Z" fill="#191919" fillOpacity="0.4"/></svg>
+                </div>
+              </div>
+              
+              {/* Navigation Header */}
+              <div className="h-[44px] px-4 flex items-center bg-white flex-shrink-0">
+                <button onClick={() => setShowInternationalServicesSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center">
+                  <BackArrow className="w-6 h-6 text-[#191919]" />
+                </button>
+              </div>
+              
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto px-4 pb-24">
+                <div className="mb-6">
+                  <h1 className="text-[24px] font-bold text-[#191919] leading-[32px] mt-2" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>International service</h1>
+                  <p className="text-[14px] text-[#707070] leading-[20px] mt-1" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Lorem ipsum dolor sit amet</p>
+                  <button className="text-[12px] text-[#D50B0B] underline mt-2" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Remove service</button>
+                </div>
+                
+                {/* Service Type Group 1 */}
+                <div className="mb-5">
+                  <h2 className="text-[14px] font-bold text-[#191919] leading-[20px] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Service type</h2>
+                  <div className="flex flex-col gap-3">
+                    {domesticServices.map((service) => {
+                      const isSelected = selectedInternational === service.id
+                      return (
+                        <button key={service.id} onClick={() => setSelectedInternational(service.id)} className="flex items-center gap-3 w-full text-left">
+                          <div className="w-[22px] h-[22px] flex-shrink-0">
+                            {isSelected ? (
+                              <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="10" stroke="#191919" strokeWidth="2"/><circle cx="11" cy="11" r="5.5" fill="#191919"/></svg>
+                            ) : (
+                              <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="10" stroke="#767676" strokeWidth="2"/></svg>
+                            )}
+                          </div>
+                          <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                            {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-opJzsRtNKhuBXRYW7Ng8AUZWWgiMti.png" alt="USPS" className="w-full h-full object-contain p-1" />}
+                            {service.logoType === "fedex" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                            {service.logoType === "ups" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/UPS_Logo_Shield_2017.svg/220px-UPS_Logo_Shield_2017.svg.png" alt="UPS" className="w-[32px] h-auto object-contain" />}
+                          </div>
+                          <div className="flex flex-col flex-1">
+                            <span className="text-[13px] font-bold text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{service.name}</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>X-X business days</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to $XXX.XX protection</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to X lb., AA x BB x CC in.</span>
+                            <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>$X.XX-$X.XX</span>
+                          </div>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+                
+                {/* Service Type Group 2 */}
+                <div className="mb-5">
+                  <h2 className="text-[14px] font-bold text-[#191919] leading-[20px] mb-3" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Service type</h2>
+                  <div className="flex flex-col gap-3">
+                    {domesticServices.slice(0, 2).map((service) => (
+                      <button key={`intl-group2-${service.id}`} className="flex items-center gap-3 w-full text-left">
+                        <div className="w-[22px] h-[22px] flex-shrink-0">
+                          <svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="10" stroke="#767676" strokeWidth="2"/></svg>
+                        </div>
+                        <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-opJzsRtNKhuBXRYW7Ng8AUZWWgiMti.png" alt="USPS" className="w-full h-full object-contain p-1" />}
+                          {service.logoType === "fedex" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                        </div>
+                        <div className="flex flex-col flex-1">
+                          <span className="text-[13px] font-bold text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{service.name}</span>
+                          <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>X-X business days</span>
+                          <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to $XXX.XX protection</span>
+                          <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Up to X lb., AA x BB x CC in.</span>
+                          <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>$X.XX-$X.XX</span>
+                        </div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Fixed Bottom Button */}
+              <div className="absolute bottom-0 left-0 right-0 bg-white">
+                <div className="h-[1px] bg-[#E5E5E5]" />
+                <div className="px-4 pb-3 pt-3">
+                  <button onClick={() => setShowInternationalServicesSheet(false)} className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]">
+                    <span className="text-[16px] font-bold text-white" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Done</span>
+                  </button>
+                </div>
+                <div className="h-[34px] flex items-center justify-center">
+                  <div className="w-[134px] h-[5px] bg-[#191919] rounded-full" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================== */}
+      {/* EDIT SHIPPING COST BOTTOM SHEET              */}
+      {/* ============================================== */}
+      {showEditShippingCostSheet && (
+        <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
+          <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
+            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
+              <div className="absolute inset-0 bg-white/60 backdrop-blur-md" onClick={() => setShowEditShippingCostSheet(false)} />
+              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] shadow-[0_-5px_30px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
+                <div className="flex justify-center pt-[6px] pb-[6px]">
+                  <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
+                </div>
+                <div className="flex items-start justify-between px-4 pt-2 pb-3">
+                  <div className="flex flex-col">
+                    <h3 className="text-[18px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Shipping cost</h3>
+                    <span className="text-[14px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Domestic service</span>
+                  </div>
+                  <button onClick={() => setShowEditShippingCostSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center">
+                    <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
+                  </button>
+                </div>
+                <div className="px-4 pt-1 pb-8">
+                  <div className="flex flex-col gap-3">
+                    <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border-2 border-[#191919] rounded-[8px] flex items-center justify-between">
+                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Calculated cost</span>
+                      <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    </button>
+                    <button className="w-full h-[56px] px-4 bg-white border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Flat rate</span>
+                    </button>
+                    <button className="w-full h-[56px] px-4 bg-white border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
+                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Free shipping</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
