@@ -5,6 +5,13 @@ import Link from "next/link"
 import { Search, ExternalLink, X } from "lucide-react"
 import { EbayShippingPage } from "@/components/ebay-shipping-page"
 import { EbayShippingPageDefault } from "@/components/ebay-shipping-page-default"
+import { EbayShippingPageUKDefault } from "@/components/ebay-shipping-page-uk-default"
+import { EbayShippingPageDEDefault } from "@/components/ebay-shipping-page-de-default"
+import { EbayShippingPageFRDefault } from "@/components/ebay-shipping-page-fr-default"
+import { EbayShippingPageITDefault } from "@/components/ebay-shipping-page-it-default"
+import { EbayShippingPageCADefault } from "@/components/ebay-shipping-page-ca-default"
+import { EbayShippingPageAUDefault } from "@/components/ebay-shipping-page-au-default"
+import { EbayShippingPageRoWDefault } from "@/components/ebay-shipping-page-row-default"
 
 // Filter options
 const platforms = [
@@ -38,6 +45,7 @@ const sites = [
     code: "UK",
     flag: "🇬🇧",
     prototypes: [
+      { id: "uk-shelby-default", name: "UK-Shelby-Default", description: "Default services view for UK market", status: "active", route: "/prototype/uk-shelby-default", platform: "ios", segment: "c2c" },
       { id: "uk-standard", name: "UK-Standard-V1", description: "Standard UK shipping with Royal Mail integration", status: "draft", route: "/prototype/uk-standard", platform: "android", segment: "c2c" },
       { id: "uk-express", name: "UK-Express-V1", description: "Express delivery options for UK sellers", status: "draft", route: "/prototype/uk-express", platform: "mweb", segment: "b2c" },
     ]
@@ -48,6 +56,7 @@ const sites = [
     code: "DE",
     flag: "🇩🇪",
     prototypes: [
+      { id: "de-shelby-default", name: "DE-Shelby-Default", description: "Default services view for German market", status: "active", route: "/prototype/de-shelby-default", platform: "ios", segment: "c2c" },
       { id: "de-standard", name: "DE-Standard-V1", description: "German market shipping with DHL/Hermes", status: "draft", route: "/prototype/de-standard", platform: "ios", segment: "c2c" },
       { id: "de-returns", name: "DE-Returns-V1", description: "Enhanced returns flow for German regulations", status: "draft", route: "/prototype/de-returns", platform: "dweb", segment: "b2c" },
     ]
@@ -58,6 +67,7 @@ const sites = [
     code: "FR",
     flag: "🇫🇷",
     prototypes: [
+      { id: "fr-shelby-default", name: "FR-Shelby-Default", description: "Default services view for French market", status: "active", route: "/prototype/fr-shelby-default", platform: "ios", segment: "c2c" },
       { id: "fr-standard", name: "FR-Standard-V1", description: "French market with La Poste/Colissimo", status: "draft", route: "/prototype/fr-standard", platform: "android", segment: "c2c" },
     ]
   },
@@ -67,6 +77,7 @@ const sites = [
     code: "IT",
     flag: "🇮🇹",
     prototypes: [
+      { id: "it-shelby-default", name: "IT-Shelby-Default", description: "Default services view for Italian market", status: "active", route: "/prototype/it-shelby-default", platform: "ios", segment: "c2c" },
       { id: "it-standard", name: "IT-Standard-V1", description: "Italian market shipping configuration", status: "draft", route: "/prototype/it-standard", platform: "mweb", segment: "c2c" },
     ]
   },
@@ -76,6 +87,7 @@ const sites = [
     code: "CA",
     flag: "🇨🇦",
     prototypes: [
+      { id: "ca-shelby-default", name: "CA-Shelby-Default", description: "Default services view for Canadian market", status: "active", route: "/prototype/ca-shelby-default", platform: "ios", segment: "c2c" },
       { id: "ca-standard", name: "CA-Standard-V1", description: "Canada Post integration for Canadian sellers", status: "draft", route: "/prototype/ca-standard", platform: "ios", segment: "b2c" },
     ]
   },
@@ -85,6 +97,7 @@ const sites = [
     code: "AU",
     flag: "🇦🇺",
     prototypes: [
+      { id: "au-shelby-default", name: "AU-Shelby-Default", description: "Default services view for Australian market", status: "active", route: "/prototype/au-shelby-default", platform: "ios", segment: "c2c" },
       { id: "au-standard", name: "AU-Standard-V1", description: "Australia Post shipping configuration", status: "draft", route: "/prototype/au-standard", platform: "dweb", segment: "c2c" },
     ]
   },
@@ -94,6 +107,7 @@ const sites = [
     code: "RoW",
     flag: "🌍",
     prototypes: [
+      { id: "row-shelby-default", name: "RoW-Shelby-Default", description: "Default services view for Rest of World", status: "active", route: "/prototype/row-shelby-default", platform: "ios", segment: "c2c" },
       { id: "row-international", name: "RoW-International-V1", description: "Generic international shipping template", status: "draft", route: "/prototype/row-international", platform: "mweb", segment: "b2c" },
     ]
   },
@@ -342,24 +356,40 @@ export default function PrototypeLibrary() {
 {/* Live Prototype Preview */}
                                     <div className="h-64 bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
                                       {prototype.status === 'active' && prototype.id === 'us-shelby-ag' ? (
-                                        <div 
-                                          className="pointer-events-none"
-                                          style={{
-                                            transform: 'scale(0.22)',
-                                            transformOrigin: 'center center',
-                                          }}
-                                        >
+                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
                                           <EbayShippingPage />
                                         </div>
                                       ) : prototype.status === 'active' && prototype.id === 'us-shelby-default' ? (
-                                        <div 
-                                          className="pointer-events-none"
-                                          style={{
-                                            transform: 'scale(0.22)',
-                                            transformOrigin: 'center center',
-                                          }}
-                                        >
+                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
                                           <EbayShippingPageDefault />
+                                        </div>
+                                      ) : prototype.status === 'active' && prototype.id === 'uk-shelby-default' ? (
+                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
+                                          <EbayShippingPageUKDefault />
+                                        </div>
+                                      ) : prototype.status === 'active' && prototype.id === 'de-shelby-default' ? (
+                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
+                                          <EbayShippingPageDEDefault />
+                                        </div>
+                                      ) : prototype.status === 'active' && prototype.id === 'fr-shelby-default' ? (
+                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
+                                          <EbayShippingPageFRDefault />
+                                        </div>
+                                      ) : prototype.status === 'active' && prototype.id === 'it-shelby-default' ? (
+                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
+                                          <EbayShippingPageITDefault />
+                                        </div>
+                                      ) : prototype.status === 'active' && prototype.id === 'ca-shelby-default' ? (
+                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
+                                          <EbayShippingPageCADefault />
+                                        </div>
+                                      ) : prototype.status === 'active' && prototype.id === 'au-shelby-default' ? (
+                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
+                                          <EbayShippingPageAUDefault />
+                                        </div>
+                                      ) : prototype.status === 'active' && prototype.id === 'row-shelby-default' ? (
+                                        <div className="pointer-events-none" style={{ transform: 'scale(0.22)', transformOrigin: 'center center' }}>
+                                          <EbayShippingPageRoWDefault />
                                         </div>
                                       ) : (
                                         <div className="flex flex-col items-center gap-2">
