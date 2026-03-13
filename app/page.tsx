@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { Search, ExternalLink, X, ChevronRight } from "lucide-react"
 import { EbayShippingPage } from "@/components/ebay-shipping-page"
@@ -142,6 +142,38 @@ export default function PrototypeLibrary() {
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedSite, setSelectedSite] = useState<string | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
+  const [recentlyUsedIds, setRecentlyUsedIds] = useState<{siteId: string, prototypeId: string}[]>([])
+
+  // Get all active prototypes for random selection
+  const allActivePrototypes = sites.flatMap(site => 
+    site.prototypes
+      .filter(p => p.status === 'active')
+      .map(p => ({ siteId: site.id, prototypeId: p.id }))
+  )
+
+  // Initialize recently used from localStorage or random selection
+  useEffect(() => {
+    const stored = localStorage.getItem('recentlyUsedPrototypes')
+    if (stored) {
+      setRecentlyUsedIds(JSON.parse(stored))
+    } else {
+      // Select 3 random active prototypes for first-time visitors
+      const shuffled = [...allActivePrototypes].sort(() => Math.random() - 0.5)
+      const randomThree = shuffled.slice(0, 3)
+      setRecentlyUsedIds(randomThree)
+      localStorage.setItem('recentlyUsedPrototypes', JSON.stringify(randomThree))
+    }
+  }, [])
+
+  // Function to track prototype usage
+  const trackPrototypeUsage = (siteId: string, prototypeId: string) => {
+    setRecentlyUsedIds(prev => {
+      const filtered = prev.filter(r => r.prototypeId !== prototypeId)
+      const updated = [{ siteId, prototypeId }, ...filtered].slice(0, 3)
+      localStorage.setItem('recentlyUsedPrototypes', JSON.stringify(updated))
+      return updated
+    })
+  }
 
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
@@ -161,15 +193,11 @@ export default function PrototypeLibrary() {
   const activeFiltersCount = [selectedSite, selectedPlatform].filter(Boolean).length
   const hasActiveFilters = activeFiltersCount > 0 || searchQuery.length > 0
 
-  // Recently used prototypes (in production, this would come from localStorage or a database)
-  const recentlyUsed = [
-    { siteId: "us", prototypeId: "us-shelby-ag" },
-  ]
-  
-  const recentPrototypes = recentlyUsed.map(r => {
+  // Map recently used IDs to full prototype objects
+  const recentPrototypes = recentlyUsedIds.map(r => {
     const site = sites.find(s => s.id === r.siteId)
     const prototype = site?.prototypes.find(p => p.id === r.prototypeId)
-    return prototype ? { ...prototype, siteCode: site?.code, siteFlag: site?.flag } : null
+    return prototype ? { ...prototype, siteId: site?.id, siteCode: site?.code, siteFlag: site?.flag } : null
   }).filter(Boolean)
 
   return (
@@ -286,51 +314,168 @@ export default function PrototypeLibrary() {
         </div>
       </section>
 
-      {/* Recently Used Carousel - shown when no filters active */}
+      {/* Recently Used - Always show 3 prototypes */}
       {!hasActiveFilters && recentPrototypes.length > 0 && (
         <section className="px-6 pb-8">
           <div className="max-w-7xl mx-auto">
-            <div className="flex items-center gap-3 mb-4">
+            <div className="flex items-center gap-3 mb-5">
               <h2 className="text-white font-semibold">Recently Used</h2>
               <span className="text-[#666] text-sm">Pick up where you left off</span>
             </div>
             
-            <div className="flex gap-4 overflow-x-auto pb-2">
-              {recentPrototypes.map((prototype) => prototype && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {recentPrototypes.slice(0, 3).map((prototype) => prototype && (
                 <div 
                   key={prototype.id}
-                  className="flex-shrink-0 w-72 bg-[#111] border border-[#222] rounded-xl overflow-hidden hover:border-blue-500/50 transition-colors"
+                  className="bg-[#0a0a0a] border border-[#222] rounded-xl overflow-hidden hover:border-[#444] transition-colors"
                 >
-                  <div className="h-40 bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
-                    {prototype.id === 'us-shelby-ag' ? (
-                      <div 
-                        className="pointer-events-none"
-                        style={{ transform: 'scale(0.16)', transformOrigin: 'center center' }}
-                      >
+                  {/* Live Prototype Preview */}
+                  <div className="h-56 bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
+                    {prototype.status === 'active' && prototype.id === 'us-shelby-ag' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
                         <EbayShippingPage />
                       </div>
+                    ) : prototype.status === 'active' && prototype.id === 'us-shelby-default' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageDefault />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'us-shelby-default-android' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageDefaultAndroid />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'uk-shelby-default' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageUKDefault />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'uk-shelby-default-android' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageUKDefaultAndroid />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'uk-shelby-ag' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageUKAG />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'uk-shelby-ag-android' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageUKAGAndroid />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'de-shelby-default' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageDEDefault />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'de-shelby-default-android' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageDEDefaultAndroid />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'fr-shelby-default' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageFRDefault />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'fr-shelby-default-android' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageFRDefaultAndroid />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'it-shelby-default' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageITDefault />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'it-shelby-default-android' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageITDefaultAndroid />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'ca-shelby-default' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageCADefault />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'ca-shelby-default-android' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageCADefaultAndroid />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'ca-shelby-ag' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageCAAG />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'ca-shelby-ag-android' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageCAAGAndroid />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'au-shelby-default' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageAUDefault />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'au-shelby-default-android' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageAUDefaultAndroid />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'au-shelby-ag' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageAUAG />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'au-shelby-ag-android' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageAUAGAndroid />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'row-shelby-default' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageRoWDefault />
+                      </div>
+                    ) : prototype.status === 'active' && prototype.id === 'row-shelby-default-android' ? (
+                      <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+                        <EbayShippingPageRoWDefaultAndroid />
+                      </div>
                     ) : (
-                      <div className="w-12 h-24 bg-[#222] rounded-lg border border-[#333]" />
+                      <div className="flex flex-col items-center gap-2">
+                        <div className="w-14 h-28 bg-[#222] rounded-[8px] border border-[#333] flex items-center justify-center">
+                          <div className="w-10 h-24 bg-[#1a1a1a] rounded-[6px]" />
+                        </div>
+                        <span className="text-[#444] text-xs">Coming Soon</span>
+                      </div>
                     )}
                   </div>
-                  <div className="p-3">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs px-1.5 py-0.5 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
-                        {prototype.siteFlag} {prototype.siteCode}
-                      </span>
-                      <span className="text-xs px-1.5 py-0.5 rounded bg-green-500/20 text-green-400">
+                  
+                  {/* Content */}
+                  <div className="p-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <h4 className="text-white font-medium text-sm">{prototype.name}</h4>
+                      <span className={`text-xs px-2 py-0.5 rounded ${
+                        prototype.status === 'active' 
+                          ? 'bg-green-500/20 text-green-400' 
+                          : 'bg-[#333] text-[#888]'
+                      }`}>
                         {prototype.status}
                       </span>
                     </div>
-                    <h4 className="text-white text-sm font-medium truncate">{prototype.name}</h4>
-                    <div className="mt-2">
-                      <Link
-                        href={prototype.route}
-                        className="block w-full text-center text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-                      >
-                        Preview
-                      </Link>
+                    
+                    {/* Market & Platform Tags */}
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
+                        {prototype.siteFlag} {prototype.siteCode}
+                      </span>
+                      <span className="text-xs px-2 py-1 rounded bg-[#1a1a1a] border border-[#333] text-[#888]">
+                        {platforms.find(p => p.id === prototype.platform)?.name}
+                      </span>
                     </div>
+                    
+                    <p className="text-[#666] text-xs mb-3 line-clamp-2">{prototype.description}</p>
+                    
+                    <Link
+                      href={prototype.status === 'active' ? prototype.route : '#'}
+                      onClick={(e) => {
+                        if (prototype.status !== 'active') {
+                          e.preventDefault()
+                        } else if (prototype.siteId) {
+                          trackPrototypeUsage(prototype.siteId, prototype.id)
+                        }
+                      }}
+                      className={`w-full h-9 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors ${
+                        prototype.status === 'active'
+                          ? 'bg-blue-600 text-white hover:bg-blue-700'
+                          : 'bg-[#222] text-[#666] cursor-not-allowed'
+                      }`}
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                      Preview
+                    </Link>
                   </div>
                 </div>
               ))}
@@ -504,7 +649,13 @@ export default function PrototypeLibrary() {
                         
                         <Link
                           href={prototype.status === 'active' ? prototype.route : '#'}
-                          onClick={(e) => prototype.status !== 'active' && e.preventDefault()}
+                          onClick={(e) => {
+                            if (prototype.status !== 'active') {
+                              e.preventDefault()
+                            } else {
+                              trackPrototypeUsage(site.id, prototype.id)
+                            }
+                          }}
                           className={`w-full h-9 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors ${
                             prototype.status === 'active'
                               ? 'bg-blue-600 text-white hover:bg-blue-700'
