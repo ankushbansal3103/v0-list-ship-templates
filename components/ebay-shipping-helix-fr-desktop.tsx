@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+
 /**
  * FR-Helix-Simple-Desktop Prototype
  * eBay Shipping Configuration Flow - Desktop Web Version (Helix Simple)
@@ -590,12 +592,12 @@ export function EbayShippingHelixFRDesktop() {
               <path d="M6 4L10 8L6 12" stroke="#A9AEB8" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
           </button>
-          <button className="w-7 h-7 flex items-center justify-center">
+          <Link href="/" className="w-7 h-7 flex items-center justify-center hover:bg-[#EFF1F4] rounded-full transition-colors">
             <svg viewBox="0 0 16 16" className="w-3.5 h-3.5">
               <path d="M14 8A6 6 0 1 1 8 2" stroke="#4B4D52" strokeWidth="1.5" strokeLinecap="round"/>
               <path d="M8 2V5L10 4" stroke="#4B4D52" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-          </button>
+          </Link>
           {/* URL Field */}
           <div className="flex-1 h-7 bg-[#EFF1F4] rounded-full flex items-center px-3 gap-2">
             <svg viewBox="0 0 16 16" className="w-4 h-4 flex-shrink-0">
@@ -1258,7 +1260,7 @@ export function EbayShippingHelixFRDesktop() {
                   {/* Preset Header */}
                   <button
                     onClick={() => togglePresetExpanded(preset.id)}
-                    className="w-full flex items-center gap-3 py-4 hover:bg-[#FAFAFA] transition-colors -mx-4 px-4"
+                    className="w-full flex items-center gap-3 py-4 hover:bg-[#FAFAFA] transition-colors"
                   >
                     {/* Icon */}
                     <div className="w-6 h-6 flex-shrink-0">
