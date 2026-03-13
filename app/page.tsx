@@ -162,17 +162,23 @@ export default function PrototypeLibrary() {
       
       const data = await response.json()
       
-      if (data.url) {
-        // Open v0 with the new branch or fallback URL
+      if (data.error) {
+        // Show specific error to user
+        alert(`Error: ${data.error}`)
+        if (data.url) {
+          // Still open the fallback URL
+          window.open(data.url, '_blank')
+        }
+      } else if (data.url) {
+        // Success - open v0 with the new branch
         window.open(data.url, '_blank')
+        setShowProjectModal(false)
+        setProjectName("")
+        setSelectedPrototypeId(null)
       }
       
-      setShowProjectModal(false)
-      setProjectName("")
-      setSelectedPrototypeId(null)
-      
-    } catch {
-      alert('Failed to create project. Please try again.')
+    } catch (err) {
+      alert(`Failed to create project: ${err instanceof Error ? err.message : 'Unknown error'}`)
     } finally {
       setIsCreating(false)
       setCopiedId(null)
