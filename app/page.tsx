@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Search, ExternalLink, X, ChevronRight } from "lucide-react"
 import { EbayShippingPage } from "@/components/ebay-shipping-page"
 import { EbayShippingPageDefault } from "@/components/ebay-shipping-page-default"
@@ -222,12 +223,12 @@ export default function PrototypeLibrary() {
   const activeFiltersCount = [selectedSite, selectedPlatform].filter(Boolean).length
   const hasActiveFilters = activeFiltersCount > 0 || searchQuery.length > 0
 
-  // Map recently used IDs to full prototype objects
+// Map recently used IDs to full prototype objects (filter out desktop/dweb)
   const recentPrototypes = recentlyUsedIds.map(r => {
-    const site = sites.find(s => s.id === r.siteId)
-    const prototype = site?.prototypes.find(p => p.id === r.prototypeId)
-    return prototype ? { ...prototype, siteId: site?.id, siteCode: site?.code, siteFlag: site?.flag } : null
-  }).filter(Boolean)
+  const site = sites.find(s => s.id === r.siteId)
+  const prototype = site?.prototypes.find(p => p.id === r.prototypeId)
+  return prototype ? { ...prototype, siteId: site?.id, siteCode: site?.code, siteFlag: site?.flag } : null
+  }).filter(p => p && p.platform !== 'dweb')
 
   return (
     <div className="min-h-screen bg-[#0a0a0a]">
@@ -235,9 +236,13 @@ export default function PrototypeLibrary() {
       <header className="border-b border-[#1f1f1f] bg-[#0a0a0a] sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">eV</span>
-            </div>
+            <Image 
+              src="/images/evo-studio-logo.png" 
+              alt="eVO Studio" 
+              width={36} 
+              height={36} 
+              className="rounded-lg"
+            />
             <span className="text-white font-semibold text-lg">eVO Studio</span>
           </Link>
           <div className="flex items-center gap-4">
@@ -401,10 +406,37 @@ export default function PrototypeLibrary() {
   <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
   <EbayShippingPageFRDefaultAndroid />
   </div>
-  ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
-  <div className="pointer-events-none w-full h-full overflow-hidden p-2.5">
-    <div className="origin-top-left scale-[0.47]">
-      <EbayShippingHelixFRDesktop previewMode />
+  ) : prototype.status === 'active' && prototype.platform === 'dweb' ? (
+  <div className="flex items-center justify-center w-full h-full p-4">
+    {/* Generic Desktop Browser Frame */}
+    <div className="w-full max-w-[280px] bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
+      {/* Browser Chrome */}
+      <div className="bg-gray-100 px-3 py-2 flex items-center gap-2 border-b border-gray-200">
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+          <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+        </div>
+        <div className="flex-1 bg-white rounded px-2 py-0.5 text-[8px] text-gray-400 truncate">
+          ebay.com/ship/config
+        </div>
+      </div>
+      {/* Content Preview */}
+      <div className="p-3 space-y-2">
+        <div className="h-2 bg-gray-200 rounded w-1/3" />
+        <div className="flex gap-2">
+          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
+          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
+          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
+        </div>
+        <div className="h-2 bg-gray-200 rounded w-1/4 mt-2" />
+        <div className="h-8 bg-gray-100 rounded border border-gray-200" />
+        <div className="h-2 bg-gray-200 rounded w-1/3 mt-2" />
+        <div className="flex gap-2">
+          <div className="flex-1 h-16 bg-gray-100 rounded border border-gray-200" />
+          <div className="flex-1 h-16 bg-gray-100 rounded border border-gray-200" />
+        </div>
+      </div>
     </div>
   </div>
   ) : prototype.status === 'active' && prototype.id === 'it-shelby-default' ? (
@@ -607,10 +639,37 @@ export default function PrototypeLibrary() {
   <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
   <EbayShippingPageFRDefaultAndroid />
   </div>
-  ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
-  <div className="pointer-events-none w-full h-full overflow-hidden p-2.5">
-    <div className="origin-top-left scale-[0.47]">
-      <EbayShippingHelixFRDesktop previewMode />
+  ) : prototype.status === 'active' && prototype.platform === 'dweb' ? (
+  <div className="flex items-center justify-center w-full h-full p-4">
+    {/* Generic Desktop Browser Frame */}
+    <div className="w-full max-w-[280px] bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
+      {/* Browser Chrome */}
+      <div className="bg-gray-100 px-3 py-2 flex items-center gap-2 border-b border-gray-200">
+        <div className="flex gap-1.5">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
+          <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
+        </div>
+        <div className="flex-1 bg-white rounded px-2 py-0.5 text-[8px] text-gray-400 truncate">
+          ebay.com/ship/config
+        </div>
+      </div>
+      {/* Content Preview */}
+      <div className="p-3 space-y-2">
+        <div className="h-2 bg-gray-200 rounded w-1/3" />
+        <div className="flex gap-2">
+          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
+          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
+          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
+        </div>
+        <div className="h-2 bg-gray-200 rounded w-1/4 mt-2" />
+        <div className="h-8 bg-gray-100 rounded border border-gray-200" />
+        <div className="h-2 bg-gray-200 rounded w-1/3 mt-2" />
+        <div className="flex gap-2">
+          <div className="flex-1 h-16 bg-gray-100 rounded border border-gray-200" />
+          <div className="flex-1 h-16 bg-gray-100 rounded border border-gray-200" />
+        </div>
+      </div>
     </div>
   </div>
   ) : prototype.status === 'active' && prototype.id === 'it-shelby-default-android' ? (
