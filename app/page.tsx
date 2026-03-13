@@ -13,6 +13,19 @@ import { EbayShippingPageCADefault } from "@/components/ebay-shipping-page-ca-de
 import { EbayShippingPageAUDefault } from "@/components/ebay-shipping-page-au-default"
 import { EbayShippingPageRoWDefault } from "@/components/ebay-shipping-page-row-default"
 import { EbayShippingPageDefaultAndroid } from "@/components/ebay-shipping-page-default-android"
+import { EbayShippingPageUKDefaultAndroid } from "@/components/ebay-shipping-page-uk-default-android"
+import { EbayShippingPageDEDefaultAndroid } from "@/components/ebay-shipping-page-de-default-android"
+import { EbayShippingPageFRDefaultAndroid } from "@/components/ebay-shipping-page-fr-default-android"
+import { EbayShippingPageITDefaultAndroid } from "@/components/ebay-shipping-page-it-default-android"
+import { EbayShippingPageCADefaultAndroid } from "@/components/ebay-shipping-page-ca-default-android"
+import { EbayShippingPageAUDefaultAndroid } from "@/components/ebay-shipping-page-au-default-android"
+import { EbayShippingPageRoWDefaultAndroid } from "@/components/ebay-shipping-page-row-default-android"
+import { EbayShippingPageUKAG } from "@/components/ebay-shipping-page-uk-ag"
+import { EbayShippingPageCAAG } from "@/components/ebay-shipping-page-ca-ag"
+import { EbayShippingPageAUAG } from "@/components/ebay-shipping-page-au-ag"
+import { EbayShippingPageUKAGAndroid } from "@/components/ebay-shipping-page-uk-ag-android"
+import { EbayShippingPageCAAGAndroid } from "@/components/ebay-shipping-page-ca-ag-android"
+import { EbayShippingPageAUAGAndroid } from "@/components/ebay-shipping-page-au-ag-android"
 
 // Filter options
 const platforms = [
@@ -48,6 +61,9 @@ const sites = [
     flag: "🇬🇧",
     prototypes: [
       { id: "uk-shelby-default", name: "UK-Shelby-Default", description: "Default services view for UK market", status: "active", route: "/prototype/uk-shelby-default", platform: "ios", segment: "c2c" },
+      { id: "uk-shelby-default-android", name: "UK-Shelby-Default-Android", description: "Default services view for UK market (Android)", status: "active", route: "/prototype/uk-shelby-default-android", platform: "android", segment: "c2c" },
+      { id: "uk-shelby-ag", name: "UK-Shelby-AG", description: "AG shipping configuration for UK market", status: "active", route: "/prototype/uk-shelby-ag", platform: "ios", segment: "c2c" },
+      { id: "uk-shelby-ag-android", name: "UK-Shelby-AG-Android", description: "AG shipping configuration for UK market (Android)", status: "active", route: "/prototype/uk-shelby-ag-android", platform: "android", segment: "c2c" },
       { id: "uk-standard", name: "UK-Standard-V1", description: "Standard UK shipping with Royal Mail integration", status: "draft", route: "/prototype/uk-standard", platform: "android", segment: "c2c" },
       { id: "uk-express", name: "UK-Express-V1", description: "Express delivery options for UK sellers", status: "draft", route: "/prototype/uk-express", platform: "mweb", segment: "b2c" },
     ]
@@ -59,6 +75,7 @@ const sites = [
     flag: "🇩🇪",
     prototypes: [
       { id: "de-shelby-default", name: "DE-Shelby-Default", description: "Default services view for German market", status: "active", route: "/prototype/de-shelby-default", platform: "ios", segment: "c2c" },
+      { id: "de-shelby-default-android", name: "DE-Shelby-Default-Android", description: "Default services view for German market (Android)", status: "active", route: "/prototype/de-shelby-default-android", platform: "android", segment: "c2c" },
       { id: "de-standard", name: "DE-Standard-V1", description: "German market shipping with DHL/Hermes", status: "draft", route: "/prototype/de-standard", platform: "ios", segment: "c2c" },
       { id: "de-returns", name: "DE-Returns-V1", description: "Enhanced returns flow for German regulations", status: "draft", route: "/prototype/de-returns", platform: "dweb", segment: "b2c" },
     ]
@@ -70,6 +87,7 @@ const sites = [
     flag: "🇫🇷",
     prototypes: [
       { id: "fr-shelby-default", name: "FR-Shelby-Default", description: "Default services view for French market", status: "active", route: "/prototype/fr-shelby-default", platform: "ios", segment: "c2c" },
+      { id: "fr-shelby-default-android", name: "FR-Shelby-Default-Android", description: "Default services view for French market (Android)", status: "active", route: "/prototype/fr-shelby-default-android", platform: "android", segment: "c2c" },
       { id: "fr-standard", name: "FR-Standard-V1", description: "French market with La Poste/Colissimo", status: "draft", route: "/prototype/fr-standard", platform: "android", segment: "c2c" },
     ]
   },
@@ -80,6 +98,7 @@ const sites = [
     flag: "🇮🇹",
     prototypes: [
       { id: "it-shelby-default", name: "IT-Shelby-Default", description: "Default services view for Italian market", status: "active", route: "/prototype/it-shelby-default", platform: "ios", segment: "c2c" },
+      { id: "it-shelby-default-android", name: "IT-Shelby-Default-Android", description: "Default services view for Italian market (Android)", status: "active", route: "/prototype/it-shelby-default-android", platform: "android", segment: "c2c" },
       { id: "it-standard", name: "IT-Standard-V1", description: "Italian market shipping configuration", status: "draft", route: "/prototype/it-standard", platform: "mweb", segment: "c2c" },
     ]
   },
@@ -90,6 +109,9 @@ const sites = [
     flag: "🇨🇦",
     prototypes: [
       { id: "ca-shelby-default", name: "CA-Shelby-Default", description: "Default services view for Canadian market", status: "active", route: "/prototype/ca-shelby-default", platform: "ios", segment: "c2c" },
+      { id: "ca-shelby-default-android", name: "CA-Shelby-Default-Android", description: "Default services view for Canadian market (Android)", status: "active", route: "/prototype/ca-shelby-default-android", platform: "android", segment: "c2c" },
+      { id: "ca-shelby-ag", name: "CA-Shelby-AG", description: "AG shipping configuration for Canadian market", status: "active", route: "/prototype/ca-shelby-ag", platform: "ios", segment: "c2c" },
+      { id: "ca-shelby-ag-android", name: "CA-Shelby-AG-Android", description: "AG shipping configuration for Canadian market (Android)", status: "active", route: "/prototype/ca-shelby-ag-android", platform: "android", segment: "c2c" },
       { id: "ca-standard", name: "CA-Standard-V1", description: "Canada Post integration for Canadian sellers", status: "draft", route: "/prototype/ca-standard", platform: "ios", segment: "b2c" },
     ]
   },
@@ -100,6 +122,9 @@ const sites = [
     flag: "🇦🇺",
     prototypes: [
       { id: "au-shelby-default", name: "AU-Shelby-Default", description: "Default services view for Australian market", status: "active", route: "/prototype/au-shelby-default", platform: "ios", segment: "c2c" },
+      { id: "au-shelby-default-android", name: "AU-Shelby-Default-Android", description: "Default services view for Australian market (Android)", status: "active", route: "/prototype/au-shelby-default-android", platform: "android", segment: "c2c" },
+      { id: "au-shelby-ag", name: "AU-Shelby-AG", description: "AG shipping configuration for Australian market", status: "active", route: "/prototype/au-shelby-ag", platform: "ios", segment: "c2c" },
+      { id: "au-shelby-ag-android", name: "AU-Shelby-AG-Android", description: "AG shipping configuration for Australian market (Android)", status: "active", route: "/prototype/au-shelby-ag-android", platform: "android", segment: "c2c" },
       { id: "au-standard", name: "AU-Standard-V1", description: "Australia Post shipping configuration", status: "draft", route: "/prototype/au-standard", platform: "dweb", segment: "c2c" },
     ]
   },
@@ -110,6 +135,7 @@ const sites = [
     flag: "🌍",
     prototypes: [
       { id: "row-shelby-default", name: "RoW-Shelby-Default", description: "Default services view for Rest of World", status: "active", route: "/prototype/row-shelby-default", platform: "ios", segment: "c2c" },
+      { id: "row-shelby-default-android", name: "RoW-Shelby-Default-Android", description: "Default services view for Rest of World (Android)", status: "active", route: "/prototype/row-shelby-default-android", platform: "android", segment: "c2c" },
       { id: "row-international", name: "RoW-International-V1", description: "Generic international shipping template", status: "draft", route: "/prototype/row-international", platform: "mweb", segment: "b2c" },
     ]
   },
@@ -406,11 +432,63 @@ export default function PrototypeLibrary() {
                           <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
                             <EbayShippingPageAUDefault />
                           </div>
-                        ) : prototype.status === 'active' && prototype.id === 'row-shelby-default' ? (
-                          <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
-                            <EbayShippingPageRoWDefault />
-                          </div>
-                        ) : (
+) : prototype.status === 'active' && prototype.id === 'row-shelby-default' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageRoWDefault />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'uk-shelby-default-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageUKDefaultAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'de-shelby-default-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageDEDefaultAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'fr-shelby-default-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageFRDefaultAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'it-shelby-default-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageITDefaultAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'ca-shelby-default-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageCADefaultAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'au-shelby-default-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageAUDefaultAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'row-shelby-default-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageRoWDefaultAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'uk-shelby-ag' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageUKAG />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'uk-shelby-ag-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageUKAGAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'ca-shelby-ag' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageCAAG />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'ca-shelby-ag-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageCAAGAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'au-shelby-ag' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageAUAG />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'au-shelby-ag-android' ? (
+  <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
+  <EbayShippingPageAUAGAndroid />
+  </div>
+  ) : (
                           <div className="flex flex-col items-center gap-2">
                             <div className="w-14 h-28 bg-[#222] rounded-[8px] border border-[#333] flex items-center justify-center">
                               <div className="w-10 h-24 bg-[#1a1a1a] rounded-[6px]" />
