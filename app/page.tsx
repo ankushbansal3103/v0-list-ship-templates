@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Search, Copy, ExternalLink, ChevronRight, Check, X } from "lucide-react"
+import { Search, ExternalLink, ChevronRight, Check, X } from "lucide-react"
 import { EbayShippingPage } from "@/components/ebay-shipping-page"
 
 // Filter options
@@ -102,9 +102,9 @@ export default function PrototypeLibrary() {
   const [selectedSite, setSelectedSite] = useState<string | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
   const [selectedSegment, setSelectedSegment] = useState<string | null>(null)
-  const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [showModal, setShowModal] = useState(false)
-  const [modalPrompt, setModalPrompt] = useState("")
+  const [showProjectModal, setShowProjectModal] = useState(false)
+  const [selectedPrototypeId, setSelectedPrototypeId] = useState<string | null>(null)
+  const [projectName, setProjectName] = useState("")
 
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
@@ -136,39 +136,35 @@ export default function PrototypeLibrary() {
     return prototype ? { ...prototype, siteCode: site?.code, siteFlag: site?.flag } : null
   }).filter(Boolean)
 
-  const handleCopy = async (prototypeId: string) => {
-    setCopiedId(prototypeId)
-    
-    // Fetch the actual template code from our API
-    try {
-      const response = await fetch(`/api/template/${prototypeId}`)
-      const data = await response.json()
-      
-      // Use the actual code, not just instructions
-      const code = data.code
-      
-      // Show modal with the actual code
-      setModalPrompt(code)
-      setShowModal(true)
-      setCopiedId(null)
-      
-    } catch {
-      // Fallback - tell user to contact support
-      setModalPrompt(`Error loading template "${prototypeId}". Please try again or contact support.`)
-      setShowModal(true)
-      setCopiedId(null)
-    }
+  const handleUseTemplate = (prototypeId: string) => {
+    setSelectedPrototypeId(prototypeId)
+    setProjectName("")
+    setShowProjectModal(true)
   }
-  
-  const copyToClipboard = async () => {
-    try {
-      await navigator.clipboard.writeText(modalPrompt)
-      // Open v0.dev after successful copy
-      window.open('https://v0.dev', '_blank')
-    } catch {
-      // Fallback for clipboard failure
-      console.log("[v0] Clipboard failed, prompt available in textarea")
-    }
+
+  const handleCreateProject = () => {
+    if (!projectName.trim() || !selectedPrototypeId) return
+    
+    // Use Vercel's one-click deploy with the project name
+    // Repository must be PUBLIC for this to work
+    const repoUrl = 'https://github.com/ankushbansal3103/v0-list-ship-templates/tree/v0/ankbansal-4101-0b50f706'
+    const projectSlug = projectName.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-')
+    
+    // Vercel deploy URL - creates user's own copy from the current branch
+    const deployUrl = `https://vercel.com/new/clone?repository-url=${encodeURIComponent(repoUrl)}&project-name=${encodeURIComponent(projectSlug)}&repository-name=${encodeURIComponent(projectSlug)}`
+    
+    window.open(deployUrl, '_blank')
+    
+    // Close modal
+    setShowProjectModal(false)
+    setProjectName("")
+    setSelectedPrototypeId(null)
+  }
+
+  const closeModal = () => {
+    setShowProjectModal(false)
+    setProjectName("")
+    setSelectedPrototypeId(null)
   }
 
   return (
@@ -199,12 +195,15 @@ export default function PrototypeLibrary() {
       {/* Hero Section */}
       <section className="py-16 px-6">
         <div className="max-w-7xl mx-auto text-center">
+          {/* HIDDEN: Original content - say "enable it back" to restore
           <h1 className="text-5xl font-bold text-white mb-4">
             Find your Prototype
           </h1>
           <p className="text-[#888] text-lg max-w-2xl mx-auto mb-10">
             Browse shipping prototypes by market. Select a template, create a copy, and build your PRD-ready prototype.
           </p>
+          */}
+          <p className="text-white">test test</p>
           
           {/* Search */}
           <div className="max-w-xl mx-auto relative mb-8">
@@ -343,7 +342,7 @@ export default function PrototypeLibrary() {
                     <h4 className="text-white text-sm font-medium truncate">{prototype.name}</h4>
                     <div className="flex gap-2 mt-2">
                       <button
-                        onClick={() => handleCopy(prototype.id)}
+                        onClick={() => handleUseTemplate(prototype.id)}
                         className="flex-1 text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                       >
                         Use Template
@@ -430,7 +429,7 @@ export default function PrototypeLibrary() {
                       
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => handleCopy(prototype.id)}
+                          onClick={() => handleUseTemplate(prototype.id)}
                           disabled={prototype.status !== 'active'}
                           className={`flex-1 h-10 flex items-center justify-center gap-2 rounded-lg text-sm font-medium transition-colors ${
                             prototype.status === 'active'
@@ -438,17 +437,8 @@ export default function PrototypeLibrary() {
                               : 'bg-[#222] text-[#666] cursor-not-allowed'
                           }`}
                         >
-                          {copiedId === prototype.id ? (
-                            <>
-                              <Check className="w-4 h-4" />
-                              Copied! Opening v0...
-                            </>
-                          ) : (
-                            <>
-                              <Copy className="w-4 h-4" />
-                              Use Template
-                            </>
-                          )}
+                          <ExternalLink className="w-4 h-4" />
+                          Start Building
                         </button>
                         <Link
                           href={prototype.status === 'active' ? prototype.route : '#'}
@@ -506,7 +496,7 @@ export default function PrototypeLibrary() {
                     <h4 className="text-white text-sm font-medium truncate">{prototype.name}</h4>
                     <div className="flex gap-2 mt-2">
                       <button
-                        onClick={() => handleCopy(prototype.id)}
+                        onClick={() => handleUseTemplate(prototype.id)}
                         className="flex-1 text-xs py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                       >
                         Use Template
@@ -534,44 +524,51 @@ export default function PrototypeLibrary() {
         </div>
       </footer>
 
-      {/* Copy Template Modal */}
-      {showModal && (
+      {/* Project Name Modal */}
+      {showProjectModal && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-[#111] border border-[#333] rounded-2xl max-w-4xl w-full max-h-[85vh] flex flex-col">
+          <div className="bg-[#111] border border-[#333] rounded-2xl w-full max-w-md overflow-hidden">
             {/* Modal Header */}
-            <div className="flex items-center justify-between p-4 border-b border-[#222]">
-              <div>
-                <h2 className="text-white font-semibold text-lg">Copy Prototype Code</h2>
-                <p className="text-[#888] text-sm">This is the exact code for the prototype. Paste into v0 to create your copy.</p>
-              </div>
-              <button 
-                onClick={() => setShowModal(false)}
-                className="w-8 h-8 flex items-center justify-center text-[#666] hover:text-white transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
+            <div className="p-6 border-b border-[#222]">
+              <h2 className="text-white font-semibold text-xl">Start New Project</h2>
+              <p className="text-[#888] text-sm mt-1">
+                Create your own copy of this prototype to customize
+              </p>
             </div>
             
             {/* Modal Content */}
-            <div className="flex-1 p-4 overflow-auto">
-              <textarea
-                readOnly
-                value={modalPrompt}
-                className="w-full h-[400px] bg-[#0a0a0a] border border-[#333] rounded-lg p-4 text-[#ccc] text-xs font-mono resize-none focus:outline-none focus:border-blue-500"
+            <div className="p-6">
+              <label className="block text-sm text-[#888] mb-2">Project Name</label>
+              <input
+                type="text"
+                value={projectName}
+                onChange={(e) => setProjectName(e.target.value)}
+                placeholder="my-shipping-prototype"
+                className="w-full h-12 px-4 bg-[#0a0a0a] border border-[#333] rounded-lg text-white placeholder:text-[#555] focus:outline-none focus:border-blue-500 transition-colors"
+                autoFocus
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && projectName.trim()) {
+                    handleCreateProject()
+                  }
+                }}
               />
+              <p className="text-[#555] text-xs mt-2">
+                Your project will be deployed to: {projectName.toLowerCase().replace(/[^a-z0-9-]/g, '-') || 'your-project'}.vercel.app
+              </p>
             </div>
             
             {/* Modal Actions */}
-            <div className="p-4 border-t border-[#222] flex items-center gap-3">
+            <div className="p-6 pt-0 flex items-center gap-3">
               <button
-                onClick={copyToClipboard}
-                className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                onClick={handleCreateProject}
+                disabled={!projectName.trim()}
+                className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Copy className="w-4 h-4" />
-                Copy Code & Open v0.dev
+                <ExternalLink className="w-4 h-4" />
+                Deploy & Start Building
               </button>
               <button
-                onClick={() => setShowModal(false)}
+                onClick={closeModal}
                 className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
               >
                 Cancel
