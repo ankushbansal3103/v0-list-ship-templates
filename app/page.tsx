@@ -402,8 +402,10 @@ export default function PrototypeLibrary() {
   <EbayShippingPageFRDefaultAndroid />
   </div>
   ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
-  <div className="pointer-events-none" style={{ transform: 'scale(0.12)', transformOrigin: 'center center' }}>
-  <EbayShippingHelixFRDesktop />
+  <div className="pointer-events-none w-full h-full overflow-hidden flex items-start justify-center">
+    <div style={{ transform: 'scale(0.38)', transformOrigin: 'top center', marginTop: '-10px' }}>
+      <EbayShippingHelixFRDesktop />
+    </div>
   </div>
   ) : prototype.status === 'active' && prototype.id === 'it-shelby-default' ? (
                       <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
@@ -606,8 +608,10 @@ export default function PrototypeLibrary() {
   <EbayShippingPageFRDefaultAndroid />
   </div>
   ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
-  <div className="pointer-events-none" style={{ transform: 'scale(0.12)', transformOrigin: 'center center' }}>
-  <EbayShippingHelixFRDesktop />
+  <div className="pointer-events-none w-full h-full overflow-hidden flex items-start justify-center">
+    <div style={{ transform: 'scale(0.38)', transformOrigin: 'top center', marginTop: '-10px' }}>
+      <EbayShippingHelixFRDesktop />
+    </div>
   </div>
   ) : prototype.status === 'active' && prototype.id === 'it-shelby-default-android' ? (
   <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
