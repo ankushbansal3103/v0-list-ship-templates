@@ -107,6 +107,8 @@ export default function PrototypeLibrary() {
   const [showBranchModal, setShowBranchModal] = useState(false)
   const [branchName, setBranchName] = useState("")
   const [selectedPrototype, setSelectedPrototype] = useState<{ id: string; route: string; name: string } | null>(null)
+  const [isCreatingBranch, setIsCreatingBranch] = useState(false)
+  const [branchError, setBranchError] = useState<string | null>(null)
 
   // Filter sites and prototypes based on all filters
   const filteredSites = sites
@@ -147,17 +149,42 @@ export default function PrototypeLibrary() {
     }
   }
 
-  const handleStartBuilding = () => {
+  const handleStartBuilding = async () => {
     if (!branchName.trim() || !selectedPrototype) return
     
-    // Store branch name for reference (in production, this would create a real branch)
-    const sanitizedBranch = branchName.trim().toLowerCase().replace(/[^a-z0-9-]/g, '-')
-    localStorage.setItem('v0-working-branch', sanitizedBranch)
-    localStorage.setItem('v0-prototype-id', selectedPrototype.id)
+    setIsCreatingBranch(true)
+    setBranchError(null)
     
-    // Navigate to the prototype
-    setShowBranchModal(false)
-    router.push(selectedPrototype.route)
+    try {
+      const response = await fetch('/api/create-branch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          projectName: branchName.trim(),
+          prototypeId: selectedPrototype.id
+        })
+      })
+      
+      const data = await response.json()
+      
+      if (data.error) {
+        setBranchError(data.error)
+        return
+      }
+      
+      if (data.success && data.branchName) {
+        // Branch created - store info and navigate
+        localStorage.setItem('v0-working-branch', data.branchName)
+        localStorage.setItem('v0-prototype-id', selectedPrototype.id)
+        
+        setShowBranchModal(false)
+        router.push(selectedPrototype.route)
+      }
+    } catch (err) {
+      setBranchError(err instanceof Error ? err.message : 'Failed to create branch')
+    } finally {
+      setIsCreatingBranch(false)
+    }
   }
 
   return (
@@ -533,37 +560,56 @@ export default function PrototypeLibrary() {
               <input
                 type="text"
                 value={branchName}
-                onChange={(e) => setBranchName(e.target.value)}
+                onChange={(e) => {
+                  setBranchName(e.target.value)
+                  setBranchError(null)
+                }}
                 placeholder="my-feature-branch"
                 className="w-full h-12 px-4 bg-[#0a0a0a] border border-[#333] rounded-lg text-white placeholder:text-[#555] focus:outline-none focus:border-blue-500 transition-colors"
                 autoFocus
+                disabled={isCreatingBranch}
                 onKeyDown={(e) => {
-                  if (e.key === 'Enter' && branchName.trim()) {
+                  if (e.key === 'Enter' && branchName.trim() && !isCreatingBranch) {
                     handleStartBuilding()
                   }
                 }}
               />
-              <p className="text-[#555] text-xs mt-2">
-                Your changes will be isolated to this branch
-              </p>
+              {branchError ? (
+                <p className="text-red-400 text-xs mt-2">{branchError}</p>
+              ) : (
+                <p className="text-[#555] text-xs mt-2">
+                  A new GitHub branch will be created for your changes
+                </p>
+              )}
             </div>
             
             <div className="p-6 pt-0 flex items-center gap-3">
               <button
                 onClick={handleStartBuilding}
-                disabled={!branchName.trim()}
+                disabled={!branchName.trim() || isCreatingBranch}
                 className="flex-1 h-11 flex items-center justify-center gap-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <ChevronRight className="w-4 h-4" />
-                Start Building
+                {isCreatingBranch ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Creating Branch...
+                  </>
+                ) : (
+                  <>
+                    <ChevronRight className="w-4 h-4" />
+                    Start Building
+                  </>
+                )}
               </button>
               <button
                 onClick={() => {
                   setShowBranchModal(false)
                   setSelectedPrototype(null)
                   setBranchName("")
+                  setBranchError(null)
                 }}
-                className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors"
+                disabled={isCreatingBranch}
+                className="h-11 px-6 bg-[#1a1a1a] border border-[#333] text-white rounded-lg hover:bg-[#222] transition-colors disabled:opacity-50"
               >
                 Cancel
               </button>
