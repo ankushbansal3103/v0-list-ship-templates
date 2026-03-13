@@ -50,6 +50,7 @@ const sites = [
       { id: "us-shelby-ag", name: "US-Shelby-AG", description: "Shipping configuration with Authenticity Guarantee, eBay International Shipping", status: "active", route: "/prototype/us-shelby-ag", platform: "ios", segment: "c2c" },
       { id: "us-shelby-default", name: "US-Shelby-Default", description: "Default services view with USPS, FedEx, UPS carrier selection", status: "active", route: "/prototype/us-shelby-default", platform: "ios", segment: "c2c" },
       { id: "us-shelby-default-android", name: "US-Shelby-Default-Android", description: "Default services view for Android platform", status: "active", route: "/prototype/us-shelby-default-android", platform: "android", segment: "c2c" },
+      { id: "us-helix-simple", name: "US-Helix-Simple", description: "Helix Simple desktop shipping configuration for US market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
       { id: "us-flat-rate", name: "US-Flat-Rate", description: "Simplified flat rate shipping flow", status: "draft", route: "/prototype/us-flat-rate", platform: "ios", segment: "b2c" },
     ]
   },
@@ -63,6 +64,7 @@ const sites = [
       { id: "uk-shelby-default-android", name: "UK-Shelby-Default-Android", description: "Default services view for UK market (Android)", status: "active", route: "/prototype/uk-shelby-default-android", platform: "android", segment: "c2c" },
       { id: "uk-shelby-ag", name: "UK-Shelby-AG", description: "AG shipping configuration for UK market", status: "active", route: "/prototype/uk-shelby-ag", platform: "ios", segment: "c2c" },
       { id: "uk-shelby-ag-android", name: "UK-Shelby-AG-Android", description: "AG shipping configuration for UK market (Android)", status: "active", route: "/prototype/uk-shelby-ag-android", platform: "android", segment: "c2c" },
+      { id: "uk-helix-simple", name: "UK-Helix-Simple", description: "Helix Simple desktop shipping configuration for UK market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
       { id: "uk-standard", name: "UK-Standard-V1", description: "Standard UK shipping with Royal Mail integration", status: "draft", route: "/prototype/uk-standard", platform: "android", segment: "c2c" },
       { id: "uk-express", name: "UK-Express-V1", description: "Express delivery options for UK sellers", status: "draft", route: "/prototype/uk-express", platform: "mweb", segment: "b2c" },
     ]
@@ -75,6 +77,7 @@ const sites = [
     prototypes: [
       { id: "de-shelby-default", name: "DE-Shelby-Default", description: "Default services view for German market", status: "active", route: "/prototype/de-shelby-default", platform: "ios", segment: "c2c" },
       { id: "de-shelby-default-android", name: "DE-Shelby-Default-Android", description: "Default services view for German market (Android)", status: "active", route: "/prototype/de-shelby-default-android", platform: "android", segment: "c2c" },
+      { id: "de-helix-simple", name: "DE-Helix-Simple", description: "Helix Simple desktop shipping configuration for German market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
       { id: "de-standard", name: "DE-Standard-V1", description: "German market shipping with DHL/Hermes", status: "draft", route: "/prototype/de-standard", platform: "ios", segment: "c2c" },
       { id: "de-returns", name: "DE-Returns-V1", description: "Enhanced returns flow for German regulations", status: "draft", route: "/prototype/de-returns", platform: "dweb", segment: "b2c" },
     ]
@@ -86,19 +89,20 @@ const sites = [
     flag: "🇫🇷",
     prototypes: [
       { id: "fr-shelby-default", name: "FR-Shelby-Default", description: "Default services view for French market", status: "active", route: "/prototype/fr-shelby-default", platform: "ios", segment: "c2c" },
-{ id: "fr-shelby-default-android", name: "FR-Shelby-Default-Android", description: "Default services view for French market (Android)", status: "active", route: "/prototype/fr-shelby-default-android", platform: "android", segment: "c2c" },
-  { id: "fr-helix-desktop", name: "FR-Helix-Desktop", description: "Helix Simple desktop shipping configuration for French market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
-  { id: "fr-standard", name: "FR-Standard-V1", description: "French market with La Poste/Colissimo", status: "draft", route: "/prototype/fr-standard", platform: "android", segment: "c2c" },
-  ]
+      { id: "fr-shelby-default-android", name: "FR-Shelby-Default-Android", description: "Default services view for French market (Android)", status: "active", route: "/prototype/fr-shelby-default-android", platform: "android", segment: "c2c" },
+      { id: "fr-helix-simple", name: "FR-Helix-Simple", description: "Helix Simple desktop shipping configuration for French market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
+      { id: "fr-standard", name: "FR-Standard-V1", description: "French market with La Poste/Colissimo", status: "draft", route: "/prototype/fr-standard", platform: "android", segment: "c2c" },
+    ]
   },
   {
-  id: "it",
+    id: "it",
     name: "Italy",
     code: "IT",
     flag: "🇮🇹",
     prototypes: [
       { id: "it-shelby-default", name: "IT-Shelby-Default", description: "Default services view for Italian market", status: "active", route: "/prototype/it-shelby-default", platform: "ios", segment: "c2c" },
       { id: "it-shelby-default-android", name: "IT-Shelby-Default-Android", description: "Default services view for Italian market (Android)", status: "active", route: "/prototype/it-shelby-default-android", platform: "android", segment: "c2c" },
+      { id: "it-helix-simple", name: "IT-Helix-Simple", description: "Helix Simple desktop shipping configuration for Italian market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
       { id: "it-standard", name: "IT-Standard-V1", description: "Italian market shipping configuration", status: "draft", route: "/prototype/it-standard", platform: "mweb", segment: "c2c" },
     ]
   },
@@ -112,6 +116,7 @@ const sites = [
       { id: "ca-shelby-default-android", name: "CA-Shelby-Default-Android", description: "Default services view for Canadian market (Android)", status: "active", route: "/prototype/ca-shelby-default-android", platform: "android", segment: "c2c" },
       { id: "ca-shelby-ag", name: "CA-Shelby-AG", description: "AG shipping configuration for Canadian market", status: "active", route: "/prototype/ca-shelby-ag", platform: "ios", segment: "c2c" },
       { id: "ca-shelby-ag-android", name: "CA-Shelby-AG-Android", description: "AG shipping configuration for Canadian market (Android)", status: "active", route: "/prototype/ca-shelby-ag-android", platform: "android", segment: "c2c" },
+      { id: "ca-helix-simple", name: "CA-Helix-Simple", description: "Helix Simple desktop shipping configuration for Canadian market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
       { id: "ca-standard", name: "CA-Standard-V1", description: "Canada Post integration for Canadian sellers", status: "draft", route: "/prototype/ca-standard", platform: "ios", segment: "b2c" },
     ]
   },
@@ -125,6 +130,7 @@ const sites = [
       { id: "au-shelby-default-android", name: "AU-Shelby-Default-Android", description: "Default services view for Australian market (Android)", status: "active", route: "/prototype/au-shelby-default-android", platform: "android", segment: "c2c" },
       { id: "au-shelby-ag", name: "AU-Shelby-AG", description: "AG shipping configuration for Australian market", status: "active", route: "/prototype/au-shelby-ag", platform: "ios", segment: "c2c" },
       { id: "au-shelby-ag-android", name: "AU-Shelby-AG-Android", description: "AG shipping configuration for Australian market (Android)", status: "active", route: "/prototype/au-shelby-ag-android", platform: "android", segment: "c2c" },
+      { id: "au-helix-simple", name: "AU-Helix-Simple", description: "Helix Simple desktop shipping configuration for Australian market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
       { id: "au-standard", name: "AU-Standard-V1", description: "Australia Post shipping configuration", status: "draft", route: "/prototype/au-standard", platform: "dweb", segment: "c2c" },
     ]
   },
@@ -136,6 +142,7 @@ const sites = [
     prototypes: [
       { id: "row-shelby-default", name: "RoW-Shelby-Default", description: "Default services view for Rest of World", status: "active", route: "/prototype/row-shelby-default", platform: "ios", segment: "c2c" },
       { id: "row-shelby-default-android", name: "RoW-Shelby-Default-Android", description: "Default services view for Rest of World (Android)", status: "active", route: "/prototype/row-shelby-default-android", platform: "android", segment: "c2c" },
+      { id: "row-helix-simple", name: "RoW-Helix-Simple", description: "Helix Simple desktop shipping configuration for Rest of World", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
       { id: "row-international", name: "RoW-International-V1", description: "Generic international shipping template", status: "draft", route: "/prototype/row-international", platform: "mweb", segment: "b2c" },
     ]
   },
