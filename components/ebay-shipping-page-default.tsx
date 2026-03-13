@@ -241,7 +241,7 @@ export function EbayShippingPageDefault() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
+    <div className="relative flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
       {/* iPhone 17 Frame */}
       <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet || showDeliveryDetailsSheet ? 'invisible' : ''}`}>
         {/* Dynamic Island */}

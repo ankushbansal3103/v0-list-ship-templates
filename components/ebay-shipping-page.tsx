@@ -337,7 +337,7 @@ export function EbayShippingPage() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
+    <div className="relative flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
       {/* iPhone 17 Frame - 402x874 logical resolution */}
       {/* Hide L1 when full-screen sheets are shown to prevent double frame/island */}
       <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet || showServicesSheet || showShippingCostSheet || showDeliveryDetailsSheet ? 'invisible' : ''}`}>
