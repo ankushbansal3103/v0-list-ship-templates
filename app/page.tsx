@@ -235,14 +235,14 @@ export default function PrototypeLibrary() {
       {/* Header */}
       <header className="border-b border-[#1f1f1f] bg-[#0a0a0a] sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <div className="w-9 h-9 rounded-lg overflow-hidden bg-white flex items-center justify-center">
+          <Link href="/" className="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
+            <div className="w-8 h-8 rounded-lg overflow-hidden bg-white flex items-center justify-center">
               <Image 
                 src="/images/evo-studio-logo.png" 
                 alt="eVO Studio" 
-                width={56} 
-                height={56} 
-                className="object-cover scale-150"
+                width={80} 
+                height={80} 
+                className="object-cover scale-[2.2]"
               />
             </div>
             <span className="text-white font-semibold text-lg">eVO Studio</span>
@@ -409,36 +409,68 @@ export default function PrototypeLibrary() {
   <EbayShippingPageFRDefaultAndroid />
   </div>
   ) : prototype.status === 'active' && prototype.platform === 'dweb' ? (
-  <div className="flex items-center justify-center w-full h-full p-4">
-    {/* Generic Desktop Browser Frame */}
-    <div className="w-full max-w-[280px] bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
-      {/* Browser Chrome */}
-      <div className="bg-gray-100 px-3 py-2 flex items-center gap-2 border-b border-gray-200">
-        <div className="flex gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-          <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-          <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-        </div>
-        <div className="flex-1 bg-white rounded px-2 py-0.5 text-[8px] text-gray-400 truncate">
-          ebay.com/ship/config
+  <div className="flex items-center justify-center w-full h-full p-3">
+    {/* Desktop Monitor Frame */}
+    <div className="flex flex-col items-center">
+      {/* Monitor */}
+      <div className="w-[260px] bg-[#1a1a1a] rounded-t-lg p-1.5">
+        <div className="bg-white rounded-sm overflow-hidden">
+          {/* Browser Tab Bar */}
+          <div className="bg-[#DEE1E6] px-2 py-1 flex items-center gap-1">
+            <div className="flex gap-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#ED6A5E]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#F4BF4F]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#61C554]" />
+            </div>
+            <div className="flex-1 flex items-center justify-center">
+              <div className="bg-white rounded-sm px-3 py-0.5 text-[6px] text-[#555] flex items-center gap-1">
+                <svg className="w-2 h-2 text-[#999]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                ebay.fr
+              </div>
+            </div>
+          </div>
+          {/* Page Content */}
+          <div className="p-2 bg-[#FAFAFA]">
+            <div className="text-[6px] font-bold text-[#191919] mb-1.5">DELIVERY</div>
+            <div className="flex gap-1 mb-2">
+              <div className="flex-1 bg-white border border-[#191919] rounded p-1">
+                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
+                <div className="text-[5px] font-medium text-[#191919]">Shipping or pickup</div>
+              </div>
+              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
+                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
+                <div className="text-[5px] text-[#707070]">Shipping only</div>
+              </div>
+              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
+                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
+                <div className="text-[5px] text-[#707070]">Pick up only</div>
+              </div>
+            </div>
+            <div className="text-[5px] font-bold text-[#191919] mb-1">Package details</div>
+            <div className="bg-white border border-[#C4C4C4] rounded p-1 flex justify-between items-center mb-2">
+              <div>
+                <div className="text-[5px] font-medium text-[#191919]">Parcel</div>
+                <div className="text-[4px] text-[#707070]">Up to 500 g</div>
+              </div>
+              <svg className="w-2 h-2 text-[#707070]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            </div>
+            <div className="text-[5px] font-bold text-[#191919] mb-1">Domestic shipping</div>
+            <div className="flex gap-1">
+              <div className="flex-1 bg-[#F7F7F7] border-2 border-[#191919] rounded p-1">
+                <div className="text-[5px] font-medium text-[#191919]">Mondial Relay</div>
+                <div className="text-[4px] text-[#707070]">X-X days</div>
+              </div>
+              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
+                <div className="text-[5px] text-[#707070]">Colissimo</div>
+                <div className="text-[4px] text-[#707070]">X-X days</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      {/* Content Preview */}
-      <div className="p-3 space-y-2">
-        <div className="h-2 bg-gray-200 rounded w-1/3" />
-        <div className="flex gap-2">
-          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
-          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
-          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
-        </div>
-        <div className="h-2 bg-gray-200 rounded w-1/4 mt-2" />
-        <div className="h-8 bg-gray-100 rounded border border-gray-200" />
-        <div className="h-2 bg-gray-200 rounded w-1/3 mt-2" />
-        <div className="flex gap-2">
-          <div className="flex-1 h-16 bg-gray-100 rounded border border-gray-200" />
-          <div className="flex-1 h-16 bg-gray-100 rounded border border-gray-200" />
-        </div>
-      </div>
+      {/* Monitor Stand */}
+      <div className="w-8 h-3 bg-[#1a1a1a]" />
+      <div className="w-16 h-1.5 bg-[#1a1a1a] rounded-b-sm" />
     </div>
   </div>
   ) : prototype.status === 'active' && prototype.id === 'it-shelby-default' ? (
@@ -642,36 +674,68 @@ export default function PrototypeLibrary() {
   <EbayShippingPageFRDefaultAndroid />
   </div>
   ) : prototype.status === 'active' && prototype.platform === 'dweb' ? (
-  <div className="flex items-center justify-center w-full h-full p-4">
-    {/* Generic Desktop Browser Frame */}
-    <div className="w-full max-w-[280px] bg-white rounded-lg shadow-lg overflow-hidden border border-gray-200">
-      {/* Browser Chrome */}
-      <div className="bg-gray-100 px-3 py-2 flex items-center gap-2 border-b border-gray-200">
-        <div className="flex gap-1.5">
-          <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
-          <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
-          <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-        </div>
-        <div className="flex-1 bg-white rounded px-2 py-0.5 text-[8px] text-gray-400 truncate">
-          ebay.com/ship/config
+  <div className="flex items-center justify-center w-full h-full p-3">
+    {/* Desktop Monitor Frame */}
+    <div className="flex flex-col items-center">
+      {/* Monitor */}
+      <div className="w-[260px] bg-[#1a1a1a] rounded-t-lg p-1.5">
+        <div className="bg-white rounded-sm overflow-hidden">
+          {/* Browser Tab Bar */}
+          <div className="bg-[#DEE1E6] px-2 py-1 flex items-center gap-1">
+            <div className="flex gap-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#ED6A5E]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#F4BF4F]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#61C554]" />
+            </div>
+            <div className="flex-1 flex items-center justify-center">
+              <div className="bg-white rounded-sm px-3 py-0.5 text-[6px] text-[#555] flex items-center gap-1">
+                <svg className="w-2 h-2 text-[#999]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                ebay.fr
+              </div>
+            </div>
+          </div>
+          {/* Page Content */}
+          <div className="p-2 bg-[#FAFAFA]">
+            <div className="text-[6px] font-bold text-[#191919] mb-1.5">DELIVERY</div>
+            <div className="flex gap-1 mb-2">
+              <div className="flex-1 bg-white border border-[#191919] rounded p-1">
+                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
+                <div className="text-[5px] font-medium text-[#191919]">Shipping or pickup</div>
+              </div>
+              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
+                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
+                <div className="text-[5px] text-[#707070]">Shipping only</div>
+              </div>
+              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
+                <div className="w-3 h-3 bg-[#E5E5E5] rounded-sm mb-0.5" />
+                <div className="text-[5px] text-[#707070]">Pick up only</div>
+              </div>
+            </div>
+            <div className="text-[5px] font-bold text-[#191919] mb-1">Package details</div>
+            <div className="bg-white border border-[#C4C4C4] rounded p-1 flex justify-between items-center mb-2">
+              <div>
+                <div className="text-[5px] font-medium text-[#191919]">Parcel</div>
+                <div className="text-[4px] text-[#707070]">Up to 500 g</div>
+              </div>
+              <svg className="w-2 h-2 text-[#707070]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            </div>
+            <div className="text-[5px] font-bold text-[#191919] mb-1">Domestic shipping</div>
+            <div className="flex gap-1">
+              <div className="flex-1 bg-[#F7F7F7] border-2 border-[#191919] rounded p-1">
+                <div className="text-[5px] font-medium text-[#191919]">Mondial Relay</div>
+                <div className="text-[4px] text-[#707070]">X-X days</div>
+              </div>
+              <div className="flex-1 bg-white border border-[#C4C4C4] rounded p-1">
+                <div className="text-[5px] text-[#707070]">Colissimo</div>
+                <div className="text-[4px] text-[#707070]">X-X days</div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      {/* Content Preview */}
-      <div className="p-3 space-y-2">
-        <div className="h-2 bg-gray-200 rounded w-1/3" />
-        <div className="flex gap-2">
-          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
-          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
-          <div className="flex-1 h-12 bg-gray-100 rounded border border-gray-200" />
-        </div>
-        <div className="h-2 bg-gray-200 rounded w-1/4 mt-2" />
-        <div className="h-8 bg-gray-100 rounded border border-gray-200" />
-        <div className="h-2 bg-gray-200 rounded w-1/3 mt-2" />
-        <div className="flex gap-2">
-          <div className="flex-1 h-16 bg-gray-100 rounded border border-gray-200" />
-          <div className="flex-1 h-16 bg-gray-100 rounded border border-gray-200" />
-        </div>
-      </div>
+      {/* Monitor Stand */}
+      <div className="w-8 h-3 bg-[#1a1a1a]" />
+      <div className="w-16 h-1.5 bg-[#1a1a1a] rounded-b-sm" />
     </div>
   </div>
   ) : prototype.status === 'active' && prototype.id === 'it-shelby-default-android' ? (
