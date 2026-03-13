@@ -681,7 +681,7 @@ export function EbayShippingHelixFRDesktop() {
               {domesticServices.map((service) => (
                 <button
                   key={service.id}
-                  onClick={() => openModal("defaultDomesticService", service.id)}
+                  onClick={() => setSelectedDomesticService(service.id)}
                   className={`flex-1 p-4 rounded-lg text-left transition-all ${
                     selectedDomesticService === service.id
                       ? "bg-[#F7F7F7] border-2 border-[#191919]"
@@ -1248,7 +1248,7 @@ export function EbayShippingHelixFRDesktop() {
           </button>
         }
       >
-        <div className="pt-2">
+        <div>
           {/* Letter and Parcel Presets */}
           <div className="space-y-0">
             {packagePresets.map((preset) => {
@@ -1258,7 +1258,7 @@ export function EbayShippingHelixFRDesktop() {
                   {/* Preset Header */}
                   <button
                     onClick={() => togglePresetExpanded(preset.id)}
-                    className="w-full flex items-center gap-4 py-3 hover:bg-[#FAFAFA] transition-colors"
+                    className="w-full flex items-center gap-3 py-4 hover:bg-[#FAFAFA] transition-colors -mx-4 px-4"
                   >
                     {/* Icon */}
                     <div className="w-6 h-6 flex-shrink-0">
@@ -1279,7 +1279,7 @@ export function EbayShippingHelixFRDesktop() {
 
                   {/* Expanded Sizes */}
                   {isExpanded && (
-                    <div className="pl-10 pb-3 space-y-0">
+                    <div className="pb-4 space-y-0">
                       {preset.sizes.map((size) => (
                         <button
                           key={size.id}
@@ -1287,23 +1287,23 @@ export function EbayShippingHelixFRDesktop() {
                             setTempPackageType(preset.id)
                             setTempPackageSize(size.id)
                           }}
-                          className="w-full flex items-start gap-4 py-3 text-left hover:bg-[#FAFAFA] transition-colors"
+                          className="w-full flex items-start gap-3 py-3 text-left hover:bg-[#FAFAFA] transition-colors pl-10"
                         >
                           {/* Radio */}
-                          <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
-                            <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                          <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+                            <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                               tempPackageSize === size.id 
                                 ? 'border-[#191919] bg-[#191919]' 
                                 : 'border-[#8F8F8F]'
                             }`}>
                               {tempPackageSize === size.id && (
-                                <div className="w-2.5 h-2.5 rounded-full bg-white" />
+                                <div className="w-2 h-2 rounded-full bg-white" />
                               )}
                             </div>
                           </div>
                           {/* Content */}
                           <div className="flex-1">
-                            <div className="text-sm text-[#191919]">{size.weight}</div>
+                            <div className="text-sm font-medium text-[#191919]">{size.weight}</div>
                             <div className="text-sm text-[#707070]">{size.description}</div>
                           </div>
                         </button>
@@ -1316,7 +1316,7 @@ export function EbayShippingHelixFRDesktop() {
           </div>
 
           {/* Don't see your size section */}
-          <div className="pt-6 border-t border-[#E5E5E5] mt-2">
+          <div className="pt-6 border-t border-[#E5E5E5]">
             <h4 className="text-base font-bold text-[#191919] mb-1">Don&apos;t see your size?</h4>
             <p className="text-sm text-[#707070] mb-4">Select oversized for heavier or larger items.</p>
             
@@ -1328,23 +1328,23 @@ export function EbayShippingHelixFRDesktop() {
                     setTempPackageType("oversized")
                     setTempPackageSize(option.id)
                   }}
-                  className="w-full flex items-start gap-4 py-3 text-left hover:bg-[#FAFAFA] transition-colors"
+                  className="w-full flex items-start gap-3 py-3 text-left hover:bg-[#FAFAFA] transition-colors"
                 >
                   {/* Radio */}
-                  <div className="w-6 h-6 flex items-center justify-center flex-shrink-0">
-                    <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
+                  <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
+                    <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center transition-colors ${
                       tempPackageSize === option.id 
                         ? 'border-[#191919] bg-[#191919]' 
                         : 'border-[#8F8F8F]'
                     }`}>
                       {tempPackageSize === option.id && (
-                        <div className="w-2.5 h-2.5 rounded-full bg-white" />
+                        <div className="w-2 h-2 rounded-full bg-white" />
                       )}
                     </div>
                   </div>
                   {/* Content */}
                   <div className="flex-1">
-                    <div className="text-sm text-[#191919]">{option.weight}</div>
+                    <div className="text-sm font-medium text-[#191919]">{option.weight}</div>
                     <div className="text-sm text-[#707070]">{option.description}</div>
                   </div>
                 </button>
