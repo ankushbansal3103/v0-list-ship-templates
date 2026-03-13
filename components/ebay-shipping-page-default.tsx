@@ -45,6 +45,7 @@ const domesticServices = [
   {
     id: "usps",
     name: "USPS",
+    logoType: "usps",
     deliveryDays: "X-X",
     protection: "$XXX.XX",
     dimensions: "Up to X lb., AA x BB x CC in.",
@@ -54,6 +55,7 @@ const domesticServices = [
   {
     id: "fedex",
     name: "FedEx",
+    logoType: "fedex",
     deliveryDays: "X-X",
     protection: "$XXX.XX",
     dimensions: "Up to X lb., AA x BB x CC in.",
@@ -63,6 +65,7 @@ const domesticServices = [
   {
     id: "ups",
     name: "UPS Ground",
+    logoType: "ups",
     deliveryDays: "X-X",
     protection: "$XXX.XX",
     dimensions: "Up to X lb., AA x BB x CC in.",
@@ -265,8 +268,11 @@ export function EbayShippingPageDefault() {
   const [showAdditionalDomesticSheet, setShowAdditionalDomesticSheet] = useState(false)
   const [showInternationalServicesSheet, setShowInternationalServicesSheet] = useState(false)
   const [showEditShippingCostSheet, setShowEditShippingCostSheet] = useState(false)
-  const [selectedAdditionalDomestic, setSelectedAdditionalDomestic] = useState("usps")
-  const [selectedInternational, setSelectedInternational] = useState("usps")
+  const [selectedAdditionalDomestic, setSelectedAdditionalDomestic] = useState<string | null>(null)
+  const [selectedInternational, setSelectedInternational] = useState<string | null>(null)
+  const [shippingCost, setShippingCost] = useState("X.XX")
+  const [showNumericKeyboard, setShowNumericKeyboard] = useState(false)
+  const [shippingCostType, setShippingCostType] = useState<"calculated" | "flat" | "free">("calculated")
   
   const formatPackageDetails = () => {
     if (packageSizeType === "unknown") {
@@ -275,10 +281,32 @@ export function EbayShippingPageDefault() {
     return `${weightLb} lb. ${weightOz} oz., ${dimensionA} x ${dimensionB} x ${dimensionC} in.`
   }
 
+  // Get selected service for display
+  const getSelectedAdditionalService = () => {
+    return domesticServices.find(s => s.id === selectedAdditionalDomestic)
+  }
+  
+  const getSelectedInternationalService = () => {
+    return domesticServices.find(s => s.id === selectedInternational)
+  }
+
+  // Handle numeric keyboard input
+  const handleKeyPress = (key: string) => {
+    if (key === "backspace") {
+      setShippingCost(prev => prev.slice(0, -1) || "0")
+    } else if (key === ".") {
+      if (!shippingCost.includes(".")) {
+        setShippingCost(prev => prev + ".")
+      }
+    } else {
+      setShippingCost(prev => prev === "0" ? key : prev + key)
+    }
+  }
+
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-[#1a1a1a] p-4">
       {/* iPhone 17 Frame */}
-      <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet || showDeliveryDetailsSheet ? 'invisible' : ''}`}>
+      <div className={`relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl ${showPackageSheet || showDeliveryDetailsSheet || showDomesticServicesSheet || showAdditionalDomesticSheet || showInternationalServicesSheet || showEditShippingCostSheet ? 'invisible' : ''}`}>
         {/* Dynamic Island */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
         
@@ -381,8 +409,10 @@ export function EbayShippingPageDefault() {
                     >
                       <div className="flex gap-3 items-start">
                         {/* Logo */}
-                        <div className="w-[48px] h-[48px] flex items-center justify-center flex-shrink-0">
-                          <ServiceLogo type={service.id} className="w-[44px] h-[44px]" />
+                        <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          {service.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-opJzsRtNKhuBXRYW7Ng8AUZWWgiMti.png" alt="USPS" className="w-full h-full object-contain p-1" />}
+                          {service.logoType === "fedex" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                          {service.logoType === "ups" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/UPS_Logo_Shield_2017.svg/220px-UPS_Logo_Shield_2017.svg.png" alt="UPS" className="w-[32px] h-auto object-contain" />}
                         </div>
                         {/* Content */}
                         <div className="flex flex-col flex-1 min-w-0">
@@ -462,13 +492,45 @@ export function EbayShippingPageDefault() {
               {/* Additional Service */}
               <div>
                 <span className="text-[13px] font-bold text-[#191919] block mb-2" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Additional service</span>
-                <button 
-                  onClick={() => setShowAdditionalDomesticSheet(true)}
-                  className="w-full h-[48px] border border-[#767676] rounded-full flex items-center justify-center gap-2"
-                >
-                  <Plus className="w-4 h-4 text-[#191919]" />
-                  <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Add additional service</span>
-                </button>
+                
+                {/* Show selected additional service card if one is selected */}
+                {selectedAdditionalDomestic && getSelectedAdditionalService() && (
+                  <button
+                    onClick={() => setShowAdditionalDomesticSheet(true)}
+                    className="w-full p-3 rounded-[8px] text-left bg-white border-2 border-[#191919] mb-3"
+                  >
+                    <div className="flex gap-3 items-start">
+                      <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                        {getSelectedAdditionalService()?.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-opJzsRtNKhuBXRYW7Ng8AUZWWgiMti.png" alt="USPS" className="w-full h-full object-contain p-1" />}
+                        {getSelectedAdditionalService()?.logoType === "fedex" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                        {getSelectedAdditionalService()?.logoType === "ups" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/UPS_Logo_Shield_2017.svg/220px-UPS_Logo_Shield_2017.svg.png" alt="UPS" className="w-[32px] h-auto object-contain" />}
+                      </div>
+                      <div className="flex flex-col flex-1 min-w-0">
+                        <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
+                          {getSelectedAdditionalService()?.name}
+                        </span>
+                        <div className="text-[13px] text-[#707070] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
+                          <div>{getSelectedAdditionalService()?.deliveryDays} business days</div>
+                          <div>Up to {getSelectedAdditionalService()?.protection} protection</div>
+                          <div>{getSelectedAdditionalService()?.dimensions}</div>
+                          <div>{getSelectedAdditionalService()?.priceRange}</div>
+                        </div>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-[#191919] mt-4" />
+                    </div>
+                  </button>
+                )}
+                
+                {/* Show add button if no service selected */}
+                {!selectedAdditionalDomestic && (
+                  <button 
+                    onClick={() => setShowAdditionalDomesticSheet(true)}
+                    className="w-full h-[48px] border border-[#767676] rounded-full flex items-center justify-center gap-2"
+                  >
+                    <Plus className="w-4 h-4 text-[#191919]" />
+                    <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Add additional service</span>
+                  </button>
+                )}
               </div>
             </div>
 
@@ -495,13 +557,41 @@ export function EbayShippingPageDefault() {
                 </button>
               </div>
 
+              {/* Show selected international service card if one is selected */}
+              {selectedInternational && getSelectedInternationalService() && (
+                <button
+                  onClick={() => setShowInternationalServicesSheet(true)}
+                  className="w-full p-3 rounded-[8px] text-left bg-white border-2 border-[#191919] mb-3"
+                >
+                  <div className="flex gap-3 items-start">
+                    <div className="w-[52px] h-[52px] bg-[#F7F7F7] rounded-[8px] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      {getSelectedInternationalService()?.logoType === "usps" && <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-opJzsRtNKhuBXRYW7Ng8AUZWWgiMti.png" alt="USPS" className="w-full h-full object-contain p-1" />}
+                      {getSelectedInternationalService()?.logoType === "fedex" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/1280px-FedEx_Corporation_-_2016_Logo.svg.png" alt="FedEx" className="w-[40px] h-auto object-contain" />}
+                      {getSelectedInternationalService()?.logoType === "ups" && <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/UPS_Logo_Shield_2017.svg/220px-UPS_Logo_Shield_2017.svg.png" alt="UPS" className="w-[32px] h-auto object-contain" />}
+                    </div>
+                    <div className="flex flex-col flex-1 min-w-0">
+                      <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
+                        {getSelectedInternationalService()?.name}
+                      </span>
+                      <div className="text-[13px] text-[#707070] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
+                        <div>{getSelectedInternationalService()?.deliveryDays} business days</div>
+                        <div>Up to {getSelectedInternationalService()?.protection} protection</div>
+                        <div>{getSelectedInternationalService()?.dimensions}</div>
+                        <div>{getSelectedInternationalService()?.priceRange}</div>
+                      </div>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-[#191919] mt-4" />
+                  </div>
+                </button>
+              )}
+
               {/* Add International Service Button */}
               <button 
                 onClick={() => setShowInternationalServicesSheet(true)}
                 className="w-full h-[48px] border border-[#767676] rounded-full flex items-center justify-center gap-2"
               >
                 <Plus className="w-4 h-4 text-[#191919]" />
-                <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Add international service</span>
+                <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{selectedInternational ? "Add another international service" : "Add international service"}</span>
               </button>
             </div>
 
@@ -1236,7 +1326,13 @@ export function EbayShippingPageDefault() {
               <div className="absolute bottom-0 left-0 right-0 bg-white">
                 <div className="h-[1px] bg-[#E5E5E5]" />
                 <div className="px-4 pb-3 pt-3">
-                  <button onClick={() => setShowAdditionalDomesticSheet(false)} className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]">
+                  <button 
+                    onClick={() => {
+                      // Keep the selection and close
+                      setShowAdditionalDomesticSheet(false)
+                    }} 
+                    className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]"
+                  >
                     <span className="text-[16px] font-bold text-white" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Done</span>
                   </button>
                 </div>
@@ -1345,7 +1441,13 @@ export function EbayShippingPageDefault() {
               <div className="absolute bottom-0 left-0 right-0 bg-white">
                 <div className="h-[1px] bg-[#E5E5E5]" />
                 <div className="px-4 pb-3 pt-3">
-                  <button onClick={() => setShowInternationalServicesSheet(false)} className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]">
+                  <button 
+                    onClick={() => {
+                      // Keep the selection and close
+                      setShowInternationalServicesSheet(false)
+                    }} 
+                    className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]"
+                  >
                     <span className="text-[16px] font-bold text-white" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Done</span>
                   </button>
                 </div>
@@ -1359,40 +1461,161 @@ export function EbayShippingPageDefault() {
       )}
 
       {/* ============================================== */}
-      {/* EDIT SHIPPING COST BOTTOM SHEET              */}
+      {/* EDIT SHIPPING COST FULL SCREEN SHEET         */}
       {/* ============================================== */}
       {showEditShippingCostSheet && (
         <div className="absolute inset-0 flex items-center justify-center" style={{ pointerEvents: 'none' }}>
           <div className="relative w-[402px] h-[874px] bg-black rounded-[55px] p-3 shadow-2xl" style={{ pointerEvents: 'auto' }}>
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[126px] h-[37px] bg-black rounded-b-[20px] z-50" />
-            <div className="relative w-full h-full rounded-[40px] overflow-hidden">
-              <div className="absolute inset-0 bg-white/60 backdrop-blur-md" onClick={() => setShowEditShippingCostSheet(false)} />
-              <div className="absolute bottom-0 left-0 right-0 bg-white rounded-t-[32px] shadow-[0_-5px_30px_rgba(0,0,0,0.12)]" onClick={(e) => e.stopPropagation()}>
-                <div className="flex justify-center pt-[6px] pb-[6px]">
+            <div className="relative w-full h-full bg-white rounded-[40px] overflow-hidden flex flex-col">
+              {/* iOS Status Bar */}
+              <div className="h-[47px] px-6 flex items-end justify-between pb-1 bg-white flex-shrink-0">
+                <span className="text-[15px] font-semibold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>9:41</span>
+                <div className="flex items-center gap-[5px]">
+                  <svg className="w-[17px] h-[11px]" viewBox="0 0 17 11"><rect x="0" y="7" width="3" height="4" rx="1" fill="#191919"/><rect x="4.5" y="5" width="3" height="6" rx="1" fill="#191919"/><rect x="9" y="2.5" width="3" height="8.5" rx="1" fill="#191919"/><rect x="13.5" y="0" width="3" height="11" rx="1" fill="#191919"/></svg>
+                  <svg className="w-[15px] h-[11px]" viewBox="0 0 15 11"><path d="M7.5 10.5C8.33 10.5 9 9.83 9 9C9 8.17 8.33 7.5 7.5 7.5C6.67 7.5 6 8.17 6 9C6 9.83 6.67 10.5 7.5 10.5Z" fill="#191919"/><path d="M4.5 7C5.5 6 6.5 5.5 7.5 5.5C8.5 5.5 9.5 6 10.5 7" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/><path d="M2.5 4.5C4 3 5.5 2.5 7.5 2.5C9.5 2.5 11 3 12.5 4.5" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/><path d="M0.5 2C2.5 0.5 5 0 7.5 0C10 0 12.5 0.5 14.5 2" stroke="#191919" strokeWidth="1.2" strokeLinecap="round" fill="none"/></svg>
+                  <svg className="w-[25px] h-[12px]" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#191919" strokeOpacity="0.35"/><rect x="2" y="2" width="18" height="8" rx="1.5" fill="#191919"/><path d="M23 4V8C23.8 8 24 7 24 6C24 5 23.8 4 23 4Z" fill="#191919" fillOpacity="0.4"/></svg>
+                </div>
+              </div>
+
+              {/* Header with drag handle and close button */}
+              <div className="flex-shrink-0">
+                <div className="flex justify-center pt-1 pb-2">
                   <div className="w-8 h-1 bg-[#8F8F8F] rounded-full" />
                 </div>
-                <div className="flex items-start justify-between px-4 pt-2 pb-3">
+                <div className="flex items-start justify-between px-4 pt-1 pb-3">
                   <div className="flex flex-col">
-                    <h3 className="text-[18px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Shipping cost</h3>
-                    <span className="text-[14px] text-[#707070]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Domestic service</span>
+                    <h3 className="text-[18px] font-bold text-[#191919] leading-[24px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Shipping cost</h3>
+                    <span className="text-[14px] text-[#707070] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Domestic service</span>
                   </div>
-                  <button onClick={() => setShowEditShippingCostSheet(false)} className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center">
+                  <button 
+                    onClick={() => {
+                      setShowEditShippingCostSheet(false)
+                      setShowNumericKeyboard(false)
+                    }}
+                    className="w-10 h-10 bg-[#F7F7F7] rounded-full flex items-center justify-center"
+                  >
                     <X className="w-5 h-5 text-[#191919]" strokeWidth={2} />
                   </button>
                 </div>
-                <div className="px-4 pt-1 pb-8">
-                  <div className="flex flex-col gap-3">
-                    <button className="w-full h-[56px] px-4 bg-[#F7F7F7] border-2 border-[#191919] rounded-[8px] flex items-center justify-between">
-                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Calculated cost</span>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 px-4 pt-4 overflow-y-auto">
+                {/* Section Header */}
+                <div className="mb-4">
+                  <h4 className="text-[16px] font-bold text-[#191919] leading-[24px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Enter the shipping cost</h4>
+                  <p className="text-[14px] text-[#707070] leading-[20px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Choose the amount you want the buyer to pay.</p>
+                </div>
+                
+                {/* Cost Type Options */}
+                <div className="flex flex-col gap-3 mb-4">
+                  <button 
+                    onClick={() => setShippingCostType("calculated")}
+                    className={`w-full h-[56px] px-4 rounded-[8px] flex items-center justify-between ${
+                      shippingCostType === "calculated" 
+                        ? "bg-[#F7F7F7] border-2 border-[#191919]" 
+                        : "bg-white border border-[#8F8F8F]"
+                    }`}
+                  >
+                    <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Calculated cost</span>
+                    {shippingCostType === "calculated" && (
                       <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    </button>
-                    <button className="w-full h-[56px] px-4 bg-white border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
-                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Flat rate</span>
-                    </button>
-                    <button className="w-full h-[56px] px-4 bg-white border border-[#8F8F8F] rounded-[8px] flex items-center justify-between">
-                      <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Free shipping</span>
-                    </button>
+                    )}
+                  </button>
+                  <button 
+                    onClick={() => {
+                      setShippingCostType("flat")
+                      setShowNumericKeyboard(true)
+                    }}
+                    className={`w-full h-[56px] px-4 rounded-[8px] flex items-center justify-between ${
+                      shippingCostType === "flat" 
+                        ? "bg-[#F7F7F7] border-2 border-[#191919]" 
+                        : "bg-white border border-[#8F8F8F]"
+                    }`}
+                  >
+                    <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Flat rate</span>
+                    {shippingCostType === "flat" && (
+                      <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    )}
+                  </button>
+                  <button 
+                    onClick={() => setShippingCostType("free")}
+                    className={`w-full h-[56px] px-4 rounded-[8px] flex items-center justify-between ${
+                      shippingCostType === "free" 
+                        ? "bg-[#F7F7F7] border-2 border-[#191919]" 
+                        : "bg-white border border-[#8F8F8F]"
+                    }`}
+                  >
+                    <span className="text-[14px] text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Free shipping</span>
+                    {shippingCostType === "free" && (
+                      <svg className="w-4 h-4 text-[#191919]" viewBox="0 0 16 16" fill="none"><path d="M3 8L6.5 11.5L13 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    )}
+                  </button>
+                </div>
+                
+                {/* Shipping Cost Input - shown when flat rate selected */}
+                {shippingCostType === "flat" && (
+                  <button 
+                    onClick={() => setShowNumericKeyboard(true)}
+                    className={`w-full h-[56px] px-4 bg-[#F7F7F7] rounded-[8px] flex items-center text-left ${showNumericKeyboard ? 'border-2 border-[#191919]' : 'border border-[#8F8F8F]'}`}
+                  >
+                    <div className="flex flex-col flex-1">
+                      <span className="text-[12px] text-[#707070] leading-[16px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Shipping cost</span>
+                      <span className="text-[16px] text-[#191919] leading-[24px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>${shippingCost || "0.00"}</span>
+                    </div>
+                  </button>
+                )}
+              </div>
+
+              {/* Bottom Section - Save button and Keyboard */}
+              <div className="flex-shrink-0">
+                {/* Save Button */}
+                <div className="px-4 pb-3 pt-3 border-t border-[#E5E5E5]">
+                  <button 
+                    onClick={() => {
+                      setShowEditShippingCostSheet(false)
+                      setShowNumericKeyboard(false)
+                    }}
+                    className="w-full h-[50px] bg-[#3665F3] rounded-full flex items-center justify-center active:bg-[#2d54d4]"
+                  >
+                    <span className="text-[16px] font-bold text-white" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Save</span>
+                  </button>
+                </div>
+
+                {/* Numeric Keyboard */}
+                {showNumericKeyboard && shippingCostType === "flat" && (
+                  <div className="bg-[#D1D5DB] px-1 pt-2 pb-1">
+                    <div className="grid grid-cols-3 gap-[6px]">
+                      {["1", "2", "3", "4", "5", "6", "7", "8", "9", ".", "0", "backspace"].map((key) => (
+                        <button
+                          key={key}
+                          onClick={() => handleKeyPress(key)}
+                          className={`h-[42px] rounded-[5px] flex items-center justify-center ${
+                            key === "backspace" 
+                              ? "bg-[#ADB5BD]" 
+                              : "bg-white shadow-sm"
+                          } active:bg-[#E5E5E5]`}
+                        >
+                          {key === "backspace" ? (
+                            <svg className="w-6 h-6 text-[#191919]" viewBox="0 0 24 24" fill="none">
+                              <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" transform="rotate(180 12 12)"/>
+                              <path d="M19 6H9L4 12L9 18H19C20.1046 18 21 17.1046 21 16V8C21 6.89543 20.1046 6 19 6Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                              <line x1="12" y1="10" x2="16" y2="14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                              <line x1="16" y1="10" x2="12" y2="14" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
+                            </svg>
+                          ) : (
+                            <span className="text-[22px] text-[#191919]">{key}</span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
                   </div>
+                )}
+
+                {/* Home Indicator */}
+                <div className={`h-[34px] flex items-center justify-center ${showNumericKeyboard && shippingCostType === "flat" ? 'bg-[#D1D5DB]' : 'bg-white'}`}>
+                  <div className="w-[134px] h-[5px] bg-[#191919] rounded-full" />
                 </div>
               </div>
             </div>

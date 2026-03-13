@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Search, ExternalLink, X } from "lucide-react"
 import { EbayShippingPage } from "@/components/ebay-shipping-page"
+import { EbayShippingPageDefault } from "@/components/ebay-shipping-page-default"
 
 // Filter options
 const platforms = [
@@ -338,27 +339,37 @@ export default function PrototypeLibrary() {
                     key={prototype.id}
                     className="bg-[#0a0a0a] border border-[#222] rounded-xl overflow-hidden hover:border-[#333] transition-colors"
                   >
-                    {/* Live Prototype Preview */}
-                    <div className="h-64 bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
-                      {prototype.status === 'active' && prototype.id === 'us-shelby-ag' ? (
-                        <div 
-                          className="pointer-events-none"
-                          style={{
-                            transform: 'scale(0.22)',
-                            transformOrigin: 'center center',
-                          }}
-                        >
-                          <EbayShippingPage />
-                        </div>
-                      ) : (
-                        <div className="flex flex-col items-center gap-2">
-                          <div className="w-16 h-32 bg-[#222] rounded-[8px] border border-[#333] flex items-center justify-center">
-                            <div className="w-12 h-28 bg-[#1a1a1a] rounded-[6px]" />
-                          </div>
-                          <span className="text-[#444] text-xs">Coming Soon</span>
-                        </div>
-                      )}
-                    </div>
+{/* Live Prototype Preview */}
+                                    <div className="h-64 bg-[#1a1a1a] flex items-center justify-center overflow-hidden">
+                                      {prototype.status === 'active' && prototype.id === 'us-shelby-ag' ? (
+                                        <div 
+                                          className="pointer-events-none"
+                                          style={{
+                                            transform: 'scale(0.22)',
+                                            transformOrigin: 'center center',
+                                          }}
+                                        >
+                                          <EbayShippingPage />
+                                        </div>
+                                      ) : prototype.status === 'active' && prototype.id === 'us-shelby-default' ? (
+                                        <div 
+                                          className="pointer-events-none"
+                                          style={{
+                                            transform: 'scale(0.22)',
+                                            transformOrigin: 'center center',
+                                          }}
+                                        >
+                                          <EbayShippingPageDefault />
+                                        </div>
+                                      ) : (
+                                        <div className="flex flex-col items-center gap-2">
+                                          <div className="w-16 h-32 bg-[#222] rounded-[8px] border border-[#333] flex items-center justify-center">
+                                            <div className="w-12 h-28 bg-[#1a1a1a] rounded-[6px]" />
+                                          </div>
+                                          <span className="text-[#444] text-xs">Coming Soon</span>
+                                        </div>
+                                      )}
+                                    </div>
                     
                     {/* Content */}
                     <div className="p-4">
