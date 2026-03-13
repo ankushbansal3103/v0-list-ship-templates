@@ -403,7 +403,7 @@ export default function PrototypeLibrary() {
   </div>
   ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
   <div className="pointer-events-none w-full h-full overflow-hidden">
-    <div style={{ transform: 'scale(0.42)', transformOrigin: 'top left', marginLeft: '12px', marginTop: '8px' }}>
+    <div style={{ transform: 'scale(0.52)', transformOrigin: 'top left', marginLeft: '16px', marginTop: '12px' }}>
       <EbayShippingHelixFRDesktop previewMode />
     </div>
   </div>
@@ -609,7 +609,7 @@ export default function PrototypeLibrary() {
   </div>
   ) : prototype.status === 'active' && prototype.id === 'fr-helix-desktop' ? (
   <div className="pointer-events-none w-full h-full overflow-hidden">
-    <div style={{ transform: 'scale(0.42)', transformOrigin: 'top left', marginLeft: '12px', marginTop: '8px' }}>
+    <div style={{ transform: 'scale(0.52)', transformOrigin: 'top left', marginLeft: '16px', marginTop: '12px' }}>
       <EbayShippingHelixFRDesktop previewMode />
     </div>
   </div>
