@@ -181,9 +181,15 @@ export default function PrototypeLibrary() {
         return
       }
 
-      // Open v0 with the actual code - this will render the prototype
-      const v0Url = `https://v0.dev/chat?q=${encodeURIComponent(templateData.code)}`
-      window.open(v0Url, '_blank')
+      // Copy the actual code to clipboard
+      const codeToUse = templateData.code || templateData.prompt
+      await navigator.clipboard.writeText(codeToUse)
+      
+      // Open v0 fresh chat
+      window.open('https://v0.dev/chat', '_blank')
+      
+      // Show success message
+      alert('Code copied to clipboard! Paste it in the v0 chat to start building.')
       
       // Close modal and reset state
       setShowProjectModal(false)
