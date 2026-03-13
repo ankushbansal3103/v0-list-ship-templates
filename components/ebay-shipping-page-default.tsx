@@ -418,8 +418,8 @@ export function EbayShippingPageDefault() {
                         <div className="flex flex-col flex-1 min-w-0">
 {/* Recommended Badge */}
                         {service.recommended && (
-                          <span className="inline-flex items-center h-[18px] px-[6px] rounded-full bg-[#3665F3] w-fit mb-1">
-                            <span className="text-[10px] text-white font-bold uppercase tracking-[0.3px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
+                          <span className="inline-flex items-center h-[22px] px-[10px] rounded-full bg-transparent border-[1.5px] border-[#3665F3] w-fit mb-1">
+                            <span className="text-[11px] text-[#3665F3] font-bold uppercase tracking-[0.3px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
                           </span>
                         )}
                           <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>
@@ -1166,8 +1166,8 @@ export function EbayShippingPageDefault() {
                           </div>
                           <div className="flex flex-col flex-1">
 {service.recommended && (
-                            <span className="inline-flex items-center h-[16px] px-[6px] rounded-full bg-[#3665F3] w-fit mb-1">
-                              <span className="text-[9px] text-white font-bold uppercase tracking-[0.3px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
+                            <span className="inline-flex items-center h-[20px] px-[8px] rounded-full bg-transparent border-[1.5px] border-[#3665F3] w-fit mb-1">
+                              <span className="text-[10px] text-[#3665F3] font-bold uppercase tracking-[0.3px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
                             </span>
                           )}
                             <span className="text-[13px] font-bold text-[#191919] leading-[18px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>{service.name}</span>
