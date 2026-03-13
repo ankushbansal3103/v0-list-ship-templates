@@ -173,12 +173,14 @@ export default function PrototypeLibrary() {
       }
       
       if (data.success && data.branchName) {
-        // Branch created - store info and navigate
-        localStorage.setItem('v0-working-branch', data.branchName)
-        localStorage.setItem('v0-prototype-id', selectedPrototype.id)
+        // Branch created - open a NEW v0 chat connected to this branch
+        // This is the only way to work on a different branch in v0
+        const v0Url = `https://v0.dev/chat/new?rid=ankushbansal3103/v0-list-ship-templates&branch=${encodeURIComponent(data.branchName)}`
+        window.open(v0Url, '_blank')
         
         setShowBranchModal(false)
-        router.push(selectedPrototype.route)
+        setBranchName("")
+        setSelectedPrototype(null)
       }
     } catch (err) {
       setBranchError(err instanceof Error ? err.message : 'Failed to create branch')
