@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Search, ExternalLink } from "lucide-react"
+import { Search, ExternalLink, X } from "lucide-react"
 import { EbayShippingPage } from "@/components/ebay-shipping-page"
 
 // Filter options
@@ -98,7 +98,6 @@ const sites = [
 ]
 
 export default function PrototypeLibrary() {
-  const router = useRouter()
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedSite, setSelectedSite] = useState<string | null>(null)
   const [selectedPlatform, setSelectedPlatform] = useState<string | null>(null)
