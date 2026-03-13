@@ -9,7 +9,22 @@
  */
 
 import { useState } from "react"
-import { ChevronDown, ChevronRight } from "lucide-react"
+import { ChevronDown, ChevronRight, X } from "lucide-react"
+
+// ============================================================================
+// TYPES
+// ============================================================================
+
+type ModalType = 
+  | null 
+  | "defaultDomesticService" 
+  | "additionalDomesticService" 
+  | "internationalService"
+  | "defaultShippingCost"
+  | "additionalShippingCost"
+  | "internationalShippingCost"
+  | "deliveryDetails"
+  | "destinationDropdown"
 
 // ============================================================================
 // DATA
@@ -40,32 +55,26 @@ const domesticServices = [
   {
     id: "mondial-relay",
     name: "Mondial Relay",
-    logoUrl: "https://upload.wikimedia.org/wikipedia/fr/thumb/9/92/Mondial_Relay_2013_logo.png/200px-Mondial_Relay_2013_logo.png",
     deliveryDays: "X-X",
     weight: "Up to X lb.",
     tracking: "Tracking included",
     price: "X,XX €",
-    recommended: true
   },
   {
     id: "colissimo",
     name: "Colissimo",
-    logoUrl: "https://upload.wikimedia.org/wikipedia/fr/thumb/4/4c/Colissimo_Logo.svg/200px-Colissimo_Logo.svg.png",
     deliveryDays: "X-X",
     weight: "Up to X lb.",
     tracking: "Tracking included",
     price: "X,XX €",
-    recommended: false
   },
   {
     id: "chronopost",
     name: "Chronopost",
-    logoUrl: "https://upload.wikimedia.org/wikipedia/fr/thumb/9/9e/Chronopost_logo.svg/200px-Chronopost_logo.svg.png",
     deliveryDays: "X-X",
     weight: "Up to X lb.",
     tracking: "Tracking included",
     price: "X,XX €",
-    recommended: false
   }
 ]
 
@@ -75,6 +84,82 @@ const internationalDestinations = [
   { id: "uk", label: "United Kingdom" },
   { id: "us", label: "United States" },
 ]
+
+const handlingTimeOptions = [
+  { id: "1", label: "1 business day" },
+  { id: "2", label: "2 business days" },
+  { id: "3", label: "3 business days" },
+  { id: "5", label: "5 business days" },
+]
+
+const returnPeriodOptions = [
+  { id: "14", label: "14 days" },
+  { id: "30", label: "30 days" },
+  { id: "60", label: "60 days" },
+]
+
+const returnShippingOptions = [
+  { id: "buyer", label: "Buyer" },
+  { id: "seller", label: "Seller" },
+]
+
+// ============================================================================
+// CARRIER LOGOS (Inline SVGs for reliability)
+// ============================================================================
+
+function MondialRelayLogo({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 60 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Mondial Relay Logo - Stylized */}
+      <rect width="20" height="24" fill="#96154A" rx="2"/>
+      <text x="4" y="15" fill="white" fontSize="6" fontWeight="bold" fontFamily="Arial">Mondial</text>
+      <text x="6" y="21" fill="white" fontSize="5" fontFamily="Arial">Relay</text>
+      <path d="M15 8 L18 5 L18 11 Z" fill="#F6ABB6"/>
+    </svg>
+  )
+}
+
+function ColissimoLogo({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Colissimo Logo - Package/Box with gradient */}
+      <defs>
+        <linearGradient id="colissimoGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#EB6608"/>
+          <stop offset="100%" stopColor="#FABA05"/>
+        </linearGradient>
+      </defs>
+      <path d="M20 4 L32 10 L32 26 L20 32 L8 26 L8 10 Z" fill="url(#colissimoGrad)"/>
+      <path d="M20 4 L20 32 M8 10 L32 10" stroke="#fff" strokeWidth="1" opacity="0.5"/>
+      <text x="5" y="38" fill="#3C3C3B" fontSize="6" fontWeight="bold" fontFamily="Arial">colissimo</text>
+    </svg>
+  )
+}
+
+function ChronopostLogo({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 48 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      {/* Chronopost Logo - Stylized */}
+      <rect x="0" y="4" width="48" height="24" fill="#0038A8" rx="2"/>
+      <circle cx="12" cy="16" r="6" fill="#FFD700"/>
+      <text x="20" y="20" fill="white" fontSize="7" fontWeight="bold" fontFamily="Arial">chrono</text>
+      <text x="8" y="36" fill="#0038A8" fontSize="6" fontWeight="bold" fontFamily="Arial">chronopost</text>
+    </svg>
+  )
+}
+
+function CarrierLogo({ carrierId, className }: { carrierId: string; className?: string }) {
+  switch (carrierId) {
+    case "mondial-relay":
+      return <MondialRelayLogo className={className} />
+    case "colissimo":
+      return <ColissimoLogo className={className} />
+    case "chronopost":
+      return <ChronopostLogo className={className} />
+    default:
+      return <div className={`${className} bg-[#F7F7F7] rounded`} />
+  }
+}
 
 // ============================================================================
 // ICONS
@@ -124,6 +209,169 @@ function DeliveryMethodIcon({ type, className }: { type: string; className?: str
 }
 
 // ============================================================================
+// MODAL COMPONENT
+// ============================================================================
+
+function Modal({ 
+  isOpen, 
+  onClose, 
+  title, 
+  subtitle,
+  children,
+  footer
+}: { 
+  isOpen: boolean
+  onClose: () => void
+  title: string
+  subtitle?: string
+  children: React.ReactNode
+  footer?: React.ReactNode
+}) {
+  if (!isOpen) return null
+
+  return (
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center"
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.32)' }}
+      onClick={onClose}
+    >
+      <div 
+        className="bg-white rounded-2xl w-[616px] max-h-[748px] flex flex-col overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+        style={{ fontFamily: "'Market Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}
+      >
+        {/* Header */}
+        <div className="flex items-start justify-between p-4 pb-2 flex-shrink-0">
+          <div className="flex-1">
+            <h2 className="text-xl font-bold text-[#191919] leading-7">{title}</h2>
+            {subtitle && <p className="text-sm text-[#707070] leading-5 mt-1">{subtitle}</p>}
+          </div>
+          <button 
+            onClick={onClose}
+            className="w-8 h-8 bg-[#F7F7F7] rounded-full flex items-center justify-center hover:bg-[#E5E5E5] transition-colors flex-shrink-0"
+          >
+            <X className="w-4 h-4 text-[#191919]" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 overflow-y-auto px-4 pb-8">
+          {children}
+        </div>
+
+        {/* Footer */}
+        {footer && (
+          <div className="border-t border-[#E5E5E5] p-4 flex justify-end flex-shrink-0">
+            {footer}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
+// ============================================================================
+// SERVICE ROW COMPONENT (for modals)
+// ============================================================================
+
+function ServiceRow({ 
+  service, 
+  isSelected, 
+  onSelect 
+}: { 
+  service: typeof domesticServices[0]
+  isSelected: boolean
+  onSelect: () => void
+}) {
+  return (
+    <button
+      onClick={onSelect}
+      className="w-full flex items-start gap-4 py-2 text-left"
+    >
+      {/* Radio Button */}
+      <div className="w-6 h-6 flex items-center justify-center flex-shrink-0 mt-4">
+        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+          isSelected ? 'border-[#191919] bg-[#191919]' : 'border-[#8F8F8F]'
+        }`}>
+          {isSelected && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+        </div>
+      </div>
+
+      {/* Logo */}
+      <div className="w-14 h-14 bg-[#F7F7F7] rounded-lg flex items-center justify-center flex-shrink-0 p-2">
+        <CarrierLogo carrierId={service.id} className="w-10 h-10" />
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 py-1">
+        <h4 className="text-sm font-bold text-[#191919] leading-5">{service.name}</h4>
+        <div className="text-sm text-[#707070] leading-5">
+          <div>{service.deliveryDays} business days</div>
+          <div>{service.weight}</div>
+          <div>{service.tracking}</div>
+          <div>{service.price}</div>
+        </div>
+      </div>
+    </button>
+  )
+}
+
+// ============================================================================
+// DROPDOWN COMPONENT
+// ============================================================================
+
+function Dropdown({
+  label,
+  value,
+  options,
+  onChange,
+  placeholder
+}: {
+  label?: string
+  value: string
+  options: { id: string; label: string }[]
+  onChange: (id: string) => void
+  placeholder?: string
+}) {
+  const [isOpen, setIsOpen] = useState(false)
+  const selectedOption = options.find(o => o.id === value)
+
+  return (
+    <div className="relative">
+      {label && <label className="text-xs text-[#707070] block mb-1">{label}</label>}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full p-3 border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors bg-white"
+      >
+        <span className="text-sm text-[#191919]">
+          {selectedOption?.label || placeholder}
+        </span>
+        <ChevronDown className={`w-5 h-5 text-[#191919] transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+      </button>
+      
+      {isOpen && (
+        <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-[#E5E5E5] rounded-lg shadow-lg z-10">
+          {options.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => {
+                onChange(option.id)
+                setIsOpen(false)
+              }}
+              className={`w-full px-3 py-2 text-left text-sm hover:bg-[#F7F7F7] transition-colors first:rounded-t-lg last:rounded-b-lg ${
+                option.id === value ? 'bg-[#F7F7F7] font-medium' : ''
+              }`}
+            >
+              {option.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+// ============================================================================
 // MAIN COMPONENT
 // ============================================================================
 
@@ -135,6 +383,45 @@ export function EbayShippingHelixFRDesktop() {
   const [additionalService, setAdditionalService] = useState("mondial-relay")
   const [internationalDestination, setInternationalDestination] = useState("eu")
   const [internationalService, setInternationalService] = useState("colissimo")
+  
+  // Modal states
+  const [activeModal, setActiveModal] = useState<ModalType>(null)
+  const [tempSelectedService, setTempSelectedService] = useState("")
+  
+  // Delivery details state
+  const [handlingTime, setHandlingTime] = useState("2")
+  const [domesticReturnsEnabled, setDomesticReturnsEnabled] = useState(true)
+  const [returnPeriod, setReturnPeriod] = useState("14")
+  const [returnShippingPaidBy, setReturnShippingPaidBy] = useState("buyer")
+  
+  // Shipping cost state
+  const [defaultShippingCost, setDefaultShippingCost] = useState("X,XX")
+  const [additionalShippingCost, setAdditionalShippingCost] = useState("X,XX")
+  const [internationalShippingCost, setInternationalShippingCost] = useState("X,XX")
+
+  // Modal handlers
+  const openModal = (modal: ModalType, initialService?: string) => {
+    setActiveModal(modal)
+    if (initialService) {
+      setTempSelectedService(initialService)
+    }
+  }
+
+  const closeModal = () => {
+    setActiveModal(null)
+    setTempSelectedService("")
+  }
+
+  const handleSaveService = () => {
+    if (activeModal === "defaultDomesticService" && tempSelectedService) {
+      setSelectedDomesticService(tempSelectedService)
+    } else if (activeModal === "additionalDomesticService" && tempSelectedService) {
+      setAdditionalService(tempSelectedService)
+    } else if (activeModal === "internationalService" && tempSelectedService) {
+      setInternationalService(tempSelectedService)
+    }
+    closeModal()
+  }
 
   return (
     <div className="min-h-screen bg-white" style={{ fontFamily: "'Market Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
@@ -278,7 +565,7 @@ export function EbayShippingHelixFRDesktop() {
               {domesticServices.map((service) => (
                 <button
                   key={service.id}
-                  onClick={() => setSelectedDomesticService(service.id)}
+                  onClick={() => openModal("defaultDomesticService", service.id)}
                   className={`flex-1 p-4 rounded-lg text-left transition-all ${
                     selectedDomesticService === service.id
                       ? "bg-[#F7F7F7] border-2 border-[#191919]"
@@ -286,17 +573,8 @@ export function EbayShippingHelixFRDesktop() {
                   }`}
                 >
                   {/* Logo */}
-                  <div className="w-10 h-10 mb-3 flex items-center justify-start">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img 
-                      src={service.logoUrl} 
-                      alt={service.name}
-                      className="max-w-[40px] max-h-[40px] object-contain"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                      }}
-                    />
+                  <div className="w-10 h-10 mb-3 bg-[#F7F7F7] rounded p-1 flex items-center justify-center">
+                    <CarrierLogo carrierId={service.id} className="w-8 h-8" />
                   </div>
                   <h4 className="text-sm font-bold text-[#191919] mb-1">{service.name}</h4>
                   <div className="text-xs text-[#707070] space-y-0.5">
@@ -310,7 +588,10 @@ export function EbayShippingHelixFRDesktop() {
             </div>
 
             {/* View All Services Button */}
-            <button className="w-full py-3 border border-[#8F8F8F] rounded-lg text-sm text-[#191919] font-medium hover:bg-[#FAFAFA] transition-colors mb-6">
+            <button 
+              onClick={() => openModal("defaultDomesticService", selectedDomesticService)}
+              className="w-full py-3 border border-[#8F8F8F] rounded-lg text-sm text-[#191919] font-medium hover:bg-[#FAFAFA] transition-colors mb-6"
+            >
               View all services
             </button>
 
@@ -342,9 +623,12 @@ export function EbayShippingHelixFRDesktop() {
               </div>
               <div className="text-center">
                 <div className="text-sm text-[#707070] mb-1">The buyer will pay:</div>
-                <div className="text-xl font-bold text-[#191919] mb-1">X.XX €</div>
+                <div className="text-xl font-bold text-[#191919] mb-1">{defaultShippingCost} €</div>
                 <div className="text-sm text-[#707070] mb-2">Based on the cost that you set</div>
-                <button className="text-sm text-[#191919] underline hover:no-underline">
+                <button 
+                  onClick={() => openModal("defaultShippingCost")}
+                  className="text-sm text-[#191919] underline hover:no-underline"
+                >
                   Edit shipping cost
                 </button>
               </div>
@@ -358,22 +642,20 @@ export function EbayShippingHelixFRDesktop() {
             <h3 className="text-base font-bold text-[#191919] mb-4">Additional service</h3>
             
             {/* Selected Additional Service Card */}
-            <div className="border border-[#8F8F8F] rounded-lg p-4 mb-4">
+            <button 
+              onClick={() => openModal("additionalDomesticService", additionalService)}
+              className="w-full border border-[#8F8F8F] rounded-lg p-4 mb-4 text-left hover:bg-[#FAFAFA] transition-colors"
+            >
               <div className="flex items-start gap-4">
                 {/* Logo */}
-                <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img 
-                    src={domesticServices.find(s => s.id === additionalService)?.logoUrl} 
-                    alt={domesticServices.find(s => s.id === additionalService)?.name}
-                    className="max-w-[40px] max-h-[40px] object-contain"
-                  />
+                <div className="w-14 h-14 bg-[#F7F7F7] rounded-lg flex items-center justify-center flex-shrink-0 p-2">
+                  <CarrierLogo carrierId={additionalService} className="w-10 h-10" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-[#191919] mb-1">
                     {domesticServices.find(s => s.id === additionalService)?.name}
                   </h4>
-                  <div className="text-xs text-[#707070] space-y-0.5">
+                  <div className="text-sm text-[#707070] leading-5">
                     <div>X-X business days</div>
                     <div>Up to X lb.</div>
                     <div>Tracking included</div>
@@ -381,10 +663,13 @@ export function EbayShippingHelixFRDesktop() {
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* View All Services Button */}
-            <button className="w-full py-3 border border-[#8F8F8F] rounded-lg text-sm text-[#191919] font-medium hover:bg-[#FAFAFA] transition-colors mb-6">
+            <button 
+              onClick={() => openModal("additionalDomesticService", additionalService)}
+              className="w-full py-3 border border-[#8F8F8F] rounded-lg text-sm text-[#191919] font-medium hover:bg-[#FAFAFA] transition-colors mb-6"
+            >
               View all services
             </button>
 
@@ -392,9 +677,12 @@ export function EbayShippingHelixFRDesktop() {
             <div className="bg-[#F7F7F7] rounded-lg p-6">
               <div className="text-center">
                 <div className="text-sm text-[#707070] mb-1">The buyer will pay:</div>
-                <div className="text-xl font-bold text-[#191919] mb-1">X.XX €</div>
+                <div className="text-xl font-bold text-[#191919] mb-1">{additionalShippingCost} €</div>
                 <div className="text-sm text-[#707070] mb-2">Based on the cost that you set</div>
-                <button className="text-sm text-[#191919] underline hover:no-underline">
+                <button 
+                  onClick={() => openModal("additionalShippingCost")}
+                  className="text-sm text-[#191919] underline hover:no-underline"
+                >
                   Edit shipping cost
                 </button>
               </div>
@@ -412,32 +700,29 @@ export function EbayShippingHelixFRDesktop() {
 
             {/* Destination Dropdown */}
             <div className="mb-4">
-              <label className="text-xs text-[#707070] block mb-1">Destination</label>
-              <button className="w-full p-3 border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors">
-                <span className="text-sm text-[#191919]">
-                  {internationalDestinations.find(d => d.id === internationalDestination)?.label}
-                </span>
-                <ChevronDown className="w-5 h-5 text-[#191919]" />
-              </button>
+              <Dropdown
+                label="Destination"
+                value={internationalDestination}
+                options={internationalDestinations}
+                onChange={setInternationalDestination}
+              />
             </div>
 
             {/* International Service Card */}
-            <div className="border border-[#8F8F8F] rounded-lg p-4 mb-4">
+            <button 
+              onClick={() => openModal("internationalService", internationalService)}
+              className="w-full border border-[#8F8F8F] rounded-lg p-4 mb-4 text-left hover:bg-[#FAFAFA] transition-colors"
+            >
               <div className="flex items-start gap-4">
                 {/* Logo */}
-                <div className="w-10 h-10 flex items-center justify-center flex-shrink-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img 
-                    src={domesticServices.find(s => s.id === internationalService)?.logoUrl} 
-                    alt={domesticServices.find(s => s.id === internationalService)?.name}
-                    className="max-w-[40px] max-h-[40px] object-contain"
-                  />
+                <div className="w-14 h-14 bg-[#F7F7F7] rounded-lg flex items-center justify-center flex-shrink-0 p-2">
+                  <CarrierLogo carrierId={internationalService} className="w-10 h-10" />
                 </div>
                 <div>
                   <h4 className="text-sm font-bold text-[#191919] mb-1">
                     {domesticServices.find(s => s.id === internationalService)?.name}
                   </h4>
-                  <div className="text-xs text-[#707070] space-y-0.5">
+                  <div className="text-sm text-[#707070] leading-5">
                     <div>X-X business days</div>
                     <div>Up to X lb.</div>
                     <div>Tracking included</div>
@@ -445,10 +730,13 @@ export function EbayShippingHelixFRDesktop() {
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
 
             {/* View All Services Button */}
-            <button className="w-full py-3 border border-[#8F8F8F] rounded-lg text-sm text-[#191919] font-medium hover:bg-[#FAFAFA] transition-colors mb-6">
+            <button 
+              onClick={() => openModal("internationalService", internationalService)}
+              className="w-full py-3 border border-[#8F8F8F] rounded-lg text-sm text-[#191919] font-medium hover:bg-[#FAFAFA] transition-colors mb-6"
+            >
               View all services
             </button>
 
@@ -456,9 +744,12 @@ export function EbayShippingHelixFRDesktop() {
             <div className="bg-[#F7F7F7] rounded-lg p-6">
               <div className="text-center">
                 <div className="text-sm text-[#707070] mb-1">The buyer will pay:</div>
-                <div className="text-xl font-bold text-[#191919] mb-1">X.XX €</div>
+                <div className="text-xl font-bold text-[#191919] mb-1">{internationalShippingCost} €</div>
                 <div className="text-sm text-[#707070] mb-2">Cost is based on buyer&apos;s location.</div>
-                <button className="text-sm text-[#191919] underline hover:no-underline">
+                <button 
+                  onClick={() => openModal("internationalShippingCost")}
+                  className="text-sm text-[#191919] underline hover:no-underline"
+                >
                   Edit shipping cost
                 </button>
               </div>
@@ -471,7 +762,10 @@ export function EbayShippingHelixFRDesktop() {
           <div className="mb-14">
             <h3 className="text-base font-bold text-[#191919] mb-4">Delivery details</h3>
             
-            <button className="w-full p-4 border border-[#8F8F8F] rounded-lg hover:bg-[#FAFAFA] transition-colors">
+            <button 
+              onClick={() => openModal("deliveryDetails")}
+              className="w-full p-4 border border-[#8F8F8F] rounded-lg hover:bg-[#FAFAFA] transition-colors"
+            >
               <div className="flex items-center justify-between">
                 <div className="text-left">
                   {/* Item Location */}
@@ -482,12 +776,14 @@ export function EbayShippingHelixFRDesktop() {
                   {/* Handling Time */}
                   <div className="mb-3">
                     <div className="text-sm font-medium text-[#191919]">Handling time</div>
-                    <div className="text-sm text-[#707070]">X business days</div>
+                    <div className="text-sm text-[#707070]">{handlingTimeOptions.find(h => h.id === handlingTime)?.label}</div>
                   </div>
                   {/* Domestic Returns */}
                   <div>
                     <div className="text-sm font-medium text-[#191919]">Domestic returns</div>
-                    <div className="text-sm text-[#707070]">14 Days, Buyer</div>
+                    <div className="text-sm text-[#707070]">
+                      {returnPeriodOptions.find(r => r.id === returnPeriod)?.label}, {returnShippingOptions.find(r => r.id === returnShippingPaidBy)?.label}
+                    </div>
                   </div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-[#191919] flex-shrink-0" />
@@ -497,6 +793,330 @@ export function EbayShippingHelixFRDesktop() {
 
         </div>
       </div>
+
+      {/* ============================================================ */}
+      {/* MODALS */}
+      {/* ============================================================ */}
+
+      {/* Default Domestic Service Modal */}
+      <Modal
+        isOpen={activeModal === "defaultDomesticService"}
+        onClose={closeModal}
+        title="Default domestic service"
+        subtitle="This service is selected by default and will be highlighted for buyers in search."
+        footer={
+          <button
+            onClick={handleSaveService}
+            className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
+          >
+            Save
+          </button>
+        }
+      >
+        <div className="space-y-6 pt-4">
+          <div>
+            <h4 className="text-base font-bold text-[#191919] mb-4">Service type</h4>
+            <div className="space-y-2">
+              {domesticServices.map((service) => (
+                <ServiceRow
+                  key={service.id}
+                  service={service}
+                  isSelected={tempSelectedService === service.id}
+                  onSelect={() => setTempSelectedService(service.id)}
+                />
+              ))}
+            </div>
+          </div>
+          <div>
+            <h4 className="text-base font-bold text-[#191919] mb-4">Service type</h4>
+            <div className="space-y-2">
+              {domesticServices.slice(0, 1).map((service) => (
+                <ServiceRow
+                  key={`alt-${service.id}`}
+                  service={service}
+                  isSelected={false}
+                  onSelect={() => {}}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Additional Domestic Service Modal */}
+      <Modal
+        isOpen={activeModal === "additionalDomesticService"}
+        onClose={closeModal}
+        title="Additional domestic service"
+        subtitle="Offer an optional choice for your buyers. They can select it at checkout."
+        footer={
+          <button
+            onClick={handleSaveService}
+            className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
+          >
+            Save
+          </button>
+        }
+      >
+        <div className="pt-4">
+          <div className="flex items-center gap-2 mb-6">
+            <button className="text-sm text-[#E53238] hover:underline">Remove service</button>
+            <span className="text-[#707070]">|</span>
+            <button className="text-sm text-[#191919] underline hover:no-underline">Make default</button>
+          </div>
+          
+          <div className="space-y-6">
+            <div>
+              <h4 className="text-base font-bold text-[#191919] mb-4">Service type</h4>
+              <div className="space-y-2">
+                {domesticServices.map((service) => (
+                  <ServiceRow
+                    key={service.id}
+                    service={service}
+                    isSelected={tempSelectedService === service.id}
+                    onSelect={() => setTempSelectedService(service.id)}
+                  />
+                ))}
+              </div>
+            </div>
+            <div>
+              <h4 className="text-base font-bold text-[#191919] mb-4">Service type</h4>
+              <div className="space-y-2">
+                {domesticServices.slice(0, 1).map((service) => (
+                  <ServiceRow
+                    key={`alt-${service.id}`}
+                    service={service}
+                    isSelected={false}
+                    onSelect={() => {}}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* International Service Modal */}
+      <Modal
+        isOpen={activeModal === "internationalService"}
+        onClose={closeModal}
+        title="International service"
+        subtitle="This service is selected by default and will be highlighted for buyers in search."
+        footer={
+          <button
+            onClick={handleSaveService}
+            className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
+          >
+            Save
+          </button>
+        }
+      >
+        <div className="space-y-6 pt-4">
+          <div>
+            <h4 className="text-base font-bold text-[#191919] mb-4">Service type</h4>
+            <div className="space-y-2">
+              {domesticServices.map((service) => (
+                <ServiceRow
+                  key={service.id}
+                  service={service}
+                  isSelected={tempSelectedService === service.id}
+                  onSelect={() => setTempSelectedService(service.id)}
+                />
+              ))}
+            </div>
+          </div>
+          <div>
+            <h4 className="text-base font-bold text-[#191919] mb-4">Service type</h4>
+            <div className="space-y-2">
+              {domesticServices.slice(0, 1).map((service) => (
+                <ServiceRow
+                  key={`alt-${service.id}`}
+                  service={service}
+                  isSelected={false}
+                  onSelect={() => {}}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Shipping Cost Modal - Default Domestic */}
+      <Modal
+        isOpen={activeModal === "defaultShippingCost"}
+        onClose={closeModal}
+        title="Shipping cost"
+        subtitle="Default domestic service"
+        footer={
+          <button
+            onClick={closeModal}
+            className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
+          >
+            Save
+          </button>
+        }
+      >
+        <div className="pt-4">
+          <h4 className="text-base font-bold text-[#191919] mb-1">Enter the shipping cost</h4>
+          <p className="text-sm text-[#707070] mb-4">Choose the amount you want the buyer to pay.</p>
+          
+          <div className="relative">
+            <label className="text-xs text-[#707070] absolute left-3 top-2">Shipping cost</label>
+            <input
+              type="text"
+              value={defaultShippingCost}
+              onChange={(e) => setDefaultShippingCost(e.target.value)}
+              className="w-full p-3 pt-6 border border-[#8F8F8F] rounded-lg text-sm text-[#191919] pr-8 focus:outline-none focus:border-[#3665F3] focus:ring-1 focus:ring-[#3665F3]"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#707070]">€</span>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Shipping Cost Modal - Additional Domestic */}
+      <Modal
+        isOpen={activeModal === "additionalShippingCost"}
+        onClose={closeModal}
+        title="Shipping cost"
+        subtitle="Additional domestic service"
+        footer={
+          <button
+            onClick={closeModal}
+            className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
+          >
+            Save
+          </button>
+        }
+      >
+        <div className="pt-4">
+          <h4 className="text-base font-bold text-[#191919] mb-1">Enter the shipping cost</h4>
+          <p className="text-sm text-[#707070] mb-4">Choose the amount you want the buyer to pay.</p>
+          
+          <div className="relative">
+            <label className="text-xs text-[#707070] absolute left-3 top-2">Shipping cost</label>
+            <input
+              type="text"
+              value={additionalShippingCost}
+              onChange={(e) => setAdditionalShippingCost(e.target.value)}
+              className="w-full p-3 pt-6 border border-[#8F8F8F] rounded-lg text-sm text-[#191919] pr-8 focus:outline-none focus:border-[#3665F3] focus:ring-1 focus:ring-[#3665F3]"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#707070]">€</span>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Shipping Cost Modal - International */}
+      <Modal
+        isOpen={activeModal === "internationalShippingCost"}
+        onClose={closeModal}
+        title="Shipping cost"
+        subtitle="International service"
+        footer={
+          <button
+            onClick={closeModal}
+            className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
+          >
+            Save
+          </button>
+        }
+      >
+        <div className="pt-4">
+          <h4 className="text-base font-bold text-[#191919] mb-1">Enter the shipping cost</h4>
+          <p className="text-sm text-[#707070] mb-4">Choose the amount you want the buyer to pay.</p>
+          
+          <div className="relative">
+            <label className="text-xs text-[#707070] absolute left-3 top-2">Shipping cost</label>
+            <input
+              type="text"
+              value={internationalShippingCost}
+              onChange={(e) => setInternationalShippingCost(e.target.value)}
+              className="w-full p-3 pt-6 border border-[#8F8F8F] rounded-lg text-sm text-[#191919] pr-8 focus:outline-none focus:border-[#3665F3] focus:ring-1 focus:ring-[#3665F3]"
+            />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-[#707070]">€</span>
+          </div>
+        </div>
+      </Modal>
+
+      {/* Delivery Details Modal */}
+      <Modal
+        isOpen={activeModal === "deliveryDetails"}
+        onClose={closeModal}
+        title="Delivery details"
+        footer={
+          <button
+            onClick={closeModal}
+            className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
+          >
+            Save
+          </button>
+        }
+      >
+        <div className="pt-4 space-y-6">
+          {/* Item Location */}
+          <div>
+            <h4 className="text-base font-bold text-[#191919] mb-3">Item location</h4>
+            <div className="bg-[#F7F7F7] rounded-lg p-4 flex items-center justify-between">
+              <div>
+                <div className="text-sm font-medium text-[#191919]">Colmar, France, 68026</div>
+                <div className="text-sm text-[#707070]">The item location appears on the listing.</div>
+              </div>
+              <button className="text-sm text-[#191919] underline hover:no-underline">Edit</button>
+            </div>
+          </div>
+
+          <div className="border-t border-[#E5E5E5]" />
+
+          {/* Handling Time */}
+          <div>
+            <h4 className="text-base font-bold text-[#191919] mb-3">Handling time</h4>
+            <Dropdown
+              value={handlingTime}
+              options={handlingTimeOptions}
+              onChange={setHandlingTime}
+            />
+          </div>
+
+          <div className="border-t border-[#E5E5E5]" />
+
+          {/* Returns */}
+          <div>
+            <h4 className="text-base font-bold text-[#191919] mb-1">Returns</h4>
+            <p className="text-sm text-[#707070] mb-4">Sellers must accept returns if the item doesn&apos;t match the listing description.</p>
+            
+            {/* Domestic Toggle */}
+            <div className="flex items-center justify-between mb-4">
+              <span className="text-sm font-medium text-[#191919]">Domestic</span>
+              <button
+                onClick={() => setDomesticReturnsEnabled(!domesticReturnsEnabled)}
+                className={`w-12 h-7 rounded-full relative transition-colors ${
+                  domesticReturnsEnabled ? 'bg-[#3665F3]' : 'bg-[#8F8F8F]'
+                }`}
+              >
+                <div className={`w-5 h-5 bg-white rounded-full absolute top-1 transition-transform ${
+                  domesticReturnsEnabled ? 'right-1' : 'left-1'
+                }`} />
+              </button>
+            </div>
+
+            {domesticReturnsEnabled && (
+              <div className="space-y-4">
+                <Dropdown
+                  label="Allowed within"
+                  value={returnPeriod}
+                  options={returnPeriodOptions}
+                  onChange={setReturnPeriod}
+                />
+                <Dropdown
+                  label="Return shipping paid by"
+                  value={returnShippingPaidBy}
+                  options={returnShippingOptions}
+                  onChange={setReturnShippingPaidBy}
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }
