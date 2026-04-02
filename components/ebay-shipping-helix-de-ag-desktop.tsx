@@ -69,7 +69,9 @@ const internationalServices = [
     weight: "Up to 30 kg",
     tracking: "Tracking included",
     price: "€ 24.99",
-    logo: "DHL"
+    logo: "DHL",
+    logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/DHL_Logo.svg/2560px-DHL_Logo.svg.png",
+    logoColor: "#D40511"
   },
   {
     id: "dhl-parcel",
@@ -78,7 +80,9 @@ const internationalServices = [
     weight: "Up to 20 kg",
     tracking: "Tracking included",
     price: "€ 14.99",
-    logo: "DHL"
+    logo: "DHL",
+    logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/DHL_Logo.svg/2560px-DHL_Logo.svg.png",
+    logoColor: "#D40511"
   },
   {
     id: "ups",
@@ -87,7 +91,9 @@ const internationalServices = [
     weight: "Up to 30 kg",
     tracking: "Tracking included",
     price: "€ 19.99",
-    logo: "UPS"
+    logo: "UPS",
+    logoUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/United_Parcel_Service_logo_2014.svg/1280px-United_Parcel_Service_logo_2014.svg.png",
+    logoColor: "#351C15"
   },
 ]
 
@@ -751,18 +757,19 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
           </div>
 
           {/* Additional Service */}
-          <div className="mb-4">
-            <span className="text-sm font-bold text-[#191919] block">Additional service</span>
+          <div className="mb-6">
+            <span className="text-sm font-bold text-[#191919] block mb-1">Additional service</span>
             <span className="text-sm text-[#707070]">
               <button className="underline text-[#3665F3] hover:text-[#2050D0]">Fees</button> apply for international sales.
             </span>
           </div>
 
-          {/* Destination Dropdown */}
-          <div className="mb-4">
+          {/* Destination and Service Selection - Desktop Layout */}
+          <div className="flex gap-6 items-start mb-6">
+            {/* Destination Dropdown */}
             <button 
               onClick={() => openModal("destinationDropdown")}
-              className="w-full max-w-[400px] px-4 py-3 bg-white border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors"
+              className="w-[280px] px-4 py-3 bg-white border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors"
             >
               <div className="flex flex-col items-start">
                 <span className="text-xs text-[#707070] leading-tight">Destination</span>
@@ -770,35 +777,43 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
               </div>
               <ChevronDown className="w-5 h-5 text-[#191919]" />
             </button>
-          </div>
 
-          {/* Selected Service Card */}
-          <button 
-            onClick={() => openModal("internationalService")}
-            className="w-full max-w-[400px] p-4 bg-white border border-[#E5E5E5] rounded-lg mb-4 text-left hover:bg-[#FAFAFA] transition-colors"
-          >
-            <div className="flex gap-4 items-start">
-              <div className="w-[48px] h-[48px] bg-[#F7F7F7] rounded flex items-center justify-center flex-shrink-0">
-                <span className="text-xs font-bold text-[#D40511]">{serviceInfo.logo}</span>
-              </div>
-              <div className="flex flex-col flex-1">
-                <span className="text-sm font-bold text-[#191919] leading-tight">
-                  {serviceInfo.name}
-                </span>
-                <div className="text-sm text-[#707070] mt-1 leading-relaxed space-y-0.5">
-                  <div>{serviceInfo.deliveryDays} business days</div>
-                  <div>{serviceInfo.weight}</div>
-                  <div>{serviceInfo.tracking}</div>
-                  <div className="font-medium text-[#191919]">{serviceInfo.price}</div>
+            {/* Selected Service Card */}
+            <button 
+              onClick={() => openModal("internationalService")}
+              className="flex-1 max-w-[400px] p-4 bg-white border border-[#E5E5E5] rounded-lg text-left hover:bg-[#FAFAFA] transition-colors"
+            >
+              <div className="flex gap-4 items-start">
+                <div className="w-[56px] h-[56px] bg-[#F7F7F7] rounded-lg flex items-center justify-center flex-shrink-0 p-2">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img 
+                    src={serviceInfo.logoUrl}
+                    alt={serviceInfo.logo}
+                    className="w-full h-auto object-contain"
+                  />
+                </div>
+                <div className="flex flex-col flex-1">
+                  <span className="text-sm font-bold text-[#191919] leading-tight">
+                    {serviceInfo.name}
+                  </span>
+                  <div className="text-sm text-[#707070] mt-1 leading-relaxed">
+                    <span>{serviceInfo.deliveryDays} business days</span>
+                    <span className="mx-2">·</span>
+                    <span>{serviceInfo.weight}</span>
+                  </div>
+                  <div className="flex items-center justify-between mt-1">
+                    <span className="text-sm text-[#707070]">{serviceInfo.tracking}</span>
+                    <span className="text-sm font-bold text-[#191919]">{serviceInfo.price}</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </button>
+            </button>
+          </div>
 
           {/* View All Services Button */}
           <button 
             onClick={() => openModal("internationalService")}
-            className="w-full max-w-[400px] h-[44px] border border-[#8F8F8F] rounded-full flex items-center justify-center hover:bg-[#FAFAFA] transition-colors"
+            className="w-[280px] h-[44px] border border-[#8F8F8F] rounded-full flex items-center justify-center hover:bg-[#FAFAFA] transition-colors"
           >
             <span className="text-sm text-[#191919]">View all services</span>
           </button>
@@ -1041,7 +1056,12 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
 
               {/* Logo */}
               <div className="w-14 h-14 bg-[#F7F7F7] rounded-lg flex items-center justify-center flex-shrink-0 p-2">
-                <span className="text-xs font-bold text-[#D40511]">{service.logo}</span>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img 
+                  src={service.logoUrl}
+                  alt={service.logo}
+                  className="w-full h-auto object-contain"
+                />
               </div>
 
               {/* Content */}
