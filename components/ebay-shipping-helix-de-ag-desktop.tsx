@@ -13,6 +13,7 @@ import Image from "next/image"
  */
 
 import { useState } from "react"
+import { ChevronDown } from "lucide-react"
 import { ChevronDown, ChevronRight, X, Info, Pencil, Plus } from "lucide-react"
 
 // ============================================================================
@@ -556,6 +557,91 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
               </div>
             </div>
           </div>
+        </section>
+
+        {/* Divider */}
+        <div className="border-t border-[#E5E5E5] my-12" />
+
+        {/* ============================================================ */}
+        {/* INTERNATIONAL SHIPPING SECTION */}
+        {/* ============================================================ */}
+        <section className="mb-0">
+          <h2 className="text-base font-bold text-[#191919] mb-6">International shipping</h2>
+          
+          {/* Default Service */}
+          <div className="mb-6">
+            <span className="text-sm font-bold text-[#191919] mb-3 block">Default service</span>
+            
+            {/* eBay International Shipping Card - Selected state */}
+            <div className="w-full p-4 bg-[#F7F7F7] border-2 border-[#191919] rounded-lg">
+              <div className="flex gap-4 items-start">
+                <div className="w-[48px] h-[32px] bg-[#F7F7F7] rounded flex items-center justify-center flex-shrink-0">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img 
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/EBay_logo.svg/2560px-EBay_logo.svg.png"
+                    alt="eBay"
+                    className="w-[36px] h-auto object-contain"
+                  />
+                </div>
+                <div className="flex flex-col flex-1">
+                  <span className="text-sm font-bold text-[#191919] leading-tight">
+                    eBay International Shipping
+                  </span>
+                  <p className="text-sm text-[#191919] mt-1 leading-relaxed">
+                    Send items to our domestic shipping hub and we&apos;ll handle the rest—at no extra cost.
+                  </p>
+                  <button className="text-sm text-[#191919] underline text-left font-medium mt-2 hover:text-[#3665F3]">
+                    How it works
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Service */}
+          <div className="mb-4">
+            <span className="text-sm font-bold text-[#191919] block">Additional service</span>
+            <span className="text-sm text-[#707070]">
+              <button className="underline text-[#3665F3] hover:text-[#2050D0]">Fees</button> apply for international sales.
+            </span>
+          </div>
+
+          {/* Destination Dropdown */}
+          <div className="mb-4">
+            <button className="w-full max-w-[400px] px-4 py-3 bg-white border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors">
+              <div className="flex flex-col items-start">
+                <span className="text-xs text-[#707070] leading-tight">Destination</span>
+                <span className="text-sm text-[#191919] leading-snug">Worldwide</span>
+              </div>
+              <ChevronDown className="w-5 h-5 text-[#191919]" />
+            </button>
+          </div>
+
+          {/* Selected Service Card */}
+          <div className="w-full max-w-[400px] p-4 bg-white border border-[#E5E5E5] rounded-lg mb-4">
+            <div className="flex gap-4 items-start">
+              <div className="w-[48px] h-[48px] bg-[#F7F7F7] rounded flex items-center justify-center flex-shrink-0">
+                {/* DHL Logo placeholder */}
+                <span className="text-xs font-bold text-[#D40511]">DHL</span>
+              </div>
+              <div className="flex flex-col flex-1">
+                <span className="text-sm font-bold text-[#191919] leading-tight">
+                  DHL Express Worldwide
+                </span>
+                <div className="text-sm text-[#707070] mt-1 leading-relaxed space-y-0.5">
+                  <div>2-4 business days</div>
+                  <div>Up to 30 kg</div>
+                  <div>Tracking included</div>
+                  <div className="font-medium text-[#191919]">€ 24.99</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* View All Services Button */}
+          <button className="w-full max-w-[400px] h-[44px] border border-[#8F8F8F] rounded-full flex items-center justify-center hover:bg-[#FAFAFA] transition-colors">
+            <span className="text-sm text-[#191919]">View all services</span>
+          </button>
         </section>
 
         {/* Divider */}
