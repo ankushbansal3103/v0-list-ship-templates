@@ -764,12 +764,11 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
             </span>
           </div>
 
-          {/* Destination and Service Selection - Desktop Layout */}
-          <div className="flex gap-6 items-start mb-6">
-            {/* Destination Dropdown */}
+          {/* Destination Dropdown - Full Width */}
+          <div className="mb-4">
             <button 
               onClick={() => openModal("destinationDropdown")}
-              className="w-[280px] px-4 py-3 bg-white border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors"
+              className="w-full p-4 border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors text-left"
             >
               <div className="flex flex-col items-start">
                 <span className="text-xs text-[#707070] leading-tight">Destination</span>
@@ -777,13 +776,15 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
               </div>
               <ChevronDown className="w-5 h-5 text-[#191919]" />
             </button>
+          </div>
 
-            {/* Selected Service Card */}
+          {/* Selected Service Card - Full Width */}
+          <div className="mb-4">
             <button 
               onClick={() => openModal("internationalService")}
-              className="flex-1 max-w-[400px] p-4 bg-white border border-[#E5E5E5] rounded-lg text-left hover:bg-[#FAFAFA] transition-colors"
+              className="w-full p-4 bg-white border border-[#E5E5E5] rounded-lg text-left hover:bg-[#FAFAFA] transition-colors"
             >
-              <div className="flex gap-4 items-start">
+              <div className="flex gap-4 items-center">
                 <div className="w-[56px] h-[56px] bg-[#F7F7F7] rounded-lg flex items-center justify-center flex-shrink-0 p-2">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
@@ -796,26 +797,22 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
                   <span className="text-sm font-bold text-[#191919] leading-tight">
                     {serviceInfo.name}
                   </span>
-                  <div className="text-sm text-[#707070] mt-1 leading-relaxed">
-                    <span>{serviceInfo.deliveryDays} business days</span>
-                    <span className="mx-2">·</span>
-                    <span>{serviceInfo.weight}</span>
-                  </div>
-                  <div className="flex items-center justify-between mt-1">
-                    <span className="text-sm text-[#707070]">{serviceInfo.tracking}</span>
-                    <span className="text-sm font-bold text-[#191919]">{serviceInfo.price}</span>
+                  <div className="text-sm text-[#707070] mt-1">
+                    {serviceInfo.deliveryDays} business days · {serviceInfo.weight} · {serviceInfo.tracking}
                   </div>
                 </div>
+                <span className="text-sm font-bold text-[#191919]">{serviceInfo.price}</span>
+                <ChevronRight className="w-5 h-5 text-[#191919] flex-shrink-0" />
               </div>
             </button>
           </div>
 
-          {/* View All Services Button */}
+          {/* View All Services Button - Full Width */}
           <button 
             onClick={() => openModal("internationalService")}
-            className="w-[280px] h-[44px] border border-[#8F8F8F] rounded-full flex items-center justify-center hover:bg-[#FAFAFA] transition-colors"
+            className="w-full h-[48px] border border-[#8F8F8F] rounded-full flex items-center justify-center hover:bg-[#FAFAFA] transition-colors"
           >
-            <span className="text-sm text-[#191919]">View all services</span>
+            <span className="text-sm font-medium text-[#191919]">View all services</span>
           </button>
         </section>
 
