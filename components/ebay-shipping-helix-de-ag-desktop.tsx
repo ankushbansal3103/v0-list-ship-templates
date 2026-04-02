@@ -13,8 +13,7 @@ import Image from "next/image"
  */
 
 import { useState } from "react"
-import { ChevronDown } from "lucide-react"
-import { ChevronDown, ChevronRight, X, Info, Pencil, Plus } from "lucide-react"
+import { ChevronDown, ChevronRight, X, Pencil } from "lucide-react"
 
 // ============================================================================
 // TYPES
@@ -25,6 +24,79 @@ type ModalType =
   | "packageDetails"
   | "format"
   | "condition"
+  | "destinationDropdown"
+  | "internationalService"
+
+// ============================================================================
+// DATA
+// ============================================================================
+
+const packagePresets = [
+  {
+    id: "small",
+    name: "Small box",
+    description: "Up to 500 g, 30 x 20 x 10 cm",
+  },
+  {
+    id: "medium",
+    name: "Medium box",
+    description: "Up to 2 kg, 60 x 30 x 15 cm",
+  },
+  {
+    id: "large",
+    name: "Large box",
+    description: "Up to 5 kg, 60 x 40 x 30 cm",
+  },
+  {
+    id: "xlarge",
+    name: "Extra large",
+    description: "Up to 10 kg, 80 x 60 x 40 cm",
+  },
+]
+
+const internationalDestinations = [
+  { id: "worldwide", label: "Worldwide" },
+  { id: "eu", label: "European Union" },
+  { id: "uk", label: "United Kingdom" },
+  { id: "us", label: "United States" },
+  { id: "asia", label: "Asia" },
+]
+
+const internationalServices = [
+  {
+    id: "dhl-express",
+    name: "DHL Express Worldwide",
+    deliveryDays: "2-4",
+    weight: "Up to 30 kg",
+    tracking: "Tracking included",
+    price: "€ 24.99",
+    logo: "DHL"
+  },
+  {
+    id: "dhl-parcel",
+    name: "DHL Parcel International",
+    deliveryDays: "5-10",
+    weight: "Up to 20 kg",
+    tracking: "Tracking included",
+    price: "€ 14.99",
+    logo: "DHL"
+  },
+  {
+    id: "ups",
+    name: "UPS Standard",
+    deliveryDays: "3-5",
+    weight: "Up to 30 kg",
+    tracking: "Tracking included",
+    price: "€ 19.99",
+    logo: "UPS"
+  },
+]
+
+const formatOptions = [
+  { id: "buy-it-now", label: "Buy It Now" },
+  { id: "auction", label: "Auction" },
+  { id: "auction-bin", label: "Auction with Buy It Now" },
+]
 
 // ============================================================================
 // ICONS
@@ -197,7 +269,7 @@ interface EbayShippingHelixDEAGDesktopProps {
 }
 
 export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippingHelixDEAGDesktopProps) {
-  // State
+  // Pricing state
   const [format, setFormat] = useState("buy-it-now")
   const [itemPrice, setItemPrice] = useState("1,650.00")
   const [quantity, setQuantity] = useState("1")
@@ -206,12 +278,87 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
   const [scheduleListening, setScheduleListening] = useState(false)
   const [promoteListening, setPromoteListening] = useState(false)
   
+  // Package state
+  const [selectedPackage, setSelectedPackage] = useState("medium")
+  
+  // International shipping state
+  const [internationalDestination, setInternationalDestination] = useState("worldwide")
+  const [selectedInternationalService, setSelectedInternationalService] = useState("dhl-express")
+  
   // Modal states
   const [activeModal, setActiveModal] = useState<ModalType>(null)
+  const [tempSelectedPackage, setTempSelectedPackage] = useState("")
+  const [tempSelectedService, setTempSelectedService] = useState("")
+  const [tempSelectedDestination, setTempSelectedDestination] = useState("")
+  
+  // Modal handlers
+  const openModal = (modal: ModalType) => {
+    setActiveModal(modal)
+    if (modal === "packageDetails") {
+      setTempSelectedPackage(selectedPackage)
+    }
+    if (modal === "internationalService") {
+      setTempSelectedService(selectedInternationalService)
+    }
+    if (modal === "destinationDropdown") {
+      setTempSelectedDestination(internationalDestination)
+    }
+  }
   
   const closeModal = () => {
     setActiveModal(null)
+    setTempSelectedPackage("")
+    setTempSelectedService("")
+    setTempSelectedDestination("")
   }
+  
+  const handleSavePackage = () => {
+    if (tempSelectedPackage) {
+      setSelectedPackage(tempSelectedPackage)
+    }
+    closeModal()
+  }
+  
+  const handleSaveService = () => {
+    if (tempSelectedService) {
+      setSelectedInternationalService(tempSelectedService)
+    }
+    closeModal()
+  }
+  
+  const handleSaveDestination = () => {
+    if (tempSelectedDestination) {
+      setInternationalDestination(tempSelectedDestination)
+    }
+    closeModal()
+  }
+  
+  // Get selected package info
+  const getSelectedPackageInfo = () => {
+    const pkg = packagePresets.find(p => p.id === selectedPackage)
+    return pkg || packagePresets[1] // default to medium
+  }
+  
+  // Get selected service info
+  const getSelectedServiceInfo = () => {
+    const service = internationalServices.find(s => s.id === selectedInternationalService)
+    return service || internationalServices[0]
+  }
+  
+  // Get selected destination label
+  const getSelectedDestinationLabel = () => {
+    const dest = internationalDestinations.find(d => d.id === internationalDestination)
+    return dest?.label || "Worldwide"
+  }
+  
+  // Get format label
+  const getFormatLabel = () => {
+    const fmt = formatOptions.find(f => f.id === format)
+    return fmt?.label || "Buy It Now"
+  }
+  
+  const packageInfo = getSelectedPackageInfo()
+  const serviceInfo = getSelectedServiceInfo()
 
   return (
     <div className={`${previewMode ? '' : 'min-h-screen'} bg-white`} style={{ fontFamily: "'Market Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" }}>
@@ -412,8 +559,11 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
               {/* Format */}
               <div>
                 <label className="text-sm text-[#191919] block mb-2">Format</label>
-                <button className="w-full h-10 px-3 border border-[#E5E5E5] rounded-lg flex items-center justify-between text-sm text-[#191919]">
-                  Buy It Now
+                <button 
+                  onClick={() => openModal("format")}
+                  className="w-full h-10 px-3 border border-[#E5E5E5] rounded-lg flex items-center justify-between text-sm text-[#191919] hover:bg-[#FAFAFA] transition-colors"
+                >
+                  {getFormatLabel()}
                   <ChevronDown className="w-4 h-4" />
                 </button>
               </div>
@@ -516,10 +666,13 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
           {/* Package size */}
           <div className="mb-8">
             <h3 className="text-lg font-bold text-[#191919] mb-4">Package size</h3>
-            <button className="w-full p-4 border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors text-left">
+            <button 
+              onClick={() => openModal("packageDetails")}
+              className="w-full p-4 border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors text-left"
+            >
               <div>
-                <div className="text-base font-medium text-[#191919]">Medium box</div>
-                <div className="text-sm text-[#707070]">Up to 2 kg, 60 x 30 x 15 cm</div>
+                <div className="text-base font-medium text-[#191919]">{packageInfo.name}</div>
+                <div className="text-sm text-[#707070]">{packageInfo.description}</div>
               </div>
               <ChevronRight className="w-5 h-5 text-[#191919] flex-shrink-0" />
             </button>
@@ -608,38 +761,46 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
 
           {/* Destination Dropdown */}
           <div className="mb-4">
-            <button className="w-full max-w-[400px] px-4 py-3 bg-white border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors">
+            <button 
+              onClick={() => openModal("destinationDropdown")}
+              className="w-full max-w-[400px] px-4 py-3 bg-white border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors"
+            >
               <div className="flex flex-col items-start">
                 <span className="text-xs text-[#707070] leading-tight">Destination</span>
-                <span className="text-sm text-[#191919] leading-snug">Worldwide</span>
+                <span className="text-sm text-[#191919] leading-snug">{getSelectedDestinationLabel()}</span>
               </div>
               <ChevronDown className="w-5 h-5 text-[#191919]" />
             </button>
           </div>
 
           {/* Selected Service Card */}
-          <div className="w-full max-w-[400px] p-4 bg-white border border-[#E5E5E5] rounded-lg mb-4">
+          <button 
+            onClick={() => openModal("internationalService")}
+            className="w-full max-w-[400px] p-4 bg-white border border-[#E5E5E5] rounded-lg mb-4 text-left hover:bg-[#FAFAFA] transition-colors"
+          >
             <div className="flex gap-4 items-start">
               <div className="w-[48px] h-[48px] bg-[#F7F7F7] rounded flex items-center justify-center flex-shrink-0">
-                {/* DHL Logo placeholder */}
-                <span className="text-xs font-bold text-[#D40511]">DHL</span>
+                <span className="text-xs font-bold text-[#D40511]">{serviceInfo.logo}</span>
               </div>
               <div className="flex flex-col flex-1">
                 <span className="text-sm font-bold text-[#191919] leading-tight">
-                  DHL Express Worldwide
+                  {serviceInfo.name}
                 </span>
                 <div className="text-sm text-[#707070] mt-1 leading-relaxed space-y-0.5">
-                  <div>2-4 business days</div>
-                  <div>Up to 30 kg</div>
-                  <div>Tracking included</div>
-                  <div className="font-medium text-[#191919]">€ 24.99</div>
+                  <div>{serviceInfo.deliveryDays} business days</div>
+                  <div>{serviceInfo.weight}</div>
+                  <div>{serviceInfo.tracking}</div>
+                  <div className="font-medium text-[#191919]">{serviceInfo.price}</div>
                 </div>
               </div>
             </div>
-          </div>
+          </button>
 
           {/* View All Services Button */}
-          <button className="w-full max-w-[400px] h-[44px] border border-[#8F8F8F] rounded-full flex items-center justify-center hover:bg-[#FAFAFA] transition-colors">
+          <button 
+            onClick={() => openModal("internationalService")}
+            className="w-full max-w-[400px] h-[44px] border border-[#8F8F8F] rounded-full flex items-center justify-center hover:bg-[#FAFAFA] transition-colors"
+          >
             <span className="text-sm text-[#191919]">View all services</span>
           </button>
         </section>
@@ -737,7 +898,7 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
       {/* MODALS */}
       {/* ============================================================ */}
 
-      {/* Package Details Modal - Placeholder */}
+      {/* Package Details Modal */}
       <Modal
         isOpen={activeModal === "packageDetails"}
         onClose={closeModal}
@@ -745,15 +906,157 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
         subtitle="Select your package type and size"
         footer={
           <button
-            onClick={closeModal}
+            onClick={handleSavePackage}
             className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
           >
             Save
           </button>
         }
       >
-        <div className="py-4">
-          <p className="text-sm text-[#707070]">Package selection options would go here.</p>
+        <div className="py-4 space-y-2">
+          {packagePresets.map((pkg) => (
+            <button
+              key={pkg.id}
+              onClick={() => setTempSelectedPackage(pkg.id)}
+              className="w-full flex items-center gap-4 p-4 rounded-lg text-left hover:bg-[#FAFAFA] transition-colors"
+            >
+              {/* Radio Button */}
+              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                tempSelectedPackage === pkg.id ? 'border-[#191919] bg-[#191919]' : 'border-[#8F8F8F]'
+              }`}>
+                {tempSelectedPackage === pkg.id && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+              </div>
+              
+              {/* Content */}
+              <div className="flex-1">
+                <span className="text-sm font-bold text-[#191919] block">{pkg.name}</span>
+                <span className="text-sm text-[#707070]">{pkg.description}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </Modal>
+
+      {/* Format Selection Modal */}
+      <Modal
+        isOpen={activeModal === "format"}
+        onClose={closeModal}
+        title="Select format"
+        subtitle="Choose how you want to sell your item"
+        footer={
+          <button
+            onClick={() => {
+              closeModal()
+            }}
+            className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
+          >
+            Done
+          </button>
+        }
+      >
+        <div className="py-4 space-y-2">
+          {formatOptions.map((fmt) => (
+            <button
+              key={fmt.id}
+              onClick={() => setFormat(fmt.id)}
+              className="w-full flex items-center gap-4 p-4 rounded-lg text-left hover:bg-[#FAFAFA] transition-colors"
+            >
+              {/* Radio Button */}
+              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                format === fmt.id ? 'border-[#191919] bg-[#191919]' : 'border-[#8F8F8F]'
+              }`}>
+                {format === fmt.id && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+              </div>
+              
+              {/* Content */}
+              <span className="text-sm font-bold text-[#191919]">{fmt.label}</span>
+            </button>
+          ))}
+        </div>
+      </Modal>
+
+      {/* Destination Selection Modal */}
+      <Modal
+        isOpen={activeModal === "destinationDropdown"}
+        onClose={closeModal}
+        title="Select destination"
+        subtitle="Choose where you want to ship to"
+        footer={
+          <button
+            onClick={handleSaveDestination}
+            className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
+          >
+            Save
+          </button>
+        }
+      >
+        <div className="py-4 space-y-2">
+          {internationalDestinations.map((dest) => (
+            <button
+              key={dest.id}
+              onClick={() => setTempSelectedDestination(dest.id)}
+              className="w-full flex items-center gap-4 p-4 rounded-lg text-left hover:bg-[#FAFAFA] transition-colors"
+            >
+              {/* Radio Button */}
+              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${
+                tempSelectedDestination === dest.id ? 'border-[#191919] bg-[#191919]' : 'border-[#8F8F8F]'
+              }`}>
+                {tempSelectedDestination === dest.id && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+              </div>
+              
+              {/* Content */}
+              <span className="text-sm font-bold text-[#191919]">{dest.label}</span>
+            </button>
+          ))}
+        </div>
+      </Modal>
+
+      {/* International Service Selection Modal */}
+      <Modal
+        isOpen={activeModal === "internationalService"}
+        onClose={closeModal}
+        title="Select shipping service"
+        subtitle="Choose a carrier for international shipping"
+        footer={
+          <button
+            onClick={handleSaveService}
+            className="px-8 py-3 bg-[#3665F3] text-white rounded-full text-sm font-medium hover:bg-[#2E5AD8] transition-colors"
+          >
+            Save
+          </button>
+        }
+      >
+        <div className="py-4 space-y-2">
+          {internationalServices.map((service) => (
+            <button
+              key={service.id}
+              onClick={() => setTempSelectedService(service.id)}
+              className="w-full flex items-start gap-4 p-4 rounded-lg text-left hover:bg-[#FAFAFA] transition-colors"
+            >
+              {/* Radio Button */}
+              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center flex-shrink-0 mt-4 ${
+                tempSelectedService === service.id ? 'border-[#191919] bg-[#191919]' : 'border-[#8F8F8F]'
+              }`}>
+                {tempSelectedService === service.id && <div className="w-2.5 h-2.5 rounded-full bg-white" />}
+              </div>
+
+              {/* Logo */}
+              <div className="w-14 h-14 bg-[#F7F7F7] rounded-lg flex items-center justify-center flex-shrink-0 p-2">
+                <span className="text-xs font-bold text-[#D40511]">{service.logo}</span>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1 py-1">
+                <h4 className="text-sm font-bold text-[#191919] leading-5">{service.name}</h4>
+                <div className="text-sm text-[#707070] leading-5">
+                  <div>{service.deliveryDays} business days</div>
+                  <div>{service.weight}</div>
+                  <div>{service.tracking}</div>
+                  <div className="font-medium text-[#191919]">{service.price}</div>
+                </div>
+              </div>
+            </button>
+          ))}
         </div>
       </Modal>
 
