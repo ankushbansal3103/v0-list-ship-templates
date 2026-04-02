@@ -515,7 +515,7 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
           {/* Package size */}
           <div className="mb-8">
             <h3 className="text-lg font-bold text-[#191919] mb-4">Package size</h3>
-            <button className="w-[400px] p-4 border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors text-left">
+            <button className="w-full p-4 border border-[#8F8F8F] rounded-lg flex items-center justify-between hover:bg-[#FAFAFA] transition-colors text-left">
               <div>
                 <div className="text-base font-medium text-[#191919]">Medium box</div>
                 <div className="text-sm text-[#707070]">Up to 2 kg, 60 x 30 x 15 cm</div>
