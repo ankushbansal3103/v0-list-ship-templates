@@ -514,7 +514,7 @@ export function EbayShippingHelixDEAGDesktop({ previewMode = false }: EbayShippi
               <input type="checkbox" id="htmlCode" className="w-[18px] h-[18px] rounded border-[#191919]" />
               <label htmlFor="htmlCode" className="text-sm text-[#191919]">Show HTML Code</label>
               <button className="ml-1">
-                <Info className="w-4 h-4 text-[#191919]" />
+                <InfoIcon className="w-4 h-4 text-[#191919]" />
               </button>
             </div>
           </div>
