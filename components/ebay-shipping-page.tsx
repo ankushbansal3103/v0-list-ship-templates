@@ -461,8 +461,8 @@ export function EbayShippingPage() {
                     <span className="text-[14px] font-bold text-[#191919] leading-tight">
                       eBay shipping powered by FedEx
                     </span>
-                    <span className="text-[13px] text-[#707070] mt-0.5">
-                      Free shipping label provided to you
+                    <span className="text-[13px] text-[#424242] font-medium mt-0.5">
+                      Free Shipping label from ebay
                     </span>
                   </div>
                 </div>

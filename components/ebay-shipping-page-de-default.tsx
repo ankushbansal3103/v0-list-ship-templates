@@ -419,7 +419,7 @@ export function EbayShippingPageDEDefault() {
 {/* Recommended Badge */}
                         {service.recommended && (
                           <span className="inline-flex items-center h-[22px] px-[10px] rounded-full bg-transparent border-[1.5px] border-[#3665F3] w-fit mb-1">
-                            <span className="text-[11px] text-[#3665F3] font-bold uppercase tracking-[0.3px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Recommended</span>
+                            <span className="text-[11px] text-[#3665F3] font-bold uppercase tracking-[0.3px]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>Cheapest</span>
                           </span>
                         )}
                           <span className="text-[14px] font-bold text-[#191919]" style={{ fontFamily: "'Market Sans', system-ui, sans-serif" }}>

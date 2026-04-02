@@ -28,6 +28,7 @@ import { EbayShippingPageUKAGAndroid } from "@/components/ebay-shipping-page-uk-
 import { EbayShippingPageCAAGAndroid } from "@/components/ebay-shipping-page-ca-ag-android"
 import { EbayShippingPageAUAGAndroid } from "@/components/ebay-shipping-page-au-ag-android"
 import { EbayShippingHelixFRDesktop } from "@/components/ebay-shipping-helix-fr-desktop"
+import { EbayShippingHelixDEAGDesktop } from "@/components/ebay-shipping-helix-de-ag-desktop"
 
 // Filter options
 const platforms = [
@@ -47,7 +48,7 @@ const sites = [
     code: "US",
     flag: "🇺🇸",
     prototypes: [
-      { id: "us-shelby-ag", name: "US-Shelby-AG", description: "Shipping configuration with Authenticity Guarantee, eBay International Shipping", status: "active", route: "/prototype/us-shelby-ag", platform: "ios", segment: "c2c", recommended: true },
+      { id: "us-shelby-ag", name: "US-Shelby-AG", description: "Shipping configuration with Authenticity Guarantee, eBay International Shipping", status: "active", route: "/prototype/us-shelby-ag", platform: "ios", segment: "c2c" },
       { id: "us-shelby-default", name: "US-Shelby-Default", description: "Default services view with USPS, FedEx, UPS carrier selection", status: "active", route: "/prototype/us-shelby-default", platform: "ios", segment: "c2c" },
       { id: "us-shelby-default-android", name: "US-Shelby-Default-Android", description: "Default services view for Android platform", status: "active", route: "/prototype/us-shelby-default-android", platform: "android", segment: "c2c" },
       { id: "us-helix-simple", name: "US-Helix-Simple", description: "Helix Simple desktop shipping configuration for US market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
@@ -78,6 +79,7 @@ const sites = [
       { id: "de-shelby-default", name: "DE-Shelby-Default", description: "Default services view for German market", status: "active", route: "/prototype/de-shelby-default", platform: "ios", segment: "c2c" },
       { id: "de-shelby-default-android", name: "DE-Shelby-Default-Android", description: "Default services view for German market (Android)", status: "active", route: "/prototype/de-shelby-default-android", platform: "android", segment: "c2c" },
       { id: "de-helix-simple", name: "DE-Helix-Simple", description: "Helix Simple desktop shipping configuration for German market", status: "active", route: "/prototype/fr-helix-desktop", platform: "dweb", segment: "c2c" },
+      { id: "de-helix-ag", name: "DE-Helix-AG", description: "Complete Your Listing with Authenticity Guarantee for German market", status: "active", route: "/prototype/de-helix-ag-desktop", platform: "dweb", segment: "c2c" },
       { id: "de-standard", name: "DE-Standard-V1", description: "German market shipping with DHL/Hermes", status: "draft", route: "/prototype/de-standard", platform: "ios", segment: "c2c" },
       { id: "de-returns", name: "DE-Returns-V1", description: "Enhanced returns flow for German regulations", status: "draft", route: "/prototype/de-returns", platform: "dweb", segment: "b2c" },
     ]
@@ -693,9 +695,129 @@ export default function PrototypeLibrary() {
   <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
   <EbayShippingPageDEDefaultAndroid />
   </div>
-  ) : prototype.status === 'active' && prototype.id === 'fr-shelby-default-android' ? (
+) : prototype.status === 'active' && prototype.id === 'fr-shelby-default-android' ? (
   <div className="pointer-events-none" style={{ transform: 'scale(0.19)', transformOrigin: 'center center' }}>
   <EbayShippingPageFRDefaultAndroid />
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'de-helix-ag' ? (
+  <div className="flex items-center justify-center w-full h-full p-3" style={{ fontFamily: "'Market Sans', -apple-system, BlinkMacSystemFont, sans-serif" }}>
+    {/* Desktop Monitor Frame - DE Helix AG */}
+    <div className="flex flex-col items-center">
+      {/* Monitor */}
+      <div className="w-[265px] bg-[#1a1a1a] rounded-t-lg p-1.5">
+        <div className="bg-white rounded-sm overflow-hidden">
+          {/* Browser Tab Bar */}
+          <div className="bg-[#DEE1E6] px-2 py-1 flex items-center gap-1">
+            <div className="flex gap-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#ED6A5E]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#F4BF4F]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#61C554]" />
+            </div>
+            <div className="flex-1 flex items-center justify-center">
+              <div className="bg-white rounded-sm px-3 py-0.5 text-[6px] text-[#555] flex items-center gap-1">
+                <svg className="w-2 h-2 text-[#999]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                ebay.de
+              </div>
+            </div>
+          </div>
+          {/* Page Content - Complete Your Listing Preview */}
+          <div className="p-2 bg-[#FAFAFA]">
+            <div className="text-[7px] font-bold text-[#111820] mb-2">Complete your listing</div>
+            {/* Condition */}
+            <div className="text-[5px] font-bold text-[#111820] uppercase mb-1">CONDITION</div>
+            <div className="text-[4px] text-[#707070] mb-2">Pre-owned - Excellent</div>
+            {/* AG Notice */}
+            <div className="bg-[#F5F9FF] rounded p-1 flex items-center gap-1 mb-2">
+              <div className="w-2 h-2 bg-[#0968F6] rounded-full flex items-center justify-center">
+                <svg className="w-1 h-1 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+              </div>
+              <span className="text-[4px] text-[#191919]">Eligible for Authenticity Check</span>
+            </div>
+            {/* Pricing */}
+            <div className="text-[5px] font-bold text-[#111820] uppercase mb-1">PRICING</div>
+            <div className="flex gap-1 mb-2">
+              <div className="flex-1 bg-white border border-[#E5E5E5] rounded p-1">
+                <div className="text-[4px] text-[#707070]">Price</div>
+                <div className="text-[5px] font-bold text-[#191919]">€ 1,650.00</div>
+              </div>
+            </div>
+            {/* Shipping */}
+            <div className="text-[5px] font-bold text-[#111820] uppercase mb-1">SHIPPING</div>
+            <div className="bg-white border border-[#E5E5E5] rounded p-1 mb-2">
+              <div className="text-[4px] font-bold text-[#191919]">Medium box</div>
+              <div className="text-[3px] text-[#707070]">Up to 2 kg, 60 x 30 x 15 cm</div>
+            </div>
+            {/* CTA */}
+            <div className="bg-[#3665F3] rounded-full py-0.5 text-center">
+              <span className="text-[4px] text-white font-medium">List it</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Monitor Stand */}
+      <div className="w-8 h-3 bg-[#1a1a1a]" />
+      <div className="w-16 h-1.5 bg-[#1a1a1a] rounded-b-sm" />
+    </div>
+  </div>
+  ) : prototype.status === 'active' && prototype.id === 'de-helix-ag' ? (
+  <div className="flex items-center justify-center w-full h-full p-3" style={{ fontFamily: "'Market Sans', -apple-system, BlinkMacSystemFont, sans-serif" }}>
+    {/* Desktop Monitor Frame - DE Helix AG */}
+    <div className="flex flex-col items-center">
+      {/* Monitor */}
+      <div className="w-[265px] bg-[#1a1a1a] rounded-t-lg p-1.5">
+        <div className="bg-white rounded-sm overflow-hidden">
+          {/* Browser Tab Bar */}
+          <div className="bg-[#DEE1E6] px-2 py-1 flex items-center gap-1">
+            <div className="flex gap-1">
+              <div className="w-1.5 h-1.5 rounded-full bg-[#ED6A5E]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#F4BF4F]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#61C554]" />
+            </div>
+            <div className="flex-1 flex items-center justify-center">
+              <div className="bg-white rounded-sm px-3 py-0.5 text-[6px] text-[#555] flex items-center gap-1">
+                <svg className="w-2 h-2 text-[#999]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                ebay.de
+              </div>
+            </div>
+          </div>
+          {/* Page Content - Complete Your Listing Preview */}
+          <div className="p-2 bg-[#FAFAFA]">
+            <div className="text-[7px] font-bold text-[#111820] mb-2">Complete your listing</div>
+            {/* Condition */}
+            <div className="text-[5px] font-bold text-[#111820] uppercase mb-1">CONDITION</div>
+            <div className="text-[4px] text-[#707070] mb-2">Pre-owned - Excellent</div>
+            {/* AG Notice */}
+            <div className="bg-[#F5F9FF] rounded p-1 flex items-center gap-1 mb-2">
+              <div className="w-2 h-2 bg-[#0968F6] rounded-full flex items-center justify-center">
+                <svg className="w-1 h-1 text-white" fill="currentColor" viewBox="0 0 20 20"><path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" /></svg>
+              </div>
+              <span className="text-[4px] text-[#191919]">Eligible for Authenticity Check</span>
+            </div>
+            {/* Pricing */}
+            <div className="text-[5px] font-bold text-[#111820] uppercase mb-1">PRICING</div>
+            <div className="flex gap-1 mb-2">
+              <div className="flex-1 bg-white border border-[#E5E5E5] rounded p-1">
+                <div className="text-[4px] text-[#707070]">Price</div>
+                <div className="text-[5px] font-bold text-[#191919]">€ 1,650.00</div>
+              </div>
+            </div>
+            {/* Shipping */}
+            <div className="text-[5px] font-bold text-[#111820] uppercase mb-1">SHIPPING</div>
+            <div className="bg-white border border-[#E5E5E5] rounded p-1 mb-2">
+              <div className="text-[4px] font-bold text-[#191919]">Medium box</div>
+              <div className="text-[3px] text-[#707070]">Up to 2 kg, 60 x 30 x 15 cm</div>
+            </div>
+            {/* CTA */}
+            <div className="bg-[#3665F3] rounded-full py-0.5 text-center">
+              <span className="text-[4px] text-white font-medium">List it</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Monitor Stand */}
+      <div className="w-8 h-3 bg-[#1a1a1a]" />
+      <div className="w-16 h-1.5 bg-[#1a1a1a] rounded-b-sm" />
+    </div>
   </div>
   ) : prototype.status === 'active' && prototype.platform === 'dweb' ? (
   <div className="flex items-center justify-center w-full h-full p-3" style={{ fontFamily: "'Market Sans', -apple-system, BlinkMacSystemFont, sans-serif" }}>
